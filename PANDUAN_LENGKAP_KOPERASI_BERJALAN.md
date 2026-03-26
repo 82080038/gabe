@@ -233,6 +233,12 @@ Member:
 CREATE DATABASE schema_person;
 USE schema_person;
 
+-- Schema Address (rename dari alamat_db)
+-- NOTE: alamat_db sudah ada dengan data lengkap Indonesia
+-- Gunakan: RENAME DATABASE alamat_db TO schema_address;
+CREATE DATABASE schema_address;
+USE schema_address;
+
 CREATE TABLE persons (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nik VARCHAR(16) UNIQUE NOT NULL,
@@ -254,37 +260,12 @@ CREATE TABLE family_links (
     FOREIGN KEY (person2_id) REFERENCES persons(id)
 );
 
--- Schema Address
-CREATE DATABASE schema_address;
-USE schema_address;
+-- Schema Address (rename dari alamat_db)
+-- NOTE: alamat_db sudah ada dengan 14.8MB data alamat Indonesia
+-- Gunakan: RENAME DATABASE alamat_db TO schema_address;
+-- Tables yang sudah ada: provinces, regencies, districts, villages, streets, addresses
 
-CREATE TABLE provinces (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE regencies (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    province_id INT NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (province_id) REFERENCES provinces(id)
-);
-
-CREATE TABLE districts (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    regency_id INT NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (regency_id) REFERENCES regencies(id)
-);
-
-CREATE TABLE villages (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    district_id INT NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (district_id) REFERENCES districts(id)
-);
-
-CREATE TABLE addresses (
+CREATE TABLE IF NOT EXISTS addresses (
     id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT NOT NULL,
     village_id INT NOT NULL,
@@ -292,8 +273,9 @@ CREATE TABLE addresses (
     address_type ENUM('rumah', 'usaha', 'penagihan'),
     latitude DECIMAL(10,8),
     longitude DECIMAL(11,8),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (person_id) REFERENCES schema_person.persons(id),
-    FOREIGN KEY (village_id) REFERENCES villages(id)
+    FOREIGN KEY (village_id) REFERENCES schema_address.villages(id)
 );
 
 -- Schema App
@@ -320,7 +302,7 @@ CREATE TABLE branches (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (unit_id) REFERENCES units(id),
-    FOREIGN KEY (address_id) REFERENCES schema_address.addresses(id)
+    -- FOREIGN KEY (address_id) REFERENCES schema_address.addresses(id)
 );
 
 CREATE TABLE users (

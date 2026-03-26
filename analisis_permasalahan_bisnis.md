@@ -34,6 +34,19 @@ Koperasi pasar di Jakarta mengalami kerugian Rp2,5 Miliar dengan temuan:
 - **Tidak ada credit scoring formal** - keputusan berdasarkan feeling
 - **Overlapping pinjaman** - satu anggota pinjam di 2-3 koperasi
 
+**Database Solution:**
+```sql
+-- Deteksi overlapping pinjaman dengan cross-database query
+SELECT 
+    p.nik, p.name, COUNT(l.id) as active_loans
+FROM schema_app.loans l
+JOIN schema_app.members m ON l.member_id = m.id
+JOIN schema_person.persons p ON m.person_id = p.id
+WHERE l.status = 'disbursed'
+GROUP BY p.nik
+HAVING COUNT(l.id) > 1;
+```
+
 ### b. Solusi Teknis dalam Aplikasi
 
 **1. Credit Scoring Sederhana (Tanpa ML)**  
