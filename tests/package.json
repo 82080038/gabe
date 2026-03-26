@@ -1,0 +1,42 @@
+{
+  "name": "koperasi-berjalan-tests",
+  "version": "1.0.0",
+  "description": "Comprehensive system testing for Koperasi Berjalan application",
+  "main": "puppeteer-comprehensive-test.js",
+  "scripts": {
+    "test": "node puppeteer-comprehensive-test.js",
+    "test:headless": "HEADLESS=true node puppeteer-comprehensive-test.js",
+    "test:visible": "HEADLESS=false node puppeteer-comprehensive-test.js",
+    "test:auth": "node -e \"const t = require('./puppeteer-comprehensive-test.js'); const tester = new t(); tester.runTestSuite('authentication').catch(console.error);\"",
+    "test:dashboard": "node -e \"const t = require('./puppeteer-comprehensive-test.js'); const tester = new t(); tester.runTestSuite('dashboard').catch(console.error);\"",
+    "test:mobile": "node -e \"const t = require('./puppeteer-comprehensive-test.js'); const tester = new t(); tester.runTestSuite('mobile-responsiveness').catch(console.error);\"",
+    "test:pwa": "node -e \"const t = require('./puppeteer-comprehensive-test.js'); const tester = new t(); tester.runTestSuite('pwa-features').catch(console.error);\"",
+    "test:performance": "node -e \"const t = require('./puppeteer-comprehensive-test.js'); const tester = new t(); tester.runTestSuite('performance').catch(console.error);\"",
+    "install-deps": "npm install puppeteer",
+    "setup": "npm install && mkdir -p screenshots"
+  },
+  "keywords": [
+    "testing",
+    "puppeteer",
+    "e2e",
+    "koperasi",
+    "cooperative",
+    "automation"
+  ],
+  "author": "Koperasi Berjalan Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.11.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/82080038/gabe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/82080038/gabe/issues"
+  },
+  "homepage": "https://github.com/82080038/gabe#readme"
+}
