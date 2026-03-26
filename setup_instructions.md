@@ -14,9 +14,13 @@ mysql -u root -p
 # Masukkan password: root
 ```
 
-### **Step 2: Rename Database alamat_db → schema_address**
-```sql
-mysql> RENAME DATABASE alamat_db TO schema_address;
+### **Step 2: Import Data alamat_db_backup.sql ke schema_address**
+```bash
+# Konversi encoding jika perlu
+iconv -f utf-16 -t utf-8 /opt/lampp/htdocs/gabe/alamat_db_backup.sql > /opt/lampp/htdocs/gabe/alamat_db_clean.sql
+
+# Import ke schema_address
+mysql -u root -p schema_address < /opt/lampp/htdocs/gabe/alamat_db_clean.sql
 ```
 
 ### **Step 3: Jalankan Script Setup**
@@ -258,7 +262,7 @@ CREATE INDEX idx_savings_account_date ON schema_app.savings_deposits(account_id,
 ## ✅ **Setup Verification Checklist**
 
 - [ ] 3 databases created: schema_person, schema_address, schema_app
-- [ ] alamat_db renamed to schema_address successfully (data 14.8MB preserved)
+- [ ] alamat_db_backup.sql imported to schema_address successfully (data Indonesia lengkap)
 - [ ] All tables created with proper relationships
 - [ ] Initial data inserted (accounts, products)
 - [ ] Views and stored procedures created
