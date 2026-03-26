@@ -1,0 +1,398 @@
+=================================================================
+                    MODUL AKUNTANSI LENGKAP
+         SISTEM SIMPAN PINJAM (KOPERASI / FINTECH)
+=================================================================
+
+1. PENDAHULUAN
+   Modul akuntansi ini dirancang untuk memenuhi standar pelaporan keuangan
+   bagi koperasi simpan pinjam, mengacu pada SAK ETAP (Standar Akuntansi
+   Keuangan Entitas Tanpa Akuntabilitas Publik). Semua transaksi bisnis
+   dicatat dengan sistem double-entry, menghasilkan jurnal otomatis yang
+   terintegrasi dengan modul operasional (simpanan, pinjaman, kas, dll).
+
+2. STRUKTUR TABEL AKUNTANSI
+
+   -----------------------------------------------------------------
+   SCHEMA_APP (tabel akuntansi)
+   -----------------------------------------------------------------
+
+   -- Daftar Akun (Chart of Accounts)
+   CREATE TABLE accounts (
+       id INT PRIMARY KEY AUTO_INCREMENT,
+       account_code VARCHAR(20) NOT NULL UNIQUE,
+       account_name VARCHAR(100) NOT NULL,
+       account_type ENUM('aset','kewajiban','ekuitas','pendapatan','beban') NOT NULL,
+       parent_id INT,                -- untuk hierarki akun (opsional)
+       is_active BOOLEAN DEFAULT TRUE,
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       FOREIGN KEY (parent_id) REFERENCES accounts(id)
+   );
+
+   -- Jurnal Umum (header)
+   CREATE TABLE journals (
+       id INT PRIMARY KEY AUTO_INCREMENT,
+       journal_date DATE NOT NULL,
+       description TEXT,
+       reference_type VARCHAR(50),   -- sumber transaksi (loan_disbursement, saving_payment, dll)
+       reference_id INT,             -- ID pada tabel sumber (loans.id, transactions.id, dll)
+       created_by INT NOT NULL,
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       FOREIGN KEY (created_by) REFERENCES users(id)
+   );
+
+   -- Detail Jurnal (posting)
+   CREATE TABLE journal_details (
+       id INT PRIMARY KEY AUTO_INCREMENT,
+       journal_id INT NOT NULL,
+       account_id INT NOT NULL,
+       debit DECIMAL(15,2) DEFAULT 0,
+       credit DECIMAL(15,2) DEFAULT 0,
+       notes TEXT,
+       FOREIGN KEY (journal_id) REFERENCES journals(id) ON DELETE CASCADE,
+       FOREIGN KEY (account_id) REFERENCES accounts(id)
+   );
+
+3. BAGAN AKUN (CHART OF ACCOUNTS) MINIMAL
+
+   Kode    | Nama Akun                         | Tipe        | Keterangan
+   --------|-----------------------------------|-------------|-----------------------------------
+   ASET
+   1010    | Kas                               | Aset        | Uang tunai di cabang
+   1020    | Bank                              | Aset        | Rekening koperasi
+   1100    | Piutang Pinjaman                  | Aset        | Pokok pinjaman yang belum dibayar
+   1110    | Piutang Bunga                      | Aset        | Bunga yang belum dibayar (opsional)
+   1120    | Piutang Denda                      | Aset        | Denda yang belum dibayar
+   1200    | Penyisihan Piutang Tak Tertagih    | Aset (kontra)| Cadangan kerugian
+   1300    | Aset Tetap                         | Aset        | Inventaris, kendaraan, dll
+
+   KEWAJIBAN
+   2010    | Simpanan Pokok                     | Kewajiban   | Simpanan pokok anggota
+   2020    | Simpanan Wajib                     | Kewajiban   | Simpanan wajib anggota
+   2030    | Simpanan Sukarela                  | Kewajiban   | Tabungan sukarela
+   2040    | Simpanan Berjangka                 | Kewajiban   | Deposito anggota
+   2100    | Kewajiban Lain-lain                | Kewajiban   | Hutang operasional
+
+   EKUITAS
+   3010    | Modal Koperasi                     | Ekuitas     | Modal awal dan setoran
+   3020    | Cadangan Umum                      | Ekuitas     | Cadangan wajib
+   3030    | Cadangan Risiko                    | Ekuitas     | Untuk penutupan kerugian
+   3040    | SHU Belum Dibagi                   | Ekuitas     | Sisa hasil usaha tahun berjalan
+
+   PENDAPATAN
+   4010    | Pendapatan Bunga Pinjaman          | Pendapatan  | Bunga dari pinjaman
+   4020    | Pendapatan Administrasi             | Pendapatan  | Biaya administrasi pinjaman
+   4030    | Pendapatan Denda                    | Pendapatan  | Denda keterlambatan
+   4040    | Pendapatan Lain-lain               | Pendapatan  | Jasa, dll
+
+   BEBAN
+   5010    | Beban Gaji                         | Beban       | Gaji karyawan
+   5020    | Beban Operasional                  | Beban       | Listrik, ATK, sewa
+   5030    | Beban Penyisihan Piutang           | Beban       | Cadangan kerugian
+   5040    | Beban Imbal Hasil Simpanan         | Beban       | Bunga yang dibayar ke anggota
+   5050    | Beban Lain-lain                    | Beban       | Biaya tak terduga
+
+4. OTOMATISASI JURNAL (DOUBLE-ENTRY)
+
+   Setiap kali terjadi transaksi bisnis melalui API, sistem akan memanggil
+   fungsi create_journal() yang mencatat jurnal dalam satu database transaction.
+   Berikut contoh jurnal untuk setiap jenis transaksi:
+
+   -----------------------------------------------------------------
+   A. Pencairan Pinjaman (loan disbursement)
+   -----------------------------------------------------------------
+   Transaksi: anggota menerima uang pinjaman.
+   Akun yang terpengaruh:
+     - Kas (debit)                  : jumlah cair
+     - Piutang Pinjaman (kredit)    : jumlah pinjaman
+     - Pendapatan Administrasi (kredit) : biaya admin (jika ada)
+     - (jika ada potongan simpanan wajib, dicatat sesuai)
+
+   Jurnal:
+     Debit  Kas                               Rp 9.500.000
+     Kredit Piutang Pinjaman                  Rp10.000.000
+     Kredit Pendapatan Administrasi           Rp   500.000
+
+   -----------------------------------------------------------------
+   B. Pembayaran Angsuran Pinjaman (loan repayment)
+   -----------------------------------------------------------------
+   Transaksi: anggota membayar angsuran (pokok + bunga + denda).
+   Akun:
+     - Kas (debit)                : total bayar
+     - Piutang Pinjaman (kredit)  : porsi pokok
+     - Piutang Bunga (kredit)     : porsi bunga (jika menggunakan akun terpisah)
+     - Pendapatan Denda (kredit)  : denda (jika ada)
+
+   Jurnal (dengan akun Piutang Bunga terpisah):
+     Debit  Kas                               Rp 1.100.000
+     Kredit Piutang Pinjaman                  Rp 1.000.000
+     Kredit Pendapatan Bunga                  Rp   100.000
+     (Jika denda: tambahkan kredit Pendapatan Denda)
+
+   -----------------------------------------------------------------
+   C. Setoran Simpanan (termasuk kewer)
+   -----------------------------------------------------------------
+   Transaksi: anggota menabung atau setor simpanan berkala.
+   Akun:
+     - Kas (debit)
+     - Simpanan Sukarela / Wajib / Pokok (kredit)
+
+   Jurnal:
+     Debit  Kas                               Rp 100.000
+     Kredit Simpanan Sukarela                 Rp 100.000
+
+   -----------------------------------------------------------------
+   D. Penarikan Simpanan
+   -----------------------------------------------------------------
+   Transaksi: anggota mengambil simpanan sukarela.
+   Akun:
+     - Simpanan Sukarela (debit)
+     - Kas (kredit)
+
+   Jurnal:
+     Debit  Simpanan Sukarela                 Rp 200.000
+     Kredit Kas                               Rp 200.000
+
+   -----------------------------------------------------------------
+   E. Pembayaran Imbal Hasil Kewer (saat jatuh tempo)
+   -----------------------------------------------------------------
+   Transaksi: koperasi membayar imbal hasil kepada anggota.
+   Akun:
+     - Beban Imbal Hasil Simpanan (debit)
+     - Kas (kredit)
+
+   Jurnal:
+     Debit  Beban Imbal Hasil Simpanan        Rp  50.000
+     Kredit Kas                               Rp  50.000
+
+   -----------------------------------------------------------------
+   F. Penerimaan Denda
+   -----------------------------------------------------------------
+   Transaksi: anggota membayar denda (terpisah atau bersama angsuran).
+   Akun:
+     - Kas (debit)
+     - Pendapatan Denda (kredit)
+
+   Jurnal (jika terpisah):
+     Debit  Kas                               Rp  10.000
+     Kredit Pendapatan Denda                  Rp  10.000
+
+   -----------------------------------------------------------------
+   G. Biaya Operasional (gaji, listrik)
+   -----------------------------------------------------------------
+   Transaksi: pembayaran biaya.
+   Akun:
+     - Beban Operasional (debit)
+     - Kas (kredit)
+
+   Jurnal:
+     Debit  Beban Operasional                 Rp 5.000.000
+     Kredit Kas                               Rp 5.000.000
+
+   -----------------------------------------------------------------
+   H. Koreksi Jurnal (jika terjadi kesalahan)
+   -----------------------------------------------------------------
+   Jurnal koreksi dibuat dengan cara membalik jurnal lama dan mencatat
+   jurnal baru yang benar. Semua jurnal tetap tersimpan untuk audit.
+
+5. LAPORAN KEUANGAN
+
+   Modul akuntansi harus menyediakan laporan berikut dengan filter per
+   unit, per cabang, atau konsolidasi:
+
+   5.1 Buku Besar (General Ledger)
+       - Tampilkan per akun: saldo awal, mutasi debit/kredit, saldo akhir.
+       - Dapat difilter periode.
+
+   5.2 Neraca (Balance Sheet)
+       - Aset = Kewajiban + Ekuitas per tanggal tertentu.
+
+   5.3 Laporan Laba Rugi (Income Statement)
+       - Pendapatan – Beban = SHU (Sisa Hasil Usaha).
+
+   5.4 Laporan Arus Kas (Cash Flow)
+       - Operasi, investasi, pendanaan.
+
+   5.5 Laporan Perubahan Ekuitas
+       - Modal, cadangan, SHU.
+
+   5.6 Jurnal Umum
+       - Daftar semua jurnal dengan detail per periode.
+
+   5.7 Neraca Saldo (Trial Balance)
+       - Daftar semua akun dengan saldo debit/kredit.
+
+6. IMPLEMENTASI TEKNIS
+
+   - Setiap endpoint API yang mempengaruhi keuangan akan memanggil
+     fungsi `Journal::createFromTransaction($data)`.
+   - Gunakan database transaction untuk menjamin atomicity antara
+     pencatatan transaksi operasional dan jurnal.
+   - Jangan izinkan penghapusan atau perubahan jurnal yang sudah
+     diposting. Jika koreksi diperlukan, buat jurnal koreksi baru.
+   - Simpan log aktivitas akuntansi di `audit_logs`.
+
+   Contoh fungsi dalam PHP:
+
+   ```php
+   function createJournal($date, $description, $entries, $refType, $refId, $userId) {
+       $pdo->beginTransaction();
+       try {
+           $stmt = $pdo->prepare("INSERT INTO journals (journal_date, description, 
+                                  reference_type, reference_id, created_by) 
+                                  VALUES (?, ?, ?, ?, ?)");
+           $stmt->execute([$date, $description, $refType, $refId, $userId]);
+           $journalId = $pdo->lastInsertId();
+
+           foreach ($entries as $entry) {
+               $stmt2 = $pdo->prepare("INSERT INTO journal_details 
+                                       (journal_id, account_id, debit, credit, notes) 
+                                       VALUES (?, ?, ?, ?, ?)");
+               $stmt2->execute([$journalId, $entry['account_id'],
+                                $entry['debit'], $entry['credit'], $entry['notes']]);
+           }
+           
+           // Validasi: total debit harus sama dengan total credit
+           $stmt3 = $pdo->prepare("SELECT SUM(debit) as total_debit, 
+                                   SUM(credit) as total_credit 
+                                   FROM journal_details WHERE journal_id = ?");
+           $stmt3->execute([$journalId]);
+           $balance = $stmt3->fetch();
+           
+           if ($balance['total_debit'] != $balance['total_credit']) {
+               throw new Exception("Jurnal tidak balance!");
+           }
+           
+           $pdo->commit();
+           return $journalId;
+       } catch (Exception $e) {
+           $pdo->rollBack();
+           throw $e;
+       }
+   }
+   ```
+
+7. INTEGRASI DENGAN MODUL LAIN
+
+   - **Modul Simpanan & Pinjaman**: setiap kali ada setoran, pencairan,
+     pembayaran, penarikan, sistem memanggil fungsi jurnal.
+   - **Modul Kas & Rekonsiliasi**: jurnal akan otomatis mencerminkan
+     perubahan saldo kas.
+   - **Modul Laporan**: laporan keuangan mengambil data dari tabel
+     akuntansi, bukan dari data transaksi mentah, untuk konsistensi.
+
+   Contoh integrasi di endpoint pencairan pinjaman:
+
+   ```php
+   // POST /api/loans/disburse
+   public function disburseLoan($loanId) {
+       $pdo->beginTransaction();
+       try {
+           // 1. Update status pinjaman
+           $stmt = $pdo->prepare("UPDATE loans SET status = 'disbursed', 
+                                  disbursement_date = NOW() WHERE id = ?");
+           $stmt->execute([$loanId]);
+           
+           // 2. Ambil data pinjaman
+           $loan = getLoanById($loanId);
+           
+           // 3. Catat transaksi kas
+           $transactionId = recordCashTransaction([
+               'type' => 'loan_disbursement',
+               'amount' => $loan['amount'],
+               'member_id' => $loan['member_id']
+           ]);
+           
+           // 4. Buat jurnal otomatis
+           $entries = [
+               ['account_id' => 1010, 'debit' => $loan['net_amount'], 'credit' => 0],
+               ['account_id' => 1100, 'debit' => 0, 'credit' => $loan['amount']],
+               ['account_id' => 4020, 'debit' => 0, 'credit' => $loan['admin_fee']]
+           ];
+           
+           createJournal(
+               date('Y-m-d'),
+               "Pencairan pinjaman #{$loanId} - {$loan['member_name']}",
+               $entries,
+               'loan_disbursement',
+               $loanId,
+               $_SESSION['user_id']
+           );
+           
+           $pdo->commit();
+           return ['success' => true, 'transaction_id' => $transactionId];
+       } catch (Exception $e) {
+           $pdo->rollBack();
+           return ['success' => false, 'error' => $e->getMessage()];
+       }
+   }
+   ```
+
+8. PENJAMINAN KUALITAS
+
+   - Lakukan uji coba dengan data dummy untuk memastikan setiap
+     transaksi menghasilkan jurnal yang benar.
+   - Pastikan saldo akhir di Buku Besar sama dengan saldo di tabel
+     operasional (misal total piutang pinjaman di neraca sama dengan
+     total sisa pokok pinjaman aktif).
+   - Siapkan prosedur tutup buku (closing) bulanan yang membawa
+     pendapatan dan beban ke SHU.
+
+   8.1 Validasi Harian
+       - Cron job untuk cek balance jurnal (debit = credit)
+       - Rekonsiliasi saldo kas dengan cash_balances
+       - Alert jika ada ketidaksesuaian
+
+   8.2 Tutup Buku Bulanan
+       - Transfer saldo pendapatan dan beban ke SHU
+       - Generate laporan keuangan bulanan
+       - Backup data sebelum closing
+       - Lock periode yang sudah ditutup
+
+   8.3 Audit Trail
+       - Semua jurnal tidak dapat dihapus
+       - Koreksi menggunakan jurnal pembalik
+       - Log semua aktivitas akuntansi
+       - Siapkan untuk audit eksternal
+
+9. API ENDPOINTS MODUL AKUNTANSI
+
+   9.1 Chart of Accounts
+       GET    /api/accounting/accounts
+       POST   /api/accounting/accounts
+       PUT    /api/accounting/accounts/{id}
+       DELETE /api/accounting/accounts/{id}
+
+   9.2 Journals
+       GET    /api/accounting/journals
+       POST   /api/accounting/journals
+       GET    /api/accounting/journals/{id}
+       POST   /api/accounting/journals/{id}/reverse
+
+   9.3 Reports
+       GET    /api/accounting/reports/general-ledger
+       GET    /api/accounting/reports/balance-sheet
+       GET    /api/accounting/reports/income-statement
+       GET    /api/accounting/reports/cash-flow
+       GET    /api/accounting/reports/trial-balance
+       GET    /api/accounting/reports/journal-list
+
+   9.4 Closing
+       POST   /api/accounting/closing/monthly
+       GET    /api/accounting/closing/status
+
+10. KESIMPULAN
+    Modul akuntansi ini memberikan fondasi yang kuat untuk menghasilkan
+    laporan keuangan yang akurat dan sesuai standar SAK ETAP. Dengan 
+    otomatisasi jurnal double-entry dan integrasi penuh dengan modul 
+    operasional, koperasi dapat:
+    
+    ✓ Melakukan analisis keuangan real-time
+    ✓ Menghasilkan laporan sesuai standar akuntansi
+    ✓ Siap untuk audit internal dan eksternal
+    ✓ Memastikan integritas data keuangan
+    ✓ Mempermudah pelaporan ke OJK/Dinas Koperasi
+
+=================================================================
+  Dokumen ini merupakan spesifikasi modul akuntansi lengkap.
+  Simpan sebagai acuan pengembangan aplikasi.
+=================================================================
