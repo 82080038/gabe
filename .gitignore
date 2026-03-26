@@ -9,19 +9,44 @@
 .DS_Store
 Thumbs.db
 
+# Environment and credentials
+.env
+.env.local
+.env.production
+config/local.php
+database/backup_*.sql
+database/*.sql.bak
+
+# Logs
+logs/
+*.log
+
+# Uploads
+uploads/
+temp/
+
+# Node modules (except for tests)
+node_modules/
+tests/node_modules/
+
+# Test outputs
+tests/test-report*.json
+tests/test-report*.html
+tests/screenshots/
+
+# Cache
+cache/
+*.cache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
 # Config files with sensitive data
 /config/database.php
 /config/.env
 *.env
-
-# Logs
-*.log
-/logs/
-
-# Temporary files
-/tmp/
-/temp/
-/cache/
 
 # Vendor/Dependencies
 /vendor/
@@ -30,7 +55,4 @@ node_modules/
 # Backup files
 *.bak
 *.backup
-*.sql
-
-# Upload directories
 /uploads/temp/
