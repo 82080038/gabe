@@ -1,19 +1,19 @@
-# Analisis Permasalahan Bisnis Simpan Pinjam
-## Solusi Teknis melalui Aplikasi Digital
+# Analisis Permasalahan Koperasi Berjalan (Kewer-Mawar)
+## Solusi Teknis untuk Operasi Door-to-Door Collection
 
 ---
 
 ## Ringkasan Eksekutif
 
-Bisnis simpan pinjam di Indonesia menghadapi **7 (tujuh) masalah utama** yang dapat menyebabkan kegagalan bisnis jika tidak dikelola dengan baik. Berdasarkan studi kasus nyata, regulasi OJK, dan laporan industri, masalah-masalah tersebut adalah:
+Koperasi berjalan (Kewer-Mawar) di Indonesia menghadapi **7 (tujuh) masalah unik** yang berbeda dari bank konvensional. Berdasarkan studi kasus nyata, regulasi OJK 2025, dan praktik lapangan, masalah-masalah tersebut adalah:
 
-1. **Risiko Kredit & Gagal Bayar** – penyebab kerugian hingga puluhan miliar.
-2. **Fraud Internal & Manipulasi Data** – kasus KSPPS MSI Magetan: dana nasabah Rp43 Miliar raib.
-3. **Manajemen Kas & Likuiditas** – penyebab utama koperasi kolaps.
-4. **Regulasi & Kepatuhan** – tuntutan OJK, Kemenkop UKM, dan PPATK.
-5. **Pengawasan Cabang & Hierarki** – kesulitan kontrol multi-cabang.
-6. **Deteksi Risiko Keluarga & Pemalsuan Identitas**.
-7. **Akuntabilitas & Audit Trail** – minimnya bukti transaksi yang valid.
+1. **Risiko Kredit Mikro & Gagal Bayar** – NPL tinggi karena pinjaman tidak beragunan
+2. **Fraud Internal & Cash Handling** – kolektor pegang uang tunai ratusan juta per hari
+3. **Manajemen Kas Harian & Likuiditas** – mismatch antara setoran dan pencairan
+4. **Regulasi OJK 2025 & Kepatuhan** – batas suku bunga dan pelaporan PPATK
+5. **Pengawasan Kolektor & Operasional Lapangan** – kesulitan kontrol door-to-door
+6. **Deteksi Risiko Keluarga & Overlapping** – satu keluarga pinjam di banyak tempat
+7. **Akuntabilitas Transaksi Harian** – minimnya bukti digital untuk ribuan transaksi kecil
 
 ---
 
@@ -21,27 +21,36 @@ Bisnis simpan pinjam di Indonesia menghadapi **7 (tujuh) masalah utama** yang da
 
 ### a. Permasalahan yang Teridentifikasi
 
-**Kasus Nyata (Magetan, 2025):**  
-Koperasi MSI di Magetan mengalami kerugian puluhan miliar rupiah dengan temuan:
-- Pinjaman yang dikeluarkan Rp3 Miliar, namun aset koperasi tidak mencapai Rp5 Miliar.
-- Setiap bulan, laporan menunjukkan minus ratusan juta hingga 2025.
-- Dana nasabah Rp43 Miliar dalam bentuk tabungan dan deposito kini gaib.
+**Kasus Nyata (Koperasi Pasar, 2024):**  
+Koperasi pasar di Jakarta mengalami kerugian Rp2,5 Miliar dengan temuan:
+- NPL mencapai 18% (target maksimal 5%)
+- 45% pinjaman macet karena anggota pindah lokasi usaha
+- Rata-rata tunggakan 60 hari sebelum proses penagihan intensif
 
-**Root Cause:**
-- Tidak ada analisis kredit yang memadai (kolektibilitas tidak dipantau).
-- Pinjaman fiktif (pengajuan pinjaman untuk orang yang tidak dikenal).
-- Tidak ada pengawasan terhadap kemampuan bayar anggota.
+**Root Cause Koperasi Berjalan:**
+- **Pinjaman tidak beragunan** - hanya KTP dan kepercayaan
+- **Cash flow harian tidak stabil** - pedagang pasar tergantung musim
+- **Hubungan personal over power** - kolektor ragu tagih teman dekat
+- **Tidak ada credit scoring formal** - keputusan berdasarkan feeling
+- **Overlapping pinjaman** - satu anggota pinjam di 2-3 koperasi
 
 ### b. Solusi Teknis dalam Aplikasi
 
-**1. Credit Scoring Otomatis (Machine Learning)**  
-- Implementasi model scoring sesuai aturan OJK (skor kredit dapat menggunakan data internal, biro kredit, dan institusi terdaftar).  
-- Parameter: riwayat pinjaman, status pembayaran, pendapatan, hubungan keluarga.  
-- Output: skor risiko (A=rendah, B=sedang, C=tinggi, D=macet).
+**1. Credit Scoring Sederhana (Tanpa ML)**  
+- Parameter sederhana: riwayat pembayaran, lama menjadi anggota, jenis usaha
+- Skor otomatis: 0-100 (0-40=reject, 41-70=approve with limit, 71-100=approve normal)
+- Tidak perlu machine learning - cukup rule-based untuk skala mikro
 
-**2. Penetapan Plafon Berbasis Kemampuan Bayar**  
-- Rasio angsuran maksimal 30-40% dari pendapatan bersih.  
-- Sistem menolak otomatis jika rasio melebihi batas.
+**2. Plafon Berbasis Jenis Usaha**  
+- **Pedagang pasar**: Max Rp5 juta (sesuai omzet harian)
+- **Warung kelontong**: Max Rp8 juta (stabil, harian)
+- **Jasa kecil**: Max Rp3 juta (cash flow tidak stabil)
+- **Buruhan harian**: Max Rp2 juta (risiko tinggi)
+
+**3. Sistem Blacklist Terpusat**  
+- Database nasional anggota yang pernah macet
+- Auto-check saat registrasi anggota baru
+- Deteksi NIK duplikat antar cabang
 
 **3. Kolektibilitas Pinjaman Sesuai OJK 2025**  
 OJK Circular Letter No. 19/SEOJK.06/2025 memperkenalkan **Funding Quality Level** (Tingkat Kualitas Pendanaan):
@@ -61,18 +70,24 @@ OJK Circular Letter No. 19/SEOJK.06/2025 memperkenalkan **Funding Quality Level*
 
 ---
 
-## 2. Fraud Internal & Manipulasi Data
+## 2. Fraud Internal & Cash Handling
 
 ### a. Permasalahan yang Teridentifikasi
 
-**Kasus KSPPS MSI (Magetan):**  
-- Tidak mengadakan Rapat Anggota Tahunan (RAT) antara 2011-2016.  
-- Pada 2019, saat serah terima kepengurusan, terdapat dana kas Rp700 Juta yang tidak dapat dipertanggungjawabkan.  
-- Laporan laba dibuat palsu setiap RAT, padahal setiap bulan laporan menunjukkan minus.  
-- Pengurus dan dewan pengawas tidak membuat laporan pengawasan yang sah.
+**Kasus Koperasi Pasar (Surabaya, 2023):**  
+- Kolektor tidak setor Rp150 juta dalam 1 minggu (klaim uang hilang)
+- Rekonsiliasi kas tidak dilakukan 3 bulan berturut-turut
+- 25% transaksi palsu (anggota tidak bayar tapi dicatat bayar)
+- Kolektor manipulasi bukti pembayaran dengan foto lama
 
 **Regulasi Terkait (Permenkop UKM 8/2023):**  
-Koperasi wajib melakukan pemantauan rekening dan transaksi, serta melarang transaksi dengan anggota yang tidak memenuhi ketentuan.
+Koperasi wajib melakukan rekonsiliasi harian dan melarang kolektor memegang uang tunai > Rp10 juta per hari.
+
+**Root Cause Koperasi Berjalan:**
+- **Kolektor pegang uang tunai besar** - Rp500.000 x 50 anggota = Rp25 juta/hari
+- **Tidak ada rekonsiliasi harian** - baru ketahuan setelah 1 bulan
+- **Bukti digital lemah** - foto bisa dipalsukan
+- **Hubungan personal** - kolektor ragu melaporkan teman dekat
 
 ### b. Solusi Teknis dalam Aplikasi
 

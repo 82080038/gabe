@@ -1,16 +1,17 @@
-# Spesifikasi Aplikasi Kewer/Mawar
+# Spesifikasi Aplikasi Koperasi Berjalan (Kewer-Mawar)
 ## Sistem Simpan Pinjam Mikro untuk Pedagang Pasar & UMKM
 
 ---
 
 ## Ringkasan Eksekutif
 
-Aplikasi Kewer/Mawar adalah sistem simpan pinjam **mikro** dengan karakteristik:
-- **Pinjaman kecil**: Rp500.000 - Rp10.000.000
-- **Angsuran harian/mingguan**: Rp10.000 - Rp500.000 per hari
-- **Target pasar**: Pedagang pasar, buruh harian, UMKM kecil
-- **Sistem kolektor**: Door-to-door collection setiap hari
-- **Volume tinggi**: Ratusan transaksi kecil per hari
+Aplikasi Kewer/Mawar adalah sistem **koperasi berjalan** dengan karakteristik unik:
+- **Operasi Door-to-Door**: Kolektor (AO) kunjungi anggota setiap hari
+- **Pinjaman mikro**: Rp500.000 - Rp10.000.000 (sesuai kemampuan UMKM)
+- **Angsuran harian**: Rp10.000 - Rp500.000 per hari (sesuai cash flow)
+- **Target pasar**: Pedagang pasar, warung, buruh harian, UMKM kecil
+- **Volume tinggi**: 300-1.000 transaksi per hari per cabang
+- **Sistem kepercayaan**: Berbasis hubungan personal, bukan dokumen formal
 
 ---
 
@@ -45,22 +46,38 @@ Aplikasi Kewer/Mawar adalah sistem simpan pinjam **mikro** dengan karakteristik:
 ## 2. Regulasi Khusus Kewer/Mawar
 
 ### 2.1 Kategori Pinjaman (OJK 2025)
-Pinjaman Kewer/Mawar masuk kategori **Pinjaman Produktif Mikro**:
+Pinjaman Koperasi Berjalan masuk kategori **Pinjaman Produktif Mikro**:
 
-| Jenis Pinjaman | Kategori OJK | Batas Harian |
-|----------------|-------------|--------------|
-| Kewer/Mawar ≤ Rp50 Juta | Produktif Mikro | **0,275% per hari** (≤6 bulan) |
-| Kewer/Mawar ≤ Rp50 Juta | Produktif Mikro | **0,1% per hari** (>6 bulan) |
+| Jenis Pinjaman | Kategori OJK | Batas Harian | Tenor |
+|----------------|-------------|--------------|-------|
+| Koperasi Berjalan ≤ Rp50 Juta | Produktif Mikro | **0,275% per hari** (≤6 bulan) | 30-180 hari |
+| Koperasi Berjalan ≤ Rp50 Juta | Produktif Mikro | **0,1% per hari** (>6 bulan) | 181-360 hari |
 
-**Implementasi:**
-- Kebanyakan pinjaman Kewer/Mawar ≤ Rp50 juta
-- Tenor biasanya ≤6 bulan
-- **Maksimal suku bunga: 0,275% per hari = 8,25% per bulan**
+**Implementasi Realistis:**
+- 95% pinjaman ≤ Rp10 juta (jauh di bawah batas Rp50 juta)
+- Tenor umumnya 30-90 hari (sesuai siklus usaha mikro)
+- **Suku bunga praktis: 1-3% per bulan flat** (di bawah batas OJK)
 
-### 2.2 Batasan Lain
-- **Tidak ada batasan minimum pendapatan** (berbeda dengan fintech P2P)
-- **Verifikasi KTP cukup** (tidak perlu e-KYC kompleks)
-- **Tidak perlu analisis kredit rumit** (focus pada cash flow harian)
+### 2.2 Keunggulan vs Bank Konvensional
+| Aspek | Koperasi Berjalan | Bank Konvensional |
+|-------|------------------|-------------------|
+| **Proses** | 1 hari (KTP saja) | 3-7 hari (banyak dokumen) |
+| **Agunan** | Tidak perlu | Wajib (BPKB, SHM) |
+| **Flexibilitas** | Tinggi (sesuai cash flow) | Rendah (standar) |
+| **Layanan** | Door-to-door | Datang ke kantor |
+| **Bunga** | 1-3%/bulan flat | 9-18%/tahun efektif |
+
+### 2.3 Target Market Spesifik
+**Primary Market (80%):**
+- Pedagang pasar tradisional
+- Warung kelontong di perumahan
+- Usaha jasa kecil (tambal ban, fotokopi)
+- Buruh harian dengan usaha sampingan
+
+**Secondary Market (20%):**
+- Pedagang kaki lima
+- Home industry kecil
+- Supplier kecil pasar tradisional
 
 ---
 

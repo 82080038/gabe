@@ -1,25 +1,28 @@
-# Aplikasi Simpan Pinjam (Koperasi)
+# Aplikasi Koperasi Berjalan (Kewer-Mawar)
 
-Aplikasi manajemen koperasi simpan pinjam dengan sistem **Kewer/Mawar** yang mendukung multi-unit dan multi-cabang.
+Aplikasi digital untuk **koperasi berjalan** dengan sistem **Kewer/Mawar** yang mendukung multi-unit dan multi-cabang.
 
 ## 🎯 Visi dan Tujuan
 
-Membangun aplikasi simpan pinjam yang mampu mengelola:
-- **Hierarki Organisasi**: BOS → UNIT → CABANG
-- **Produk Simpanan Berkala** (harian/mingguan) dengan imbal hasil (kewer/mawar)
-- **Pinjaman** dengan angsuran harian/mingguan untuk pedagang pasar, pengusaha kecil, dan UMKM
-- **Transaksi Kas** dengan frekuensi tinggi dan dukungan petugas lapangan (kolektor mobile)
-- **Deteksi Risiko Kredit** melalui hubungan keluarga
-- **Pencegahan Fraud Internal** (kutipan tidak disetor, pelarian dana)
+Membangun aplikasi koperasi berjalan yang mampu mengelola:
+- **Operasi Door-to-Door**: Kolektor (AO) kunjungi anggota setiap hari
+- **Simpanan Kewer**: Setoran harian Rp5.000-50.000 dengan imbal hasil
+- **Simpanan Mawar**: Setoran bulanan Rp100.000-1.000.000 berjangka
+- **Pinjaman Mikro**: Rp500.000-10.000.000 dengan angsuran harian/mingguan
+- **Target Pasar**: Pedagang pasar, warung kelontong, UMKM kecil
+- **Volume Tinggi**: 300-1.000 transaksi per hari per cabang
+- **Deteksi Risiko**: Analisis keluarga dan kolektibilitas anggota
+- **Pencegahan Fraud**: Sistem segregation of duties dan audit trail
 - **Laporan Real-time** dan dashboard analitik
 
 ## 🏗️ Arsitektur Teknologi
 
 ### Stack Teknologi
-- **Frontend**: HTML, Bootstrap, jQuery, AJAX
-- **Backend**: PHP Native dengan REST API
-- **Database**: MySQL (satu instance dengan beberapa schema logis)
-- **Pattern**: Hybrid (bukan SPA murni)
+- **Frontend**: HTML5, Bootstrap 5, jQuery 3.7
+- **Backend**: PHP 8.2+ Native dengan REST API
+- **Database**: MySQL 8.0+ dengan multi-schema
+- **Mobile**: Progressive Web App (PWA) untuk kolektor
+- **Pattern**: Hybrid dengan door-to-door collection
 
 ### Struktur Folder
 ```
