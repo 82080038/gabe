@@ -1,0 +1,36 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config files with sensitive data
+/config/database.php
+/config/.env
+*.env
+
+# Logs
+*.log
+/logs/
+
+# Temporary files
+/tmp/
+/temp/
+/cache/
+
+# Vendor/Dependencies
+/vendor/
+node_modules/
+
+# Backup files
+*.bak
+*.backup
+*.sql
+
+# Upload directories
+/uploads/temp/

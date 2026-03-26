@@ -1,0 +1,254 @@
+=================================================================
+           RINGKASAN FINAL: APLIKASI SIMPAN PINJAM
+   (KOPERASI DENGAN SISTEM KEWER/MAWAR & MULTI-UNIT-CABANG)
+=================================================================
+
+1. VISI DAN TUJUAN
+   Membangun aplikasi simpan pinjam yang mampu mengelola:
+   - Hierarki organisasi: BOS → UNIT → CABANG.
+   - Produk simpanan berkala (harian/mingguan) dengan imbal hasil,
+     dikenal sebagai “kewer” atau “mawar”.
+   - Pinjaman dengan angsuran harian/mingguan untuk pedagang pasar,
+     pengusaha kecil, dan UMKM.
+   - Transaksi kas dengan frekuensi tinggi, dukungan petugas lapangan
+     (kolektor mobile), serta laporan real-time.
+   - Deteksi risiko kredit melalui hubungan keluarga.
+   - Pencegahan fraud internal (kutipan tidak disetor, pelarian dana).
+
+2. ARSITEKTUR TEKNOLOGI
+   - Frontend: HTML, Bootstrap, jQuery, AJAX.
+   - Backend: PHP native dengan REST API.
+   - Database: MySQL (satu instance dengan beberapa schema logis).
+   - Pola: Hybrid (bukan SPA murni); halaman utama (index.php) memuat
+     konten dinamis via AJAX.
+   - Struktur folder:
+        /api/          - endpoint REST (auth, members, savings, loans, dll)
+        /pages/        - file HTML untuk setiap menu (dashboard, dll)
+        /assets/       - CSS, JS, vendor
+        /config/       - koneksi database, fungsi helper
+
+3. ARSITEKTUR DATABASE: SATU INSTANCE, BEBERAPA SCHEMA
+   Untuk menjaga modularitas, keamanan, dan kemudahan JOIN, digunakan satu
+   database server dengan tiga schema logis:
+   - schema_person   : data personal, hubungan keluarga, biometrik.
+   - schema_address  : data alamat (provinsi, kabupaten, kecamatan, desa,
+                       detail alamat dengan tipe: rumah, kantor, penagihan).
+   - schema_app      : data operasional (unit, cabang, anggota, simpanan,
+                       pinjaman, transaksi, kas, audit log).
+
+   Keuntungan:
+   - JOIN lintas schema tetap dapat dilakukan (prefix schema).
+   - Foreign key dapat dibuat antar schema (InnoDB mendukung).
+   - Backup dan maintenance lebih sederhana dibandingkan database terpisah.
+   - Skalabilitas ke depan dapat dilakukan dengan sharding jika diperlukan.
+
+4. STRUKTUR DATABASE (DETAIL)
+   (Lihat bagian sebelumnya yang berisi semua DDL. Tidak diulang di sini
+    untuk menghemat ruang, namun tetap menjadi bagian integral dari dokumen.)
+
+5. FITUR INTI (MODUL)
+   5.1 Manajemen Unit & Cabang (khusus bos)
+   5.2 Manajemen Anggota & Data Personal
+   5.3 Produk Simpanan Berkala (Kewer/Mawar)
+   5.4 Pinjaman dengan Angsuran Harian/Mingguan
+   5.5 Transaksi Kasir (Fokus Kecepatan)
+   5.6 Mobile Collector (Petugas Lapangan)
+   5.7 Deteksi Hubungan Keluarga & Risiko Kredit
+   5.8 Pencegahan Fraud Internal
+   5.9 Notifikasi Otomatis
+   5.10 Laporan & Dashboard
+
+6. IMPLEMENTASI TEKNIS
+   6.1 Autentikasi & Otorisasi
+   6.2 Contoh Endpoint API (REST)
+   6.3 Cron Job (Tugas Harian)
+   6.4 Keamanan
+
+7. FITUR TAMBAHAN YANG DIREKOMENDASIKAN
+   - Barcode / QR Code pada kartu anggota.
+   - Multi-mata uang (opsional).
+   - Integrasi payment gateway untuk pembayaran virtual account.
+   - API untuk sistem akuntansi eksternal.
+   - Dashboard kolektor dengan target setoran harian.
+
+8. LANGKAH IMPLEMENTASI BERTAHAP
+   (Sesuai dengan yang telah diuraikan sebelumnya.)
+
+=================================================================
+                     PELENGKAP & REKOMENDASI TAMBAHAN
+=================================================================
+
+9. MANAJEMEN LIMIT & PLAFON PINJAMAN
+   Setiap pengguna dengan otoritas persetujuan (branch_head, unit_head,
+   credit_analyst) memiliki limit plafon yang dapat dikonfigurasi secara
+   terpusat oleh bos. Implementasi:
+
+   - Tambahkan kolom `approval_limit` pada tabel `users` (atau tabel
+     terpisah `approval_limits`) untuk menyimpan batas maksimal pinjaman
+     yang dapat disetujui tanpa perlu persetujuan atasan.
+   - Saat pengajuan pinjaman, sistem memeriksa:
+        - Jika jumlah pinjaman <= limit user, status dapat langsung
+          "approved" (jika analisa memenuhi).
+        - Jika melebihi limit, status tetap "proposed" dan perlu
+          persetujuan dari atasan (misal unit_head atau bos).
+   - Laporan audit mencatat setiap persetujuan dan alasan jika melewati
+     limit.
+
+   Contoh struktur:
+   ALTER TABLE users ADD COLUMN approval_limit DECIMAL(15,2) DEFAULT 0;
+   (Untuk bos, limit bisa di-set NULL atau nilai besar).
+
+10. PERHITUNGAN BUNGA & DENDA
+    Aplikasi harus mendukung berbagai metode perhitungan bunga yang
+    umum digunakan di koperasi, serta perhitungan denda otomatis.
+
+    10.1 Metode Bunga
+        - Flat       : bunga dihitung dari pokok pinjaman, tidak berubah
+                       setiap periode.
+        - Efektif    : bunga dihitung dari sisa pokok, menurun setiap
+                       periode.
+        - Anuitas    : angsuran tetap, komposisi bunga dan pokok berubah.
+        Pilihan metode ditentukan saat pembuatan produk pinjaman
+        (tabel `loan_products` atau kolom pada `loans`).
+
+    10.2 Perhitungan Angsuran
+        Sistem akan menghitung angsuran per periode berdasarkan:
+        - Jumlah pinjaman
+        - Suku bunga per tahun
+        - Frekuensi (harian/mingguan/bulanan)
+        - Jangka waktu (jumlah periode)
+        Hasil disimpan di tabel `loan_installments`.
+
+    10.3 Denda Keterlambatan
+        - Denda dihitung per hari setelah due_date jika status belum 'paid'.
+        - Persentase denda ditentukan per produk pinjaman (misal 0,1% per hari
+          dari angsuran, atau nominal tetap).
+        - Setiap malam, cron job mengecek installment yang overdue,
+          menambahkan penalti di tabel `penalties`.
+        - Penalti dapat dibayarkan bersamaan dengan angsuran berikutnya
+          atau dijadwalkan terpisah.
+
+    10.4 Contoh implementasi pada cron:
+        UPDATE loan_installments SET status = 'late'
+        WHERE due_date < CURDATE() AND status = 'pending';
+        INSERT INTO penalties (member_id, reference_type, reference_id, amount)
+        SELECT l.member_id, 'loan_installment', li.id,
+               (li.amount * penalty_rate / 100)
+        FROM loan_installments li
+        JOIN loans l ON li.loan_id = l.id
+        WHERE li.status = 'late' AND li.penalty_added = 0;
+        -- (penalty_added flag untuk mencegah duplikasi)
+
+11. PENANGANAN TRANSAKSI OFFLINE (MOBILE COLLECTOR)
+    Aplikasi mobile collector harus mampu beroperasi saat tidak ada
+    koneksi internet (offline) dan menyinkronkan data saat online kembali.
+
+    11.1 Arsitektur Offline
+        - Gunakan teknologi PWA (Progressive Web App) dengan service worker
+          dan cache API.
+        - Data transaksi disimpan sementara di localStorage atau IndexedDB
+          di perangkat.
+        - Setiap transaksi diberi ID unik lokal (UUID) untuk menghindari
+          duplikasi saat sinkronisasi.
+
+    11.2 Sinkronisasi
+        - Saat koneksi tersedia, aplikasi mengirim batch transaksi ke
+          endpoint API `/api/collector/sync` dengan metode POST.
+        - Server akan memvalidasi setiap transaksi (cek duplikat,
+          kecocokan data anggota) dan mencatatnya ke database.
+        - Respon dari server berisi daftar transaksi yang berhasil dan
+          yang gagal (misal karena anggota tidak ditemukan).
+        - Aplikasi mobile menampilkan status sinkronisasi dan menghapus
+          data lokal yang sudah berhasil.
+
+    11.3 Penanganan Konflik
+        - Jika transaksi yang sama (misal angsuran anggota) sudah dicatat
+          oleh kasir sebelum sinkronisasi kolektor, server akan menolak
+          dan memberi tahu kolektor.
+        - Anggota harus membawa kartu/kode unik untuk memastikan identitas
+          dan mencegah duplikasi.
+        - Sistem akan mencatat waktu dan lokasi (GPS) setiap transaksi
+          untuk audit.
+
+12. BACKUP & DISASTER RECOVERY
+    Strategi backup dan pemulihan bencana untuk memastikan data aman dan
+    bisnis dapat berjalan kembali dengan cepat.
+
+    12.1 Backup Otomatis
+        - Backup database (full) dijadwalkan setiap hari pukul 02.00.
+        - Backup incremental setiap 6 jam untuk mengurangi risiko kehilangan
+          data.
+        - File backup disimpan di lokasi yang berbeda: cloud storage
+          (misal AWS S3, Google Cloud Storage) dan server sekunder.
+        - Retention policy: backup harian disimpan 30 hari, backup bulanan
+          disimpan 1 tahun.
+
+    12.2 Prosedur Pemulihan (Recovery)
+        - Dokumen prosedur pemulihan harus tersedia dan diuji secara berkala.
+        - Jika terjadi kegagalan database, sistem dapat dialihkan ke server
+          cadangan (replica) dalam waktu < 1 jam.
+        - Untuk bencana besar, backup dapat direstorasi ke server baru.
+        - Simpan konfigurasi server (ansible/docker) untuk deployment cepat.
+
+    12.3 Redundansi Infrastruktur
+        - Gunakan VPS dengan snapshot otomatis.
+        - Database replikasi (master-slave) untuk failover.
+        - Aplikasi dapat berjalan di dua server dengan load balancer jika
+          diperlukan.
+
+    12.4 Pengujian Restore
+        - Setiap bulan, lakukan uji coba restore backup ke lingkungan
+          staging untuk memastikan data dapat dipulihkan dengan benar.
+
+=================================================================
+13. DOKUMENTASI & PELATIHAN
+    - Setiap modul dilengkapi user manual (PDF) dan video tutorial.
+    - Pelatihan tatap muka untuk kasir, kolektor, kepala cabang,
+      analis kredit sebelum implementasi.
+    - Buat pusat bantuan (helpdesk) internal untuk pertanyaan harian.
+
+14. SPESIFIKASI NON-FUNGSIONAL
+    - Keamanan: SSL/TLS, enkripsi data sensitif, session timeout,
+      blocking IP setelah 5 kali gagal login.
+    - Performa: Waktu respon API < 2 detik; dukungan minimal 500 transaksi
+      per jam per cabang.
+    - Ketersediaan: Uptime target 99,5%, dengan server cloud yang memiliki
+      SLA minimal 99,9%.
+    - Skalabilitas: Arsitektur memungkinkan penambahan cabang dan unit
+      tanpa perubahan signifikan.
+
+15. RENCANA MIGRASI DATA (JIKA ADA DATA LAMA)
+    - Identifikasi data anggota, simpanan, pinjaman dari sistem lama
+      (Excel, buku besar, dll).
+    - Buat skrip migrasi yang memetakan data ke struktur database baru.
+    - Lakukan validasi dan pembersihan data (duplikat, inkonsistensi)
+      sebelum migrasi.
+    - Uji coba migrasi di lingkungan staging, lalu lakukan migrasi
+      pada hari libur operasional dengan pengawasan ketat.
+
+16. ANGGARAN & INFRASTRUKTUR (REKOMENDASI AWAL)
+    - VPS: 4 vCPU, 8 GB RAM, 100 GB SSD (misal dari DigitalOcean, AWS Lightsail).
+    - Domain & SSL: sekitar Rp 300.000/tahun.
+    - Layanan notifikasi WhatsApp: berlangganan API gateway (misal Fonnte,
+      WATI) dengan biaya sesuai volume.
+    - Biaya pengembangan: jika menggunakan tim internal, perhitungkan
+      gaji developer; jika outsourcing, estimasi Rp 250–600 juta untuk
+      aplikasi sebesar ini.
+
+=================================================================
+                           KESIMPULAN
+=================================================================
+Aplikasi ini dirancang secara modular dengan arsitektur database satu
+instance multiple schema, memudahkan pengembangan dan pemeliharaan.
+Seluruh fitur penting untuk bisnis simpan pinjam dengan sistem kewer/mawar
+telah diakomodasi, termasuk manajemen limit, perhitungan bunga/denda,
+penanganan offline, dan backup disaster recovery.
+
+Dengan mengikuti langkah implementasi bertahap, aplikasi dapat dibangun
+sendiri dengan bantuan AI dan siap mendukung ekspansi bisnis secara aman
+dan terkendali.
+
+=================================================================
+  Dokumen ini merupakan ringkasan final seluruh diskusi.
+  Simpan sebagai acuan pengembangan aplikasi.
+=================================================================
