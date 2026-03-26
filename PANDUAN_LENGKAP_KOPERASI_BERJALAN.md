@@ -80,9 +80,48 @@ Per Cabang Sedang (Kota):
 
 ---
 
-## 3. Arsitektur Sistem Lengkap
+## 3. Arsitektur Sistem Responsif
 
-### 3.1 Stack Teknologi
+### 3.1 Device Detection & Role-Based Rendering
+
+Aplikasi ini menggunakan sistem **device detection** dan **role-based rendering** untuk memberikan pengalaman optimal sesuai perangkat dan peran pengguna:
+
+```php
+// config/device_detection.php
+class DeviceDetection {
+    private $deviceType;     // mobile, tablet, desktop
+    private $screenSize;     // small, medium, large
+    private $userRole;       // collector, admin, manager
+    private $capabilities;   // max_data_rows, use_pwa, enable_animations
+}
+```
+
+**Device Detection Matrix:**
+| Device | Screen Size | Role | Render Mode | Max Data | PWA | Animations |
+|--------|-------------|-------|-------------|----------|-----|------------|
+| Mobile | <768px | Collector | Minimal | 25 rows | ✅ | ❌ |
+| Mobile | <768px | Admin | Compact | 50 rows | ❌ | ❌ |
+| Tablet | 768-1023px | Any | Compact | 100 rows | ❌ | ✅ |
+| Desktop | >1023px | Admin | Full | 200 rows | ❌ | ✅ |
+
+### 3.2 Template Structure Berdasarkan Device
+
+```
+/pages/
+├── mobile/           # Mobile collector interface
+│   ├── dashboard.php
+│   ├── route.php
+│   └── payment.php
+├── tablet/           # Tablet optimized interface
+│   ├── dashboard.php
+│   └── reports.php
+└── web/              # Desktop full interface
+    ├── dashboard.php
+    ├── analytics.php
+    └── admin.php
+```
+
+### 3.3 Stack Teknologi Responsif
 ```
 Frontend:
 - Web: HTML5, Bootstrap 5, jQuery 3.7
