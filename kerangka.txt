@@ -1,389 +1,741 @@
 =================================================================
-           RINGKASAN FINAL: APLIKASI SIMPAN PINJAM
+           DOKUMENTASI LENGKAP: APLIKASI SIMPAN PINJAM
    (KOPERASI DENGAN SISTEM KEWER/MAWAR & MULTI-UNIT-CABANG)
 =================================================================
 
-1. VISI DAN TUJUAN
+=================================================================
+BAGIAN I: KONSEP DASAR & VISI
+=================================================================
+
+1. VISI DAN TUJUAN APLIKASI
    Membangun aplikasi simpan pinjam yang mampu mengelola:
-   - Hierarki organisasi: BOS → UNIT → CABANG.
-   - Produk simpanan berkala (harian/mingguan) dengan imbal hasil,
-     dikenal sebagai “kewer” atau “mawar”.
-   - Pinjaman dengan angsuran harian/mingguan untuk pedagang pasar,
-     pengusaha kecil, dan UMKM.
-   - Transaksi kas dengan frekuensi tinggi, dukungan petugas lapangan
-     (kolektor mobile), serta laporan real-time.
-   - Deteksi risiko kredit melalui hubungan keluarga.
-   - Pencegahan fraud internal (kutipan tidak disetor, pelarian dana).
-
-2. ARSITEKTUR TEKNOLOGI
-   - Frontend: HTML, Bootstrap, jQuery, AJAX.
-   - Backend: PHP native dengan REST API.
-   - Database: MySQL (satu instance dengan beberapa schema logis).
-   - Pola: Hybrid (bukan SPA murni); halaman utama (index.php) memuat
-     konten dinamis via AJAX.
-   - Struktur folder:
-        /api/          - endpoint REST (auth, members, savings, loans, dll)
-        /pages/        - file HTML untuk setiap menu (dashboard, dll)
-        /assets/       - CSS, JS, vendor
-        /config/       - koneksi database, fungsi helper
-
-3. ARSITEKTUR DATABASE: SATU INSTANCE, BEBERAPA SCHEMA
-   Untuk menjaga modularitas, keamanan, dan kemudahan JOIN, digunakan satu
-   database server dengan tiga schema logis:
-   - schema_person   : data personal, hubungan keluarga, biometrik.
-   - schema_address  : data alamat (provinsi, kabupaten, kecamatan, desa,
-                       detail alamat dengan tipe: rumah, kantor, penagihan).
-   - schema_app      : data operasional (unit, cabang, anggota, simpanan,
-                       pinjaman, transaksi, kas, audit log).
-
-   Keuntungan:
-   - JOIN lintas schema tetap dapat dilakukan (prefix schema).
-   - Foreign key dapat dibuat antar schema (InnoDB mendukung).
-   - Backup dan maintenance lebih sederhana dibandingkan database terpisah.
-   - Skalabilitas ke depan dapat dilakukan dengan sharding jika diperlukan.
-
-4. STRUKTUR DATABASE (DETAIL)
-   (Lihat bagian sebelumnya yang berisi semua DDL. Tidak diulang di sini
-    untuk menghemat ruang, namun tetap menjadi bagian integral dari dokumen.)
-
-5. FITUR INTI (MODUL)
-   5.1 Manajemen Unit & Cabang (khusus bos)
-   5.2 Manajemen Anggota & Data Personal
-   5.3 Produk Simpanan Berkala (Kewer/Mawar)
-   5.4 Pinjaman dengan Angsuran Harian/Mingguan
-   5.5 Transaksi Kasir (Fokus Kecepatan)
-   5.6 Mobile Collector (Petugas Lapangan)
-   5.7 Deteksi Hubungan Keluarga & Risiko Kredit
-   5.8 Pencegahan Fraud Internal
-   5.9 Notifikasi Otomatis
-   5.10 Laporan & Dashboard
-
-6. IMPLEMENTASI TEKNIS
-   6.1 Autentikasi & Otorisasi
-   6.2 Contoh Endpoint API (REST)
-   6.3 Cron Job (Tugas Harian)
-   6.4 Keamanan
-
-7. FITUR TAMBAHAN YANG DIREKOMENDASIKAN
-   - Barcode / QR Code pada kartu anggota.
-   - Multi-mata uang (opsional).
-   - Integrasi payment gateway untuk pembayaran virtual account.
-   - API untuk sistem akuntansi eksternal.
-   - Dashboard kolektor dengan target setoran harian.
-
-8. LANGKAH IMPLEMENTASI BERTAHAP
-   1. Setup database server dengan schema yang telah dirancang.
-   2. Implementasi autentikasi dan manajemen user (termasuk integrasi dengan persons).
-   3. Buat modul unit & cabang (untuk bos).
-   4. Buat modul manajemen data personal dan alamat (persons, addresses, family_links).
-   5. Buat modul anggota (members) dengan deteksi duplikat dan keluarga.
-   6. Buat modul produk simpanan dan pendaftaran anggota ke produk (generate jadwal).
-   7. Buat halaman kasir (tagihan harian, pembayaran) dan integrasi dengan cash_balances.
-   8. Buat modul pinjaman (pengajuan, approval, jadwal angsuran) dengan pengecekan risiko keluarga.
-   9. Implementasi mobile collector (PWA) dengan fitur offline dan sinkronisasi.
-   10. Implementasi cron job dan notifikasi.
-   11. Buat laporan dan dashboard (termasuk laporan fraud/risiko).
-   12. Uji coba dengan transaksi riil (minimal 100 transaksi per hari) di satu cabang percontohan.
-   13. Latih staf (kasir, kolektor, kepala cabang, analis).
-   14. Implementasi bertahap di cabang-cabang lain.
-
+   - Hierarki organisasi: BOS → UNIT → CABANG
+   - Produk simpanan berkala (harian/mingguan) dengan imbal hasil "kewer/mawar"
+   - Pinjaman dengan angsuran harian/mingguan untuk pedagang pasar & UMKM
+   - Transaksi kas frekuensi tinggi dengan dukungan petugas lapangan (kolektor)
+   - Deteksi risiko kredit melalui hubungan keluarga
+   - Pencegahan fraud internal (kutipan tidak disetor, pelarian dana)
+   - Laporan real-time dan dashboard analitik
 
 =================================================================
-                     PELENGKAP & REKOMENDASI TAMBAHAN
+BAGIAN II: ARSITEKTUR SISTEM
+=================================================================
+
+2. ARSITEKTUR TEKNOLOGI
+
+   2.1 Stack Teknologi
+       - Frontend: HTML, Bootstrap, jQuery, AJAX
+       - Backend: PHP native dengan REST API
+       - Database: MySQL (satu instance dengan beberapa schema logis)
+       - Pattern: Hybrid (bukan SPA murni)
+       - Halaman utama (index.php) memuat konten dinamis via AJAX
+
+   2.2 Struktur Folder
+       /api/          - Endpoint REST (auth, members, savings, loans, dll)
+       /pages/        - File HTML untuk setiap menu (dashboard, dll)
+       /assets/       - CSS, JS, vendor libraries
+       /config/       - Koneksi database, fungsi helper
+
+3. ARSITEKTUR DATABASE: SATU INSTANCE, MULTI-SCHEMA
+
+   Menggunakan satu database server dengan tiga schema logis:
+
+   3.1 schema_person
+       - Data personal anggota
+       - Hubungan keluarga (family_links)
+       - Data biometrik
+
+   3.2 schema_address
+       - Data alamat (provinsi, kabupaten, kecamatan, desa)
+       - Detail alamat dengan tipe: rumah, kantor, penagihan
+
+   3.3 schema_app
+       - Data operasional (unit, cabang, anggota)
+       - Simpanan, pinjaman, transaksi
+       - Kas, audit log, notifikasi
+
+   3.4 Keuntungan Arsitektur Ini
+       - JOIN lintas schema tetap dapat dilakukan (prefix schema)
+       - Foreign key dapat dibuat antar schema (InnoDB support)
+       - Backup dan maintenance lebih sederhana
+       - Skalabilitas dengan sharding jika diperlukan
+
+4. STRUKTUR DATABASE DETAIL
+   (DDL lengkap tersedia di dokumentasi terpisah untuk menghemat ruang)
+
+=================================================================
+BAGIAN III: FITUR INTI APLIKASI
+=================================================================
+
+5. MODUL UTAMA
+
+   5.1 Manajemen Unit & Cabang (Khusus BOS)
+       - CRUD unit dan cabang
+       - Hierarki organisasi BOS → UNIT → CABANG
+       - Assignment kepala unit dan kepala cabang
+
+   5.2 Manajemen Anggota & Data Personal
+       - Registrasi anggota baru
+       - Data personal lengkap (KTP, foto, biometrik)
+       - Manajemen hubungan keluarga
+       - Deteksi duplikat anggota
+
+   5.3 Produk Simpanan Berkala (Kewer/Mawar)
+       - Simpanan harian/mingguan dengan imbal hasil
+       - Generate jadwal setoran otomatis
+       - Tracking setoran dan penarikan
+       - Perhitungan imbal hasil
+
+   5.4 Pinjaman dengan Angsuran
+       - Pengajuan pinjaman dengan workflow approval
+       - Angsuran harian/mingguan/bulanan
+       - Perhitungan bunga (Flat, Efektif, Anuitas)
+       - Generate jadwal angsuran otomatis
+       - Denda keterlambatan otomatis
+
+   5.5 Transaksi Kasir (Fokus Kecepatan)
+       - Interface cepat untuk transaksi harian
+       - Pembayaran angsuran dan simpanan
+       - Penarikan simpanan
+       - Rekonsiliasi kas harian
+
+   5.6 Mobile Collector (Petugas Lapangan)
+       - Aplikasi PWA untuk kolektor
+       - Mode offline dengan sinkronisasi
+       - GPS tracking setiap transaksi
+       - Target setoran harian
+
+   5.7 Deteksi Hubungan Keluarga & Risiko Kredit
+       - Analisis hubungan keluarga otomatis
+       - Deteksi risiko kredit berlebihan dalam satu keluarga
+       - Alert untuk analis kredit
+
+   5.8 Pencegahan Fraud Internal
+       - Audit log lengkap semua transaksi
+       - Deteksi anomali transaksi
+       - Rekonsiliasi kas harian
+       - Alert untuk selisih kas
+
+   5.9 Notifikasi Otomatis
+       - WhatsApp notification untuk angsuran jatuh tempo
+       - Alert tunggakan
+       - Reminder untuk petugas
+       - Notifikasi approval pinjaman
+
+   5.10 Laporan & Dashboard
+        - Dashboard real-time per cabang/unit
+        - Laporan keuangan (neraca, laba rugi)
+        - Analisis performa kolektor
+        - Laporan risiko kredit
+        - Export ke Excel/PDF
+
+=================================================================
+BAGIAN IV: IMPLEMENTASI TEKNIS
+=================================================================
+
+6. AUTENTIKASI & KEAMANAN
+
+   6.1 Autentikasi
+       - Session-based authentication
+       - Role-based access control (RBAC)
+       - Multi-level: BOS, Unit Head, Branch Head, Kasir, Kolektor, Analis
+
+   6.2 Keamanan
+       - SSL/TLS untuk komunikasi
+       - Enkripsi data sensitif
+       - Session timeout (30 menit tidak aktif)
+       - Blocking IP setelah 5x gagal login
+       - Audit trail untuk semua aktivitas penting
+
+   6.3 Manajemen Pengguna & Sesi
+       - Session timeout otomatis
+       - Perangkat khusus untuk kasir dan kolektor (tablet/smartphone)
+       - Akses terbatas sesuai role
+
+7. API ENDPOINTS (REST)
+
+   7.1 Authentication
+       POST /api/auth/login
+       POST /api/auth/logout
+       GET  /api/auth/profile
+
+   7.2 Members
+       GET    /api/members
+       POST   /api/members
+       GET    /api/members/{id}
+       PUT    /api/members/{id}
+       DELETE /api/members/{id}
+
+   7.3 Savings
+       GET  /api/savings/products
+       POST /api/savings/register
+       GET  /api/savings/schedules
+       POST /api/savings/deposit
+
+   7.4 Loans
+       POST /api/loans/apply
+       PUT  /api/loans/{id}/approve
+       GET  /api/loans/{id}/installments
+       POST /api/loans/pay-installment
+
+   7.5 Collector
+       POST /api/collector/sync
+       GET  /api/collector/daily-target
+
+8. CRON JOBS (TUGAS OTOMATIS)
+
+   8.1 Harian (Pukul 02:00)
+       - Backup database full
+       - Generate tagihan harian untuk simpanan dan pinjaman
+       - Hitung denda keterlambatan
+       - Update status angsuran (pending → late)
+       - Kirim notifikasi WhatsApp untuk tagihan hari ini
+
+   8.2 Setiap 6 Jam
+       - Backup incremental database
+
+   8.3 Setiap 15 Menit
+       - Rekonsiliasi pembayaran virtual account (jika ada)
+
+   8.4 Mingguan
+       - Prediksi risiko default (jika menggunakan ML)
+       - Laporan performa kolektor
+
+=================================================================
+BAGIAN V: FITUR LANJUTAN
 =================================================================
 
 9. MANAJEMEN LIMIT & PLAFON PINJAMAN
-   Setiap pengguna dengan otoritas persetujuan (branch_head, unit_head,
-   credit_analyst) memiliki limit plafon yang dapat dikonfigurasi secara
-   terpusat oleh bos. Implementasi:
 
-   - Tambahkan kolom `approval_limit` pada tabel `users` (atau tabel
-     terpisah `approval_limits`) untuk menyimpan batas maksimal pinjaman
-     yang dapat disetujui tanpa perlu persetujuan atasan.
-   - Saat pengajuan pinjaman, sistem memeriksa:
-        - Jika jumlah pinjaman <= limit user, status dapat langsung
-          "approved" (jika analisa memenuhi).
-        - Jika melebihi limit, status tetap "proposed" dan perlu
-          persetujuan dari atasan (misal unit_head atau bos).
-   - Laporan audit mencatat setiap persetujuan dan alasan jika melewati
-     limit.
+   9.1 Konsep
+       - Setiap user dengan otoritas approval memiliki limit plafon
+       - Dikonfigurasi terpusat oleh BOS
+       - Approval otomatis jika dalam limit
+       - Escalation ke atasan jika melebihi limit
 
-   Contoh struktur:
-   ALTER TABLE users ADD COLUMN approval_limit DECIMAL(15,2) DEFAULT 0;
-   (Untuk bos, limit bisa di-set NULL atau nilai besar).
+   9.2 Implementasi
+       - Tambah kolom approval_limit pada tabel users
+       - Saat pengajuan pinjaman, sistem cek limit
+       - Jika <= limit: status "approved" (jika analisa OK)
+       - Jika > limit: status "proposed", perlu approval atasan
+       - Audit log mencatat semua persetujuan
+
+   9.3 Contoh SQL
+       ALTER TABLE users ADD COLUMN approval_limit DECIMAL(15,2) DEFAULT 0;
 
 10. PERHITUNGAN BUNGA & DENDA
-    Aplikasi harus mendukung berbagai metode perhitungan bunga yang
-    umum digunakan di koperasi, serta perhitungan denda otomatis.
 
     10.1 Metode Bunga
-        - Flat       : bunga dihitung dari pokok pinjaman, tidak berubah
-                       setiap periode.
-        - Efektif    : bunga dihitung dari sisa pokok, menurun setiap
-                       periode.
-        - Anuitas    : angsuran tetap, komposisi bunga dan pokok berubah.
-        Pilihan metode ditentukan saat pembuatan produk pinjaman
-        (tabel `loan_products` atau kolom pada `loans`).
+         - Flat: Bunga tetap dari pokok pinjaman
+         - Efektif: Bunga dari sisa pokok (menurun)
+         - Anuitas: Angsuran tetap, komposisi berubah
+         - Pilihan metode per produk pinjaman
 
     10.2 Perhitungan Angsuran
-        Sistem akan menghitung angsuran per periode berdasarkan:
-        - Jumlah pinjaman
-        - Suku bunga per tahun
-        - Frekuensi (harian/mingguan/bulanan)
-        - Jangka waktu (jumlah periode)
-        Hasil disimpan di tabel `loan_installments`.
+         Berdasarkan:
+         - Jumlah pinjaman
+         - Suku bunga per tahun
+         - Frekuensi (harian/mingguan/bulanan)
+         - Jangka waktu (jumlah periode)
+         - Hasil disimpan di tabel loan_installments
 
     10.3 Denda Keterlambatan
-        - Denda dihitung per hari setelah due_date jika status belum 'paid'.
-        - Persentase denda ditentukan per produk pinjaman (misal 0,1% per hari
-          dari angsuran, atau nominal tetap).
-        - Setiap malam, cron job mengecek installment yang overdue,
-          menambahkan penalti di tabel `penalties`.
-        - Penalti dapat dibayarkan bersamaan dengan angsuran berikutnya
-          atau dijadwalkan terpisah.
+         - Denda per hari setelah due_date
+         - Persentase denda per produk (misal 0,1%/hari)
+         - Cron job malam hari cek overdue
+         - Insert ke tabel penalties
+         - Dapat dibayar bersamaan angsuran berikutnya
 
-    10.4 Contoh implementasi pada cron:
-        UPDATE loan_installments SET status = 'late'
-        WHERE due_date < CURDATE() AND status = 'pending';
-        INSERT INTO penalties (member_id, reference_type, reference_id, amount)
-        SELECT l.member_id, 'loan_installment', li.id,
-               (li.amount * penalty_rate / 100)
-        FROM loan_installments li
-        JOIN loans l ON li.loan_id = l.id
-        WHERE li.status = 'late' AND li.penalty_added = 0;
-        -- (penalty_added flag untuk mencegah duplikasi)
+    10.4 Contoh Cron Implementation
+         UPDATE loan_installments SET status = 'late'
+         WHERE due_date < CURDATE() AND status = 'pending';
+         
+         INSERT INTO penalties (member_id, reference_type, reference_id, amount)
+         SELECT l.member_id, 'loan_installment', li.id,
+                (li.amount * penalty_rate / 100)
+         FROM loan_installments li
+         JOIN loans l ON li.loan_id = l.id
+         WHERE li.status = 'late' AND li.penalty_added = 0;
 
 11. PENANGANAN TRANSAKSI OFFLINE (MOBILE COLLECTOR)
-    Aplikasi mobile collector harus mampu beroperasi saat tidak ada
-    koneksi internet (offline) dan menyinkronkan data saat online kembali.
 
     11.1 Arsitektur Offline
-        - Gunakan teknologi PWA (Progressive Web App) dengan service worker
-          dan cache API.
-        - Data transaksi disimpan sementara di localStorage atau IndexedDB
-          di perangkat.
-        - Setiap transaksi diberi ID unik lokal (UUID) untuk menghindari
-          duplikasi saat sinkronisasi.
+         - PWA (Progressive Web App) dengan service worker
+         - Data transaksi di localStorage atau IndexedDB
+         - ID unik lokal (UUID) untuk setiap transaksi
+         - Cache API untuk data master (anggota, produk)
 
     11.2 Sinkronisasi
-        - Saat koneksi tersedia, aplikasi mengirim batch transaksi ke
-          endpoint API `/api/collector/sync` dengan metode POST.
-        - Server akan memvalidasi setiap transaksi (cek duplikat,
-          kecocokan data anggota) dan mencatatnya ke database.
-        - Respon dari server berisi daftar transaksi yang berhasil dan
-          yang gagal (misal karena anggota tidak ditemukan).
-        - Aplikasi mobile menampilkan status sinkronisasi dan menghapus
-          data lokal yang sudah berhasil.
+         - Batch upload saat koneksi tersedia
+         - Endpoint: POST /api/collector/sync
+         - Server validasi setiap transaksi
+         - Response: daftar sukses dan gagal
+         - Hapus data lokal yang sudah berhasil
 
     11.3 Penanganan Konflik
-        - Jika transaksi yang sama (misal angsuran anggota) sudah dicatat
-          oleh kasir sebelum sinkronisasi kolektor, server akan menolak
-          dan memberi tahu kolektor.
-        - Anggota harus membawa kartu/kode unik untuk memastikan identitas
-          dan mencegah duplikasi.
-        - Sistem akan mencatat waktu dan lokasi (GPS) setiap transaksi
-          untuk audit.
+         - Cek duplikasi di server
+         - Tolak jika sudah dicatat kasir
+         - Kartu/kode unik untuk identitas anggota
+         - GPS tracking untuk audit
+         - Timestamp untuk resolusi konflik
 
 12. BACKUP & DISASTER RECOVERY
-    Strategi backup dan pemulihan bencana untuk memastikan data aman dan
-    bisnis dapat berjalan kembali dengan cepat.
 
     12.1 Backup Otomatis
-        - Backup database (full) dijadwalkan setiap hari pukul 02.00.
-        - Backup incremental setiap 6 jam untuk mengurangi risiko kehilangan
-          data.
-        - File backup disimpan di lokasi yang berbeda: cloud storage
-          (misal AWS S3, Google Cloud Storage) dan server sekunder.
-        - Retention policy: backup harian disimpan 30 hari, backup bulanan
-          disimpan 1 tahun.
+         - Full backup harian (pukul 02:00)
+         - Incremental backup setiap 6 jam
+         - Lokasi: Cloud storage (AWS S3/GCS) + server sekunder
+         - Retention: harian 30 hari, bulanan 1 tahun
 
-    12.2 Prosedur Pemulihan (Recovery)
-        - Dokumen prosedur pemulihan harus tersedia dan diuji secara berkala.
-        - Jika terjadi kegagalan database, sistem dapat dialihkan ke server
-          cadangan (replica) dalam waktu < 1 jam.
-        - Untuk bencana besar, backup dapat direstorasi ke server baru.
-        - Simpan konfigurasi server (ansible/docker) untuk deployment cepat.
+    12.2 Prosedur Pemulihan
+         - Dokumen prosedur tersedia dan diuji berkala
+         - Failover ke replica < 1 jam
+         - Restore backup ke server baru untuk bencana besar
+         - Konfigurasi server (ansible/docker) untuk deployment cepat
 
     12.3 Redundansi Infrastruktur
-        - Gunakan VPS dengan snapshot otomatis.
-        - Database replikasi (master-slave) untuk failover.
-        - Aplikasi dapat berjalan di dua server dengan load balancer jika
-          diperlukan.
+         - VPS dengan snapshot otomatis
+         - Database replication (master-slave)
+         - Load balancer untuk high availability (opsional)
 
     12.4 Pengujian Restore
-        - Setiap bulan, lakukan uji coba restore backup ke lingkungan
-          staging untuk memastikan data dapat dipulihkan dengan benar.
+         - Uji restore bulanan ke staging
+         - Validasi integritas data
+         - Dokumentasi hasil testing
 
 =================================================================
-13. DOKUMENTASI & PELATIHAN
-    - Setiap modul dilengkapi user manual (PDF) dan video tutorial.
-    - Pelatihan tatap muka untuk kasir, kolektor, kepala cabang,
-      analis kredit sebelum implementasi.
-    - Buat pusat bantuan (helpdesk) internal untuk pertanyaan harian.
-
-14. SPESIFIKASI NON-FUNGSIONAL
-    - Keamanan: SSL/TLS, enkripsi data sensitif, session timeout,
-      blocking IP setelah 5 kali gagal login.
-    - Performa: Waktu respon API < 2 detik; dukungan minimal 500 transaksi
-      per jam per cabang.
-    - Ketersediaan: Uptime target 99,5%, dengan server cloud yang memiliki
-      SLA minimal 99,9%.
-    - Skalabilitas: Arsitektur memungkinkan penambahan cabang dan unit
-      tanpa perubahan signifikan.
-
-15. RENCANA MIGRASI DATA (JIKA ADA DATA LAMA)
-    - Identifikasi data anggota, simpanan, pinjaman dari sistem lama
-      (Excel, buku besar, dll).
-    - Buat skrip migrasi yang memetakan data ke struktur database baru.
-    - Lakukan validasi dan pembersihan data (duplikat, inkonsistensi)
-      sebelum migrasi.
-    - Uji coba migrasi di lingkungan staging, lalu lakukan migrasi
-      pada hari libur operasional dengan pengawasan ketat.
-
-16. ANGGARAN & INFRASTRUKTUR (REKOMENDASI AWAL)
-    - VPS: 4 vCPU, 8 GB RAM, 100 GB SSD (misal dari DigitalOcean, AWS Lightsail).
-    - Domain & SSL: sekitar Rp 300.000/tahun.
-    - Layanan notifikasi WhatsApp: berlangganan API gateway (misal Fonnte,
-      WATI) dengan biaya sesuai volume.
-    - Biaya pengembangan: jika menggunakan tim internal, perhitungkan
-      gaji developer; jika outsourcing, estimasi Rp 250–600 juta untuk
-      aplikasi sebesar ini.
-
-=================================================================
-    TAMBAHAN SINGKAT: ASPEK OPERASIONAL & PENGEMBANGAN LANJUTAN
+BAGIAN VI: INTEGRASI & OPERASIONAL
 =================================================================
 
-17. MANAJEMEN PENGGUNA & SESI
-    - Setiap pengguna memiliki session timeout (misal 30 menit tidak aktif).
-    - Untuk role kasir dan kolektor, gunakan perangkat khusus (tablet/smartphone) 
-      dengan akses terbatas.
+13. INTEGRASI DENGAN SISTEM LAIN
 
-18. INTEGRASI DENGAN SISTEM LAIN
-    - Siapkan API untuk ekspor data ke software akuntansi (misal Jurnal, Accurate) 
-      dalam format jurnal standar.
-    - Jika ada aplikasi pelaporan eksternal (Power BI, Metabase), siapkan view 
-      database khusus untuk analitik.
+    13.1 Software Akuntansi
+         - API ekspor data ke Jurnal, Accurate
+         - Format jurnal standar (debit/kredit)
+         - Mapping akun otomatis
+         - Sinkronisasi harian/real-time
 
-19. PENGELOLAAN DOKUMEN DIGITAL
-    - Setiap anggota harus memiliki dokumen digital (foto KTP, selfie, surat 
-      perjanjian) yang diunggah ke server.
-    - Gunakan folder terstruktur dengan nama file unik (misal NIK_timestamp.jpg) 
-      dan simpan path di database.
+    13.2 Aplikasi Pelaporan Eksternal
+         - View database khusus untuk analitik
+         - Integrasi Power BI, Metabase
+         - Read-only access untuk keamanan
+         - Scheduled refresh data
 
-20. PEMBAYARAN DIGITAL & REKONSILIASI OTOMATIS
-    - Jika menggunakan virtual account (VA), sistem harus mencocokkan pembayaran 
-      masuk via webhook atau cron setiap 15 menit.
-    - Mapping VA dengan anggota dan tagihan agar pembayaran otomatis mengurangi 
-      kewajiban.
+    13.3 Payment Gateway
+         - Virtual Account (VA) untuk pembayaran digital
+         - Webhook untuk notifikasi pembayaran
+         - Rekonsiliasi otomatis setiap 15 menit
+         - Mapping VA dengan anggota dan tagihan
 
-21. PENGUJIAN BEBAN (LOAD TESTING)
-    - Sebelum go-live, lakukan simulasi dengan 500 transaksi per jam untuk 
-      memastikan performa server dan kode.
-    - Optimasi query SQL (indeks, query caching) untuk laporan yang berat.
+14. PENGELOLAAN DOKUMEN DIGITAL
 
-22. PEMBARUAN & MAINTENANCE
-    - Gunakan sistem version control (Git) untuk kode.
-    - Jadwalkan maintenance rutin (update library, backup, pembersihan log) 
-      di luar jam operasional.
+    14.1 Jenis Dokumen
+         - Foto KTP
+         - Selfie/foto anggota
+         - Surat perjanjian pinjaman
+         - Dokumen pendukung lainnya
 
-23. KEPATUHAN REGULASI
-    - Pastikan aplikasi dapat menghasilkan laporan yang diperlukan OJK 
-      (jika terdaftar) atau Dinas Koperasi.
-    - Simpan data minimal 5 tahun sesuai ketentuan arsip.
+    14.2 Penyimpanan
+         - Folder terstruktur: /uploads/{year}/{month}/{member_id}/
+         - Nama file unik: NIK_timestamp_type.jpg
+         - Path disimpan di database
+         - Backup dokumen ke cloud storage
 
-24. PENGEMBANGAN FITUR DI MASA DEPAN
-    - Mobile App untuk Anggota: agar anggota bisa melihat saldo, tagihan, 
-      dan melakukan pembayaran digital.
-    - Sistem Antrian & Layanan: untuk kantor cabang yang ramai.
-    - Analisis Risiko Lanjutan: menggunakan machine learning untuk memprediksi 
-      potensi kredit macet.
+    14.3 Keamanan
+         - Validasi tipe file (whitelist)
+         - Batasan ukuran file
+         - Scan virus/malware
+         - Akses terbatas sesuai role
 
-25. MACHINE LEARNING UNTUK APLIKASI SIMPAN PINJAM
+15. PEMBAYARAN DIGITAL & REKONSILIASI
 
-    Machine learning dapat diintegrasikan sebagai layanan terpisah (misal API 
-    Python/Node.js) yang dipanggil oleh aplikasi utama. Berikut area penerapannya:
+    15.1 Virtual Account (VA)
+         - Generate VA unik per anggota
+         - Mapping VA dengan member_id
+         - Webhook dari payment gateway
+         - Notifikasi real-time ke sistem
 
-    25.1 Prediksi Risiko Kredit (Credit Scoring)
-        - Model: Logistic Regression, Random Forest, atau XGBoost.
-        - Data: Riwayat pinjaman, status pembayaran, jumlah pinjaman, pendapatan, 
-          riwayat simpanan, hubungan keluarga, data demografi.
-        - Output: Skor risiko (0–100) dan rekomendasi plafon. Skor rendah = 
-          risiko tinggi.
-        - Implementasi: Saat pengajuan pinjaman, sistem mengirim data ke API ML, 
-          hasil skor ditampilkan ke analis sebagai pertimbangan.
+    15.2 Rekonsiliasi Otomatis
+         - Cron setiap 15 menit cek pembayaran baru
+         - Match pembayaran dengan tagihan
+         - Auto-update status pembayaran
+         - Alert jika ada mismatch
 
-    25.2 Deteksi Dini Potensi Default
-        - Model: Survival analysis atau time-series classification.
-        - Data: Pola pembayaran angsuran (frekuensi keterlambatan, nominal), 
-          perubahan perilaku transaksi.
-        - Output: Peringatan dini jika anggota menunjukkan pola yang mengarah 
-          ke default (misal selalu bayar di akhir tenggat, mulai telat).
-        - Implementasi: Cron job mingguan menjalankan prediksi untuk semua 
-          pinjaman aktif, hasil peringatan dikirim ke kolektor/kepala cabang.
+    15.3 Laporan Pembayaran
+         - Rekap harian pembayaran digital
+         - Perbandingan tunai vs digital
+         - Settlement report
 
-    25.3 Deteksi Anomali untuk Fraud Internal & Eksternal
-        - Model: Isolation Forest, Autoencoder.
-        - Data: Log transaksi kasir, kolektor (waktu, lokasi, nominal), 
-          pola setoran.
-        - Output: Mendeteksi transaksi yang tidak biasa (misal setoran kolektor 
-          selalu di menit terakhir, selisih kas yang tidak wajar).
-        - Implementasi: Sistem memantau transaksi real-time dan memberi 
-          peringatan jika anomali terdeteksi.
+=================================================================
+BAGIAN VII: QUALITY ASSURANCE & COMPLIANCE
+=================================================================
 
-    25.4 Rekomendasi Produk Simpanan/Pinjaman
-        - Model: Collaborative filtering atau content-based filtering.
-        - Data: Profil anggota (usia, pekerjaan, riwayat produk), perilaku 
-          transaksi.
-        - Output: Rekomendasi produk simpanan (misal kewer dengan periode 
-          tertentu) atau pinjaman yang sesuai.
-        - Implementasi: Ditampilkan di dashboard anggota atau digunakan kolektor 
-          untuk menawarkan produk.
+16. PENGUJIAN BEBAN (LOAD TESTING)
 
-    25.5 Clustering Anggota untuk Segmentasi
-        - Model: K-Means clustering.
-        - Data: Karakteristik anggota (pendapatan, frekuensi transaksi, 
-          plafon pinjaman).
-        - Output: Segmen anggota (misal: "pedagang pasar dengan omzet tinggi", 
-          "buruh harian dengan cash flow kecil").
-        - Implementasi: Digunakan untuk menentukan strategi penagihan, penawaran 
-          produk, dan limit kredit yang sesuai.
+    16.1 Sebelum Go-Live
+         - Simulasi 500 transaksi/jam
+         - Test concurrent users (50-100 users)
+         - Monitoring response time API
+         - Stress test database
 
-    25.6 Optimalisasi Rute Kolektor (Opsional)
-        - Model: Algoritma traveling salesman problem (TSP) dengan reinforcement 
-          learning.
-        - Data: Lokasi anggota yang memiliki tagihan hari itu.
-        - Output: Rute optimal untuk kolektor lapangan.
-        - Implementasi: Dikirim ke aplikasi mobile kolektor setiap pagi.
+    16.2 Optimasi
+         - Indeks database untuk query berat
+         - Query caching untuk laporan
+         - CDN untuk static assets
+         - Database connection pooling
 
-    25.7 Implementasi Teknis
-        - Infrastruktur: Karena aplikasi utama berbasis PHP, ML dapat dijalankan 
-          sebagai microservice terpisah menggunakan Python (Flask/FastAPI) yang 
-          menyediakan REST endpoint.
-        - Pelatihan Model: Gunakan data historis (minimal 6 bulan) untuk training; 
-          lakukan retraining berkala (bulanan).
-        - Keamanan Data: Pastikan data sensitif tidak dikirim ke layanan ML dalam 
-          bentuk mentah; gunakan hashing atau tokenization jika perlu.
+    16.3 Monitoring
+         - APM tools (New Relic, DataDog)
+         - Error tracking (Sentry)
+         - Uptime monitoring
+         - Alert untuk anomali performa
 
-    25.8 Keuntungan
-        - Mengurangi risiko kredit macet hingga 20–30% (estimasi).
-        - Mendeteksi fraud lebih awal.
-        - Personalisasi layanan meningkatkan loyalitas anggota.
-        - Efisiensi operasional kolektor.
+17. PEMBARUAN & MAINTENANCE
+
+    17.1 Version Control
+         - Git untuk source code
+         - Branching strategy (main, develop, feature)
+         - Code review sebelum merge
+         - Tag untuk setiap release
+
+    17.2 Maintenance Rutin
+         - Update library/framework (bulanan)
+         - Security patch (segera)
+         - Pembersihan log (mingguan)
+         - Optimasi database (bulanan)
+         - Jadwal maintenance di luar jam operasional
+
+    17.3 Deployment
+         - Staging environment untuk testing
+         - Blue-green deployment untuk zero downtime
+         - Rollback plan jika ada masalah
+         - Dokumentasi setiap deployment
+
+18. KEPATUHAN REGULASI
+
+    18.1 Pelaporan OJK/Dinas Koperasi
+         - Laporan keuangan sesuai format standar
+         - Laporan operasional bulanan
+         - Laporan tahunan
+         - Audit trail untuk compliance
+
+    18.2 Penyimpanan Data
+         - Simpan data minimal 5 tahun
+         - Arsip digital dan backup
+         - Enkripsi data sensitif
+         - Hak akses terbatas
+
+    18.3 Privacy & GDPR (jika applicable)
+         - Consent management
+         - Right to be forgotten
+         - Data portability
+         - Privacy policy
+
+19. DOKUMENTASI & PELATIHAN
+
+    19.1 Dokumentasi
+         - User manual per modul (PDF)
+         - Video tutorial
+         - API documentation (Swagger/Postman)
+         - Technical documentation untuk developer
+         - SOP operasional
+
+    19.2 Pelatihan
+         - Pelatihan tatap muka sebelum implementasi:
+           * Kasir
+           * Kolektor
+           * Kepala Cabang
+           * Analis Kredit
+         - Refresher training berkala
+         - Training untuk fitur baru
+
+    19.3 Support
+         - Helpdesk internal
+         - Ticketing system
+         - Knowledge base
+         - FAQ
+
+=================================================================
+BAGIAN VIII: SPESIFIKASI & INFRASTRUKTUR
+=================================================================
+
+20. SPESIFIKASI NON-FUNGSIONAL
+
+    20.1 Keamanan
+         - SSL/TLS wajib
+         - Enkripsi data sensitif (AES-256)
+         - Session timeout 30 menit
+         - IP blocking setelah 5x gagal login
+         - 2FA untuk role BOS dan Unit Head (opsional)
+
+    20.2 Performa
+         - Response time API < 2 detik
+         - Support 500 transaksi/jam per cabang
+         - Page load time < 3 detik
+         - Database query < 1 detik
+
+    20.3 Ketersediaan
+         - Uptime target 99.5%
+         - SLA server minimal 99.9%
+         - Maintenance window: 02:00-04:00
+         - Disaster recovery < 1 jam
+
+    20.4 Skalabilitas
+         - Arsitektur mendukung penambahan cabang
+         - Horizontal scaling untuk web server
+         - Database sharding jika diperlukan
+         - Microservice untuk fitur berat (ML)
+
+21. INFRASTRUKTUR & ANGGARAN
+
+    21.1 Rekomendasi Server
+         - VPS: 4 vCPU, 8 GB RAM, 100 GB SSD
+         - Provider: DigitalOcean, AWS Lightsail, Vultr
+         - Lokasi: Indonesia (Jakarta) untuk latency rendah
+         - Backup server/replica di region berbeda
+
+    21.2 Biaya Operasional (Estimasi)
+         - VPS: Rp 500.000 - 1.000.000/bulan
+         - Domain & SSL: Rp 300.000/tahun
+         - WhatsApp API: Rp 500.000 - 2.000.000/bulan (sesuai volume)
+         - Cloud storage: Rp 200.000 - 500.000/bulan
+         - Monitoring tools: Rp 500.000 - 1.000.000/bulan
+
+    21.3 Biaya Pengembangan (Estimasi)
+         - Tim internal: Sesuai gaji developer (3-6 bulan)
+         - Outsourcing: Rp 250-600 juta (aplikasi lengkap)
+         - Maintenance: 15-20% dari biaya pengembangan/tahun
+
+22. RENCANA MIGRASI DATA (JIKA ADA SISTEM LAMA)
+
+    22.1 Persiapan
+         - Identifikasi data dari sistem lama (Excel, buku besar)
+         - Mapping struktur data lama ke struktur baru
+         - Validasi dan pembersihan data
+         - Backup data lama
+
+    22.2 Eksekusi Migrasi
+         - Buat skrip migrasi (PHP/Python)
+         - Testing di staging dengan data sample
+         - Migrasi bertahap per cabang
+         - Migrasi final pada hari libur operasional
+
+    22.3 Validasi Post-Migration
+         - Cek integritas data
+         - Rekonsiliasi saldo
+         - User acceptance testing (UAT)
+         - Parallel run 1-2 minggu
+
+=================================================================
+BAGIAN IX: FITUR MASA DEPAN & INOVASI
+=================================================================
+
+23. PENGEMBANGAN FITUR DI MASA DEPAN
+
+    23.1 Mobile App untuk Anggota
+         - Native app (Android/iOS) atau Flutter
+         - Fitur: cek saldo, tagihan, riwayat transaksi
+         - Pembayaran digital (VA, e-wallet)
+         - Notifikasi push
+         - Pengajuan pinjaman online
+
+    23.2 Sistem Antrian & Layanan
+         - Queue management untuk cabang ramai
+         - Display antrian digital
+         - Estimasi waktu tunggu
+         - Booking appointment online
+
+    23.3 Chatbot & AI Assistant
+         - WhatsApp chatbot untuk info saldo
+         - FAQ automation
+         - Voice assistant untuk kasir
+
+    23.4 Gamification
+         - Reward points untuk pembayaran tepat waktu
+         - Leaderboard kolektor terbaik
+         - Badge achievement untuk anggota
+
+24. MACHINE LEARNING UNTUK APLIKASI SIMPAN PINJAM
+
+    Machine learning diintegrasikan sebagai microservice terpisah (Python API)
+    yang dipanggil oleh aplikasi utama.
+
+    24.1 Prediksi Risiko Kredit (Credit Scoring)
+         - Model: Logistic Regression, Random Forest, XGBoost
+         - Data Input:
+           * Riwayat pinjaman dan pembayaran
+           * Jumlah pinjaman dan pendapatan
+           * Riwayat simpanan
+           * Hubungan keluarga
+           * Data demografi
+         - Output: Skor risiko (0-100), rekomendasi plafon
+         - Implementasi: API ML dipanggil saat pengajuan pinjaman
+         - Hasil ditampilkan ke analis sebagai pertimbangan
+
+    24.2 Deteksi Dini Potensi Default
+         - Model: Survival analysis, time-series classification
+         - Data Input:
+           * Pola pembayaran angsuran
+           * Frekuensi keterlambatan
+           * Perubahan perilaku transaksi
+         - Output: Peringatan dini untuk anggota berisiko
+         - Implementasi: Cron job mingguan prediksi semua pinjaman aktif
+         - Alert ke kolektor/kepala cabang
+
+    24.3 Deteksi Anomali untuk Fraud Internal & Eksternal
+         - Model: Isolation Forest, Autoencoder
+         - Data Input:
+           * Log transaksi kasir dan kolektor
+           * Waktu, lokasi (GPS), nominal transaksi
+           * Pola setoran
+         - Output: Deteksi transaksi tidak biasa
+         - Implementasi: Monitoring real-time
+         - Alert otomatis jika anomali terdeteksi
+
+    24.4 Rekomendasi Produk Simpanan/Pinjaman
+         - Model: Collaborative filtering, content-based filtering
+         - Data Input:
+           * Profil anggota (usia, pekerjaan)
+           * Riwayat produk
+           * Perilaku transaksi
+         - Output: Rekomendasi produk yang sesuai
+         - Implementasi: Dashboard anggota, tools untuk kolektor
+
+    24.5 Clustering Anggota untuk Segmentasi
+         - Model: K-Means clustering
+         - Data Input:
+           * Karakteristik anggota
+           * Pendapatan, frekuensi transaksi
+           * Plafon pinjaman
+         - Output: Segmen anggota (pedagang pasar, buruh harian, dll)
+         - Implementasi: Strategi penagihan dan penawaran produk
+
+    24.6 Optimalisasi Rute Kolektor
+         - Model: TSP algorithm dengan reinforcement learning
+         - Data Input: Lokasi anggota dengan tagihan hari ini
+         - Output: Rute optimal untuk kolektor
+         - Implementasi: Dikirim ke mobile app setiap pagi
+
+    24.7 Implementasi Teknis ML
+         - Infrastruktur: Microservice Python (Flask/FastAPI)
+         - REST endpoint untuk setiap model
+         - Training: Data historis minimal 6 bulan
+         - Retraining: Bulanan atau saat ada data baru signifikan
+         - Keamanan: Hashing/tokenization untuk data sensitif
+         - Monitoring: Track accuracy dan performance model
+
+    24.8 Keuntungan Machine Learning
+         - Mengurangi risiko kredit macet 20-30% (estimasi)
+         - Deteksi fraud lebih awal
+         - Personalisasi layanan meningkatkan loyalitas
+         - Efisiensi operasional kolektor
+         - Data-driven decision making
+
+=================================================================
+BAGIAN X: IMPLEMENTASI & ROADMAP
+=================================================================
+
+25. LANGKAH IMPLEMENTASI BERTAHAP
+
+    FASE 1: PERSIAPAN & INFRASTRUKTUR (Minggu 1-2)
+    1. Setup database server dengan 3 schema
+    2. Setup web server dan environment
+    3. Konfigurasi domain, SSL, backup
+    4. Setup version control (Git)
+
+    FASE 2: AUTENTIKASI & USER MANAGEMENT (Minggu 3-4)
+    5. Implementasi autentikasi dan RBAC
+    6. Manajemen user dengan integrasi persons
+    7. Audit log system
+
+    FASE 3: MASTER DATA (Minggu 5-6)
+    8. Modul unit & cabang (untuk BOS)
+    9. Modul manajemen data personal dan alamat
+    10. Modul anggota dengan deteksi duplikat dan keluarga
+
+    FASE 4: PRODUK SIMPANAN (Minggu 7-8)
+    11. Modul produk simpanan (kewer/mawar)
+    12. Pendaftaran anggota ke produk
+    13. Generate jadwal setoran otomatis
+
+    FASE 5: TRANSAKSI KASIR (Minggu 9-10)
+    14. Halaman kasir untuk tagihan harian
+    15. Pembayaran simpanan dan penarikan
+    16. Integrasi dengan cash_balances
+    17. Rekonsiliasi kas harian
+
+    FASE 6: PINJAMAN (Minggu 11-13)
+    18. Modul pengajuan pinjaman
+    19. Workflow approval dengan limit checking
+    20. Generate jadwal angsuran
+    21. Pengecekan risiko keluarga
+    22. Pembayaran angsuran
+
+    FASE 7: MOBILE COLLECTOR (Minggu 14-15)
+    23. Implementasi PWA untuk kolektor
+    24. Fitur offline dengan IndexedDB
+    25. Sinkronisasi batch transaksi
+    26. GPS tracking
+
+    FASE 8: AUTOMATION (Minggu 16-17)
+    27. Implementasi cron jobs
+    28. Notifikasi WhatsApp
+    29. Perhitungan denda otomatis
+    30. Backup otomatis
+
+    FASE 9: LAPORAN & DASHBOARD (Minggu 18-19)
+    31. Dashboard real-time per cabang/unit
+    32. Laporan keuangan
+    33. Laporan fraud/risiko
+    34. Export Excel/PDF
+
+    FASE 10: TESTING & UAT (Minggu 20-22)
+    35. Load testing (500 transaksi/jam)
+    36. Security testing
+    37. UAT dengan user
+    38. Bug fixing
+
+    FASE 11: TRAINING & DEPLOYMENT (Minggu 23-24)
+    39. Pelatihan staf (kasir, kolektor, kepala cabang, analis)
+    40. Migrasi data (jika ada)
+    41. Soft launch di 1 cabang percontohan
+    42. Monitoring dan evaluasi
+
+    FASE 12: ROLLOUT (Minggu 25+)
+    43. Implementasi bertahap di cabang lain
+    44. Support dan maintenance
+    45. Pengembangan fitur tambahan
 
 =================================================================
                            KESIMPULAN
 =================================================================
-Aplikasi ini dirancang secara modular dengan arsitektur database satu
-instance multiple schema, memudahkan pengembangan dan pemeliharaan.
-Seluruh fitur penting untuk bisnis simpan pinjam dengan sistem kewer/mawar
-telah diakomodasi, termasuk manajemen limit, perhitungan bunga/denda,
-penanganan offline, dan backup disaster recovery.
 
-Dengan mengikuti langkah implementasi bertahap, aplikasi dapat dibangun
-sendiri dengan bantuan AI dan siap mendukung ekspansi bisnis secara aman
-dan terkendali.
+Aplikasi Simpan Pinjam ini dirancang secara modular dengan arsitektur 
+database satu instance multiple schema, memudahkan pengembangan dan 
+pemeliharaan. Seluruh fitur penting untuk bisnis simpan pinjam dengan 
+sistem kewer/mawar telah diakomodasi, termasuk:
+
+✓ Manajemen hierarki organisasi (BOS → UNIT → CABANG)
+✓ Produk simpanan berkala dengan imbal hasil
+✓ Pinjaman dengan berbagai metode bunga dan denda otomatis
+✓ Mobile collector dengan mode offline
+✓ Deteksi risiko kredit melalui hubungan keluarga
+✓ Pencegahan fraud dengan audit log dan deteksi anomali
+✓ Backup & disaster recovery
+✓ Integrasi dengan sistem eksternal (akuntansi, payment gateway)
+✓ Machine learning untuk prediksi risiko dan optimasi operasional
+
+Dengan mengikuti langkah implementasi bertahap (24 minggu), aplikasi 
+dapat dibangun sendiri dengan bantuan AI dan siap mendukung ekspansi 
+bisnis secara aman dan terkendali.
+
+Aplikasi ini dapat berkembang dengan fitur-fitur canggih seperti mobile 
+app untuk anggota, chatbot, dan analisis machine learning yang akan 
+meningkatkan efisiensi operasional dan mengurangi risiko kredit macet 
+hingga 20-30%.
 
 =================================================================
-  Dokumen ini merupakan ringkasan final seluruh diskusi.
+  Dokumen ini merupakan ringkasan final dan blueprint lengkap.
   Simpan sebagai acuan pengembangan aplikasi.
+  Versi: 2.0 - Tersusun Ulang
 =================================================================
