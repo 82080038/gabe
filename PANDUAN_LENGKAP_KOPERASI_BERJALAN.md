@@ -468,6 +468,10 @@ ALTER TABLE savings_accounts ADD CONSTRAINT uk_account_number UNIQUE (account_nu
 ```php
 <?php
 // config/auth.php
+// Konfigurasi Lokasi Indonesia
+date_default_timezone_set('Asia/Jakarta');
+setlocale(LC_ALL, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID');
+
 class Auth {
     private $pdo;
     
@@ -930,6 +934,10 @@ self.addEventListener('fetch', event => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koperasi Collector</title>
+    <meta http-equiv="Content-Language" content="id">
+    <meta name="language" content="Indonesian">
+    <meta name="geo.country" content="ID">
+    <meta name="geo.region" content="ID">
     <link rel="manifest" href="/mobile/manifest.json">
     <link href="/mobile/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/mobile/assets/css/style.css" rel="stylesheet">
@@ -1292,7 +1300,20 @@ class CollectorApp {
     }
 
     formatCurrency(amount) {
-        return new Intl.NumberFormat('id-ID').format(amount);
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(amount);
+    }
+    
+    formatDate(date) {
+        return new Intl.DateTimeFormat('id-ID', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }).format(new Date(date));
     }
 
     getStatusClass(status) {
@@ -2181,19 +2202,26 @@ class OJKComplianceService {
 #!/bin/bash
 # setup_server.sh
 
-echo "Setting up Koperasi Berjalan Application Server..."
+echo "Setting up Koperasi Berjalan Application Server - Lokasi Indonesia..."
 
 # Update system
 sudo apt update && sudo apt upgrade -y
 
 # Install required packages
-sudo apt install -y apache2 php8.2 php8.2-mysql php8.2-json php8.2-mbstring php8.2-curl php8.2-gd php8.2-xml mysql-server redis-server
+sudo apt install -y apache2 php8.2 php8.2-mysql php8.2-json php8.2-mbstring php8.2-curl php8.2-gd php8.2-xml php8.2-intl mysql-server redis-server
 
-# Configure PHP
+# Configure PHP untuk Indonesia
 sudo sed -i 's/memory_limit = 128M/memory_limit = 512M/' /etc/php/8.2/apache2/php.ini
 sudo sed -i 's/max_execution_time = 30/max_execution_time = 300/' /etc/php/8.2/apache2/php.ini
 sudo sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 50M/' /etc/php/8.2/apache2/php.ini
 sudo sed -i 's/post_max_size = 8M/post_max_size = 50M/' /etc/php/8.2/apache2/php.ini
+
+# Set timezone Indonesia
+echo "date.timezone = Asia/Jakarta" | sudo tee -a /etc/php/8.2/apache2/php.ini
+
+# Set locale Indonesia
+sudo locale-gen id_ID.UTF-8
+echo "intl.default_locale = id_ID" | sudo tee -a /etc/php/8.2/apache2/php.ini
 
 # Configure Apache
 sudo a2enmod rewrite
