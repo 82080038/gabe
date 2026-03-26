@@ -72,7 +72,21 @@
    - Dashboard kolektor dengan target setoran harian.
 
 8. LANGKAH IMPLEMENTASI BERTAHAP
-   (Sesuai dengan yang telah diuraikan sebelumnya.)
+   1. Setup database server dengan schema yang telah dirancang.
+   2. Implementasi autentikasi dan manajemen user (termasuk integrasi dengan persons).
+   3. Buat modul unit & cabang (untuk bos).
+   4. Buat modul manajemen data personal dan alamat (persons, addresses, family_links).
+   5. Buat modul anggota (members) dengan deteksi duplikat dan keluarga.
+   6. Buat modul produk simpanan dan pendaftaran anggota ke produk (generate jadwal).
+   7. Buat halaman kasir (tagihan harian, pembayaran) dan integrasi dengan cash_balances.
+   8. Buat modul pinjaman (pengajuan, approval, jadwal angsuran) dengan pengecekan risiko keluarga.
+   9. Implementasi mobile collector (PWA) dengan fitur offline dan sinkronisasi.
+   10. Implementasi cron job dan notifikasi.
+   11. Buat laporan dan dashboard (termasuk laporan fraud/risiko).
+   12. Uji coba dengan transaksi riil (minimal 100 transaksi per hari) di satu cabang percontohan.
+   13. Latih staf (kasir, kolektor, kepala cabang, analis).
+   14. Implementasi bertahap di cabang-cabang lain.
+
 
 =================================================================
                      PELENGKAP & REKOMENDASI TAMBAHAN
@@ -234,6 +248,55 @@
     - Biaya pengembangan: jika menggunakan tim internal, perhitungkan
       gaji developer; jika outsourcing, estimasi Rp 250–600 juta untuk
       aplikasi sebesar ini.
+
+=================================================================
+    TAMBAHAN SINGKAT: ASPEK OPERASIONAL & PENGEMBANGAN LANJUTAN
+=================================================================
+
+17. MANAJEMEN PENGGUNA & SESI
+    - Setiap pengguna memiliki session timeout (misal 30 menit tidak aktif).
+    - Untuk role kasir dan kolektor, gunakan perangkat khusus (tablet/smartphone) 
+      dengan akses terbatas.
+
+18. INTEGRASI DENGAN SISTEM LAIN
+    - Siapkan API untuk ekspor data ke software akuntansi (misal Jurnal, Accurate) 
+      dalam format jurnal standar.
+    - Jika ada aplikasi pelaporan eksternal (Power BI, Metabase), siapkan view 
+      database khusus untuk analitik.
+
+19. PENGELOLAAN DOKUMEN DIGITAL
+    - Setiap anggota harus memiliki dokumen digital (foto KTP, selfie, surat 
+      perjanjian) yang diunggah ke server.
+    - Gunakan folder terstruktur dengan nama file unik (misal NIK_timestamp.jpg) 
+      dan simpan path di database.
+
+20. PEMBAYARAN DIGITAL & REKONSILIASI OTOMATIS
+    - Jika menggunakan virtual account (VA), sistem harus mencocokkan pembayaran 
+      masuk via webhook atau cron setiap 15 menit.
+    - Mapping VA dengan anggota dan tagihan agar pembayaran otomatis mengurangi 
+      kewajiban.
+
+21. PENGUJIAN BEBAN (LOAD TESTING)
+    - Sebelum go-live, lakukan simulasi dengan 500 transaksi per jam untuk 
+      memastikan performa server dan kode.
+    - Optimasi query SQL (indeks, query caching) untuk laporan yang berat.
+
+22. PEMBARUAN & MAINTENANCE
+    - Gunakan sistem version control (Git) untuk kode.
+    - Jadwalkan maintenance rutin (update library, backup, pembersihan log) 
+      di luar jam operasional.
+
+23. KEPATUHAN REGULASI
+    - Pastikan aplikasi dapat menghasilkan laporan yang diperlukan OJK 
+      (jika terdaftar) atau Dinas Koperasi.
+    - Simpan data minimal 5 tahun sesuai ketentuan arsip.
+
+24. PENGEMBANGAN FITUR DI MASA DEPAN
+    - Mobile App untuk Anggota: agar anggota bisa melihat saldo, tagihan, 
+      dan melakukan pembayaran digital.
+    - Sistem Antrian & Layanan: untuk kantor cabang yang ramai.
+    - Analisis Risiko Lanjutan: menggunakan machine learning untuk memprediksi 
+      potensi kredit macet.
 
 =================================================================
                            KESIMPULAN
