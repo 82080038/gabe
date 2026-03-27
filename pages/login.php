@@ -28,17 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'branch_name' => 'Pusat'
         ];
         
-        // Set session cookie parameters (only if session not started)
-        if (session_status() === PHP_SESSION_NONE) {
-            session_set_cookie_params([
-                'lifetime' => 86400, // 24 hours
-                'path' => '/',
-                'domain' => '',
-                'secure' => false, // HTTP for development
-                'httponly' => true,
-                'samesite' => 'Lax'
-            ]);
-        }
+        // Session cookie parameters sudah di set di awal session_start()
+        // Tidak perlu set ulang karena session sudah aktif
         
         // Regenerate session ID for security
         session_regenerate_id(true);
