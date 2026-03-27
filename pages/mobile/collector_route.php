@@ -9,8 +9,8 @@ require_once __DIR__ . '/../template_header.php';
 // Set page specific variables
 $pageTitle = 'Rute Kolektor';
 $breadcrumbs = [
-    ['title' => 'Dashboard', 'url' => '/mobile/dashboard'],
-    ['title' => 'Rute', 'url' => '/collector/route']
+    ['title' => 'Dashboard', 'url' => '../pages/mobile/dashboard.php'],
+    ['title' => 'Rute', 'url' => '../pages/collector/route.php']
 ];
 
 // Add mobile-specific meta tags
@@ -236,10 +236,10 @@ echo '<meta name="theme-color" content="#667eea">';
 </div>
 
 <!-- Mobile Route CSS -->
-<link rel="stylesheet" href="/assets/css/mobile-dashboard.css">
+<link rel="stylesheet" href="../assets/css/mobile-dashboard.css">
 
 <!-- Mobile Route JavaScript -->
-<script src="/assets/js/mobile-route.js"></script>
+<script src="../assets/js/mobile-route.js"></script>
 
 <!-- PWA Development Config -->
 <script src="/pwa-dev-config.js"></script>

@@ -31,25 +31,43 @@ $metaTags = IndonesiaConfig::generateMetaTags();
     <title><?php echo $pageTitle ?? 'Aplikasi Koperasi Berjalan'; ?></title>
     
     <!-- CSS Indonesia Theme -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/indonesia-theme.css" rel="stylesheet">
-    <link href="/assets/css/fontawesome.min.css" rel="stylesheet">
+    <link href="/gabe/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/gabe/assets/css/indonesia-theme.css" rel="stylesheet">
+    <link href="/gabe/assets/css/fontawesome.min.css" rel="stylesheet">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/gabe/assets/images/favicon.ico">
     
     <!-- Indonesia Formatter JS -->
-    <script src="/assets/js/indonesia-formatter.js"></script>
+    <script src="/gabe/assets/js/indonesia-formatter.js"></script>
     
     <?php if (isset($customCSS)): ?>
     <style><?php echo $customCSS; ?></style>
     <?php endif; ?>
+    
+    <style>
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    @media (max-width: 768px) {
+        .navbar-nav {
+            text-align: center;
+        }
+        .navbar-nav .nav-item {
+            margin: 0.5rem 0;
+        }
+        .dropdown-menu {
+            text-align: center;
+        }
+    }
+    </style>
 </head>
 <body class="bg-light">
     <!-- Navigation Header -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/dashboard">
+            <a class="navbar-brand" href="/gabe/pages/web/dashboard.php">
                 <i class="fas fa-store"></i> Koperasi Berjalan
             </a>
             
@@ -60,7 +78,7 @@ $metaTags = IndonesiaConfig::generateMetaTags();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">
+                        <a class="nav-link" href="/gabe/pages/web/dashboard.php">
                             <i class="fas fa-tachometer-alt"></i> Dashboard
                         </a>
                     </li>
@@ -167,14 +185,14 @@ $metaTags = IndonesiaConfig::generateMetaTags();
                             <i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['user']['name']); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/profile">
+                            <li><a class="dropdown-item" href="/gabe/pages/profile.php">
                                 <i class="fas fa-user-cog"></i> Profil
                             </a></li>
-                            <li><a class="dropdown-item" href="/settings">
+                            <li><a class="dropdown-item" href="/gabe/pages/settings.php">
                                 <i class="fas fa-cog"></i> Pengaturan
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout">
+                            <li><a class="dropdown-item" href="/gabe/logout.php">
                                 <i class="fas fa-sign-out-alt"></i> Keluar
                             </a></li>
                         </ul>
@@ -208,7 +226,7 @@ $metaTags = IndonesiaConfig::generateMetaTags();
     <nav aria-label="breadcrumb" class="m-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="/dashboard"><i class="fas fa-home"></i> Beranda</a>
+                <a href="/gabe/pages/web/dashboard.php"><i class="fas fa-home"></i> Beranda</a>
             </li>
             <?php foreach ($breadcrumbs as $index => $breadcrumb): ?>
                 <?php if ($index === count($breadcrumbs) - 1): ?>

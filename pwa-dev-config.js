@@ -16,7 +16,7 @@ const PWA_CONFIG = {
     // Service Worker Registration
     serviceWorker: {
         enabled: true,
-        script: '/sw.js',
+        script: '/gabe/sw.js',
         developmentMode: isDevelopment,
         updateInterval: isDevelopment ? 30000 : 3600000, // 30s dev, 1hr prod
         forceUpdate: false
@@ -25,7 +25,7 @@ const PWA_CONFIG = {
     // Manifest Registration
     manifest: {
         enabled: true,
-        href: '/manifest.json',
+        href: '/gabe/manifest.json',
         developmentMode: isDevelopment
     },
     
@@ -119,7 +119,7 @@ class PWAManager {
             this.serviceWorkerRegistration = await navigator.serviceWorker.register(
                 this.config.serviceWorker.script,
                 { 
-                    scope: '/',
+                    scope: '/gabe/',
                     updateViaCache: this.config.serviceWorker.developmentMode ? 'all' : 'none'
                 }
             );

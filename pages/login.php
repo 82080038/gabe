@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Redirect sesuai device
         if ($deviceDetection->getDeviceType() === 'mobile' && $deviceDetection->getUserRole() === 'collector') {
-            header('Location: mobile/dashboard.php');
+            header('Location: /gabe/pages/mobile/dashboard.php');
         } else {
-            header('Location: web/dashboard.php');
+            header('Location: /gabe/pages/web/dashboard.php');
         }
         exit;
     } elseif ($username === 'collector' && $password === 'collector') {
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
         
         // Redirect ke mobile dashboard untuk collector
-        header('Location: mobile/dashboard.php');
+        header('Location: /gabe/pages/mobile/dashboard.php');
         exit;
     } else {
         $error = 'Username atau password salah';
@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title><?php echo $pageTitle; ?></title>
     
     <!-- CSS -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/indonesia-theme.css" rel="stylesheet">
-    <link href="/assets/css/responsive.css" rel="stylesheet">
+    <link href="/gabe/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/gabe/assets/css/indonesia-theme.css" rel="stylesheet">
+    <link href="/gabe/assets/css/responsive.css" rel="stylesheet">
     
     <!-- Device classes -->
     <style>
@@ -272,6 +272,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <strong>Kolektor:</strong>
                     <code>collector / collector</code>
                 </div>
+                
+                <!-- Quick Login Buttons -->
+                <div class="mt-3">
+                    <h6><i class="fas fa-rocket"></i> Quick Login</h6>
+                    <div class="d-grid gap-2">
+                        <a href="/gabe/pages/quick_login.php" class="btn btn-primary btn-sm">
+                            <i class="fas fa-users"></i> Lihat Semua Role
+                        </a>
+                    </div>
+                </div>
             </div>
             
             <div class="device-info">
@@ -283,22 +293,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/gabe/manifest.json">
     <meta name="theme-color" content="#2c3e50">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Koperasi Berjalan">
-    <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/gabe/assets/icons/icon-192x192.png">
     
     <!-- JavaScript -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/responsive-manager.js"></script>
-    <script src="/assets/js/indonesia-formatter.js"></script>
-    <script src="/pwa-dev-config.js"></script>
+    <script src="/gabe/assets/js/jquery.min.js"></script>
+    <script src="/gabe/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/gabe/assets/js/responsive-manager.js"></script>
+    <script src="/gabe/assets/js/indonesia-formatter.js"></script>
+    <script src="/gabe/pwa-dev-config.js"></script>
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Set device variables from PHP
+        window.deviceType = '<?php echo $deviceDetection->getDeviceType(); ?>';
+        window.screenSize = '<?php echo $deviceDetection->getScreenSize(); ?>';
+        window.userRole = '<?php echo $deviceDetection->getUserRole(); ?>';
+        window.deviceConfig = {
+            capabilities: <?php echo json_encode($deviceDetection->getCapabilities()); ?>
+        };
+        
         // Auto-focus username field
         document.getElementById('username').focus();
         

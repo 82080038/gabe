@@ -9,7 +9,7 @@ require_once __DIR__ . '/../template_header.php';
 // Set page specific variables
 $pageTitle = 'Portal Anggota';
 $breadcrumbs = [
-    ['title' => 'Portal', 'url' => '/member/portal']
+    ['title' => 'Portal', 'url' => '../pages/member/portal.php']
 ];
 
 // Add mobile-specific meta tags
@@ -60,7 +60,7 @@ $savings = [
         <div class="row align-items-center">
             <div class="col-auto">
                 <div class="member-avatar">
-                    <img src="/assets/images/default-avatar.png" alt="Avatar" class="rounded-circle" width="60" height="60">
+                    <img src="../assets/images/default-avatar.png" alt="Avatar" class="rounded-circle" width="60" height="60">
                 </div>
             </div>
             <div class="col">
@@ -375,7 +375,7 @@ $savings = [
             </div>
             <div class="modal-body">
                 <div class="text-center mb-4">
-                    <img src="/assets/images/default-avatar.png" alt="Avatar" class="rounded-circle" width="100" height="100">
+                    <img src="../assets/images/default-avatar.png" alt="Avatar" class="rounded-circle" width="100" height="100">
                     <h5 class="mt-3"><?php echo htmlspecialchars($memberData['name']); ?></h5>
                     <p class="text-muted"><?php echo htmlspecialchars($memberData['member_number']); ?></p>
                 </div>
@@ -434,10 +434,10 @@ $savings = [
 </div>
 
 <!-- Member Portal CSS -->
-<link rel="stylesheet" href="/assets/css/member-portal.css">
+<link rel="stylesheet" href="../assets/css/member-portal.css">
 
 <!-- Member Portal JavaScript -->
-<script src="/assets/js/member-portal.js"></script>
+<script src="../assets/js/member-portal.js"></script>
 
 <!-- PWA Development Config -->
 <script src="/pwa-dev-config.js"></script>

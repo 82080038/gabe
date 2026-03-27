@@ -9,16 +9,49 @@ require_once __DIR__ . '/../template_header.php';
 // Set page specific variables
 $pageTitle = 'Dashboard Manajemen';
 $breadcrumbs = [
-    ['title' => 'Dashboard', 'url' => '/dashboard']
+    ['title' => 'Dashboard', 'url' => '/gabe/pages/web/dashboard.php']
 ];
 
-// Get comprehensive dashboard data
-$dashboardData = $dashboardService->getComprehensiveData();
-$recentActivities = $dashboardService->getRecentActivities(10);
-$alerts = $dashboardService->getSystemAlerts();
+// Mock data untuk dashboard (sementara)
+$dashboardData = [
+    'totalMembers' => 1250,
+    'activeLoans' => 340,
+    'totalSavings' => 2500000000,
+    'monthlyRevenue' => 125000000
+];
+
+$recentActivities = [
+    ['time' => '10:30', 'user' => 'Admin', 'action' => 'Tambah anggota baru', 'title' => 'Tambah Anggota Baru', 'description' => 'Anggota baru berhasil ditambahkan ke sistem', 'created_at' => '2024-03-27 10:30:00'],
+    ['time' => '09:45', 'user' => 'Kolektor', 'action' => 'Update pembayaran', 'title' => 'Update Pembayaran', 'description' => 'Pembayaran Kewer berhasil dicatat', 'created_at' => '2024-03-27 09:45:00'],
+    ['time' => '08:20', 'user' => 'Manager', 'action' => 'Approve pinjaman', 'title' => 'Approve Pinjaman', 'description' => 'Pinjaman berhasil disetujui', 'created_at' => '2024-03-27 08:20:00']
+];
+
+$alerts = [
+    ['type' => 'warning', 'message' => '3 pinjaman jatuh tempo hari ini'],
+    ['type' => 'info', 'message' => 'Backup database berhasil']
+];
 ?>
 
 <div class="container-fluid">
+    <!-- User Info Bar -->
+    <div class="alert alert-info d-flex align-items-center" role="alert">
+        <div class="me-3">
+            <i class="fas fa-user-circle fa-2x"></i>
+        </div>
+        <div class="flex-grow-1">
+            <strong>Selamat datang, <?php echo htmlspecialchars($_SESSION['user']['name'] ?? 'User'); ?>!</strong><br>
+            <small class="text-muted">
+                Role: <span class="badge bg-primary"><?php echo htmlspecialchars(ucfirst($_SESSION['user']['role'] ?? 'guest')); ?></span> | 
+                Cabang: <?php echo htmlspecialchars($_SESSION['user']['branch_name'] ?? 'Pusat'); ?>
+            </small>
+        </div>
+        <div>
+            <a href="/gabe/pages/quick_login.php" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-exchange-alt"></i> Ganti Role
+            </a>
+        </div>
+    </div>
+
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0">Dashboard Manajemen</h1>
@@ -58,6 +91,68 @@ $alerts = $dashboardService->getSystemAlerts();
         </div>
     </div>
     <?php endif; ?>
+
+    <!-- Role-Specific Content -->
+    <?php
+    $currentRole = $_SESSION['user']['role'] ?? 'guest';
+    $roleContent = [
+        'bos' => [
+            'title' => 'Dashboard Administrator',
+            'description' => 'Akses penuh ke seluruh sistem',
+            'features' => ['Manajemen User', 'System Settings', 'Global Reports', 'Audit Log']
+        ],
+        'unit_head' => [
+            'title' => 'Dashboard Manager Unit',
+            'description' => 'Kelola operasional unit dan cabang',
+            'features' => ['Unit Management', 'Branch Oversight', 'Performance Reports', 'Staff Management']
+        ],
+        'branch_head' => [
+            'title' => 'Dashboard Kepala Cabang',
+            'description' => 'Kelola operasional cabang',
+            'features' => ['Branch Operations', 'Local Reports', 'Staff Management', 'Customer Service']
+        ],
+        'collector' => [
+            'title' => 'Dashboard Kolektor',
+            'description' => 'Kelola penagihan dan collection',
+            'features' => ['Collection Routes', 'Payment Processing', 'Customer Visits', 'Daily Reports']
+        ],
+        'cashier' => [
+            'title' => 'Dashboard Kasir',
+            'description' => 'Kelola transaksi keuangan',
+            'features' => ['Cash Transactions', 'Daily Reconciliation', 'Payment Processing', 'Teller Operations']
+        ],
+        'staff' => [
+            'title' => 'Dashboard Staff',
+            'description' => 'Dukungan administratif',
+            'features' => ['Data Entry', 'Basic Reports', 'Customer Service', 'Administrative Tasks']
+        ]
+    ];
+    
+    $currentRoleContent = $roleContent[$currentRole] ?? $roleContent['staff'];
+    ?>
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="mb-2"><?php echo htmlspecialchars($currentRoleContent['title']); ?></h4>
+                            <p class="mb-3"><?php echo htmlspecialchars($currentRoleContent['description']); ?></p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <?php foreach ($currentRoleContent['features'] as $feature): ?>
+                                <span class="badge bg-white text-primary"><?php echo htmlspecialchars($feature); ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="fas fa-user-shield fa-4x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Key Metrics Cards -->
     <div class="row mb-4">
@@ -299,7 +394,7 @@ $alerts = $dashboardService->getSystemAlerts();
                                     </div>
                                     <div class="activity-meta text-muted small">
                                         <i class="fas fa-user"></i> <?php echo htmlspecialchars($activity['user']); ?> •
-                                        <i class="fas fa-clock"></i> <?php echo formatDateTime($activity['created_at']); ?>
+                                        <i class="fas fa-clock"></i> <?php echo date('d/m/Y H:i', strtotime($activity['created_at'])); ?>
                                     </div>
                                 </div>
                             </div>
@@ -714,4 +809,8 @@ function showAlert(alert) {
 }
 </style>
 
-<?php require_once __DIR__ . '/../template_footer.php'; ?>
+<!-- Bootstrap JavaScript -->
+<script src="/gabe/assets/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

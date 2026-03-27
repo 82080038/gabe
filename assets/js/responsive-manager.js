@@ -330,6 +330,42 @@ class ResponsiveManager {
     }
     
     /**
+     * Enable all features for full mode
+     */
+    enableAllFeatures() {
+        // Enable all UI components
+        document.body.classList.remove('compact-mode', 'mobile-mode');
+        document.body.classList.add('full-mode');
+        
+        // Enable all charts and graphs
+        const charts = document.querySelectorAll('.chart-container');
+        charts.forEach(chart => chart.style.display = 'block');
+        
+        // Enable all advanced features
+        const advancedFeatures = document.querySelectorAll('.advanced-feature');
+        advancedFeatures.forEach(feature => feature.classList.remove('d-none'));
+    }
+    
+    /**
+     * Load all data for full mode
+     */
+    loadAllData() {
+        // Trigger data loading events
+        this.emit('loadAllData');
+    }
+    
+    /**
+     * Enable animations for full mode
+     */
+    enableAnimations() {
+        // Remove animation restrictions
+        const animationStyles = document.querySelector('style[data-animations-restricted]');
+        if (animationStyles) {
+            animationStyles.remove();
+        }
+    }
+    
+    /**
      * Setup PWA features
      */
     setupPWAFeatures() {
@@ -665,6 +701,44 @@ class ResponsiveManager {
         document.dispatchEvent(new CustomEvent(`responsiveManager:${eventName}`, {
             detail: data
         }));
+    }
+    
+    /**
+     * Reduce animations for performance
+     */
+    reduceAnimations() {
+        // Disable animations for better performance
+        const style = document.createElement('style');
+        style.textContent = `
+            * {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                transition-delay: 0.01ms !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    /**
+     * Optimize tables for mobile
+     */
+    optimizeTables() {
+        const tables = document.querySelectorAll('table');
+        tables.forEach(table => {
+            table.classList.add('table-responsive');
+        });
+    }
+    
+    /**
+     * Simplify forms for mobile
+     */
+    simplifyForms() {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            // Add mobile-friendly classes
+            form.classList.add('mobile-form');
+        });
     }
 }
 

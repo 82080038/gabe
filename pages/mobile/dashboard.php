@@ -4,12 +4,12 @@
  * PWA-enabled dengan touch-friendly interface
  */
 
-require_once __DIR__ . '/../template_header.php';
+require_once __DIR__ . '/template_header.php';
 
 // Set page specific variables
 $pageTitle = 'Dashboard Kolektor';
 $breadcrumbs = [
-    ['title' => 'Dashboard', 'url' => '/dashboard']
+    ['title' => 'Dashboard', 'url' => '/gabe/pages/mobile/dashboard.php']
 ];
 
 // Add mobile-specific meta tags
@@ -216,10 +216,10 @@ $summary = [
 </div>
 
 <!-- Mobile Dashboard CSS -->
-<link rel="stylesheet" href="/assets/css/mobile-dashboard.css">
+<link rel="stylesheet" href="../assets/css/mobile-dashboard.css">
 
 <!-- Mobile Dashboard JavaScript -->
-<script src="/assets/js/mobile-dashboard.js"></script>
+<script src="../assets/js/mobile-dashboard.js"></script>
 
 <!-- PWA Development Config -->
 <script src="/pwa-dev-config.js"></script>

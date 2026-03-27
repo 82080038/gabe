@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-03-27T08:19:40.541Z",
+  "baseUrl": "http://localhost:8000",
+  "screenshots": [
+    {
+      "filename": "screenshots/login-page-1774599566362.png",
+      "description": "Initial login page"
+    },
+    {
+      "filename": "screenshots/login-filled-1774599567940.png",
+      "description": "Login form filled"
+    },
+    {
+      "filename": "screenshots/login-error-1774599578539.png",
+      "description": "Login test error"
+    },
+    {
+      "filename": "screenshots/dashboard-view-1774599578685.png",
+      "description": "Dashboard view"
+    },
+    {
+      "filename": "screenshots/mobile-view-1774599579608.png",
+      "description": "Mobile responsive view"
+    }
+  ],
+  "summary": {
+    "totalScreenshots": 5,
+    "screenshotDirectory": "screenshots/"
+  }
+}

@@ -15,7 +15,7 @@ class ComprehensiveSystemTest {
         this.testResults = [];
         this.screenshots = [];
         this.config = {
-            baseUrl: 'http://localhost',
+            baseUrl: 'http://localhost:8000',
             timeout: 30000,
             headless: process.env.HEADLESS !== 'false',
             slowMo: 100,

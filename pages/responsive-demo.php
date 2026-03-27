@@ -9,8 +9,8 @@ require_once __DIR__ . '/template_header.php';
 // Set page specific variables
 $pageTitle = 'Responsive Design Demo';
 $breadcrumbs = [
-    ['title' => 'Demo', 'url' => '/demo'],
-    ['title' => 'Responsive', 'url' => '/demo/responsive']
+    ['title' => 'Demo', 'url' => '../pages/demo.php'],
+    ['title' => 'Responsive', 'url' => '../pages/demo/responsive.php']
 ];
 
 // Add responsive meta tags
@@ -483,10 +483,10 @@ echo '<meta name="theme-color" content="#007bff">';
 <div class="responsive-sidebar-overlay" id="responsive-sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <!-- Responsive CSS -->
-<link rel="stylesheet" href="/assets/css/responsive-complete.css">
+<link rel="stylesheet" href="../assets/css/responsive-complete.css">
 
 <!-- Responsive JavaScript -->
-<script src="/assets/js/responsive-enhanced.js"></script>
+<script src="../assets/js/responsive-enhanced.js"></script>
 
 <style>
 /* Demo-specific styles */

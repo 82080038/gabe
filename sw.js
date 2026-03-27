@@ -10,29 +10,30 @@ const API_CACHE = 'koperasi-api-v1.0.0';
 
 // Files to cache for offline functionality
 const STATIC_ASSETS = [
-    '/',
-    '/index.php',
-    '/pages/login.php',
-    '/pages/web/dashboard.php',
-    '/assets/css/bootstrap.min.css',
-    '/assets/css/responsive.css',
-    '/assets/js/bootstrap.bundle.min.js',
-    '/assets/js/responsive-manager.js',
-    '/assets/js/app.js',
-    '/manifest.json',
-    '/assets/icons/icon-192x192.png',
-    '/assets/icons/icon-512x512.png'
+    '/gabe/',
+    '/gabe/index.php',
+    '/gabe/pages/login.php',
+    '/gabe/pages/web/dashboard.php',
+    '/gabe/assets/css/bootstrap.min.css',
+    '/gabe/assets/css/indonesia-theme.css',
+    '/gabe/assets/css/fontawesome.min.css',
+    '/gabe/assets/js/bootstrap.bundle.min.js',
+    '/gabe/assets/js/responsive-manager.js',
+    '/gabe/assets/js/indonesia-formatter.js',
+    '/gabe/manifest.json',
+    '/gabe/pwa-dev-config.js',
+    '/gabe/assets/images/favicon.ico'
 ];
 
 // API endpoints to cache
 const API_ENDPOINTS = [
-    '/api/auth/login',
-    '/api/auth/logout',
-    '/api/user/profile',
-    '/api/dashboard/stats',
-    '/api/members/list',
-    '/api/loans/list',
-    '/api/savings/list'
+    '/gabe/api/auth/login',
+    '/gabe/api/auth/logout',
+    '/gabe/api/user/profile',
+    '/gabe/api/dashboard/stats',
+    '/gabe/api/members/list',
+    '/gabe/api/loans/list',
+    '/gabe/api/savings/list'
 ];
 
 // ================================================================
@@ -45,10 +46,20 @@ self.addEventListener('install', (event) => {
         caches.open(STATIC_CACHE)
             .then((cache) => {
                 console.log('[SW] Caching static assets');
-                return cache.addAll(STATIC_ASSETS);
+                // Cache files one by one to handle individual failures
+                return Promise.allSettled(
+                    STATIC_ASSETS.map(url => 
+                        cache.add(url).catch(err => {
+                            console.warn(`[SW] Failed to cache ${url}:`, err.message);
+                            return null; // Continue with other files
+                        })
+                    )
+                );
             })
-            .then(() => {
-                console.log('[SW] Static assets cached successfully');
+            .then((results) => {
+                const successful = results.filter(r => r.status === 'fulfilled').length;
+                const failed = results.filter(r => r.status === 'rejected').length;
+                console.log(`[SW] Static assets cached: ${successful} successful, ${failed} failed`);
                 return self.skipWaiting();
             })
             .catch((error) => {

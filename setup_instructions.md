@@ -1,32 +1,299 @@
-# Setup Database Aplikasi Koperasi Berjalan
+# 🚀 Setup Instructions - Koperasi Berjalan
+
+**Last Updated:** 2026-03-27  
+**Version:** 1.0.0  
+**Status:** Production Ready
+
+---
 
 ## 📋 **Overview**
-Implementasi database menggunakan **3 database**:
-1. `schema_person` - Data personal & hubungan keluarga
-2. `schema_address` - Data alamat lengkap Indonesia (rename dari alamat_db)
-3. `schema_app` - Data aplikasi & transaksi
 
-## 🚀 **Langkah Setup Database**
+Aplikasi Koperasi Berjalan adalah sistem simpan pinjam digital yang siap digunakan dengan:
+- **Multi-role user system** (6 role types)
+- **Responsive web & mobile interface**
+- **PWA features** dengan Service Worker
+- **Quick login demo** untuk testing
+- **Comprehensive testing** dengan Puppeteer
 
-### **Step 1: Login ke MySQL**
+---
+
+## 🛠️ **System Requirements**
+
+### **Software Requirements**
+- **XAMPP** (Apache + MySQL + PHP)
+- **PHP 8.2+** 
+- **MySQL 8.0+**
+- **Modern Browser** (Chrome, Firefox, Edge)
+
+### **Hardware Requirements**
+- **RAM:** Minimum 4GB (8GB recommended)
+- **Storage:** Minimum 2GB free space
+- **Processor:** Modern dual-core or better
+
+---
+
+## 🚀 **Quick Setup (5 Minutes)**
+
+### **Step 1: Start XAMPP**
 ```bash
-mysql -u root -p
-# Masukkan password: root
+# Start XAMPP services
+sudo /opt/lampp/lampp start
+
+# Check status
+sudo /opt/lampp/lampp status
 ```
 
-### **Step 2: Import Data alamat_db_backup.sql ke schema_address**
+### **Step 2: Verify Setup**
 ```bash
-# Konversi encoding jika perlu
-iconv -f utf-16 -t utf-8 /opt/lampp/htdocs/gabe/alamat_db_backup.sql > /opt/lampp/htdocs/gabe/alamat_db_clean.sql
+# Test Apache
+curl -I http://localhost/
 
-# Import ke schema_address
-mysql -u root -p schema_address < /opt/lampp/htdocs/gabe/alamat_db_clean.sql
+# Test MySQL
+mysql -u root -p -e "SHOW DATABASES;"
 ```
 
-### **Step 3: Jalankan Script Setup**
+### **Step 3: Access Application**
+```bash
+# Open browser
+http://localhost/gabe/
+
+# Quick access URLs
+http://localhost/gabe/pages/login.php          # Login page
+http://localhost/gabe/pages/quick_login.php    # Quick demo
+http://localhost/gabe/pages/web/dashboard.php  # Dashboard
+```
+
+---
+
+## 📱 **Quick Login Demo**
+
+### **Available User Roles**
+| Role | Username | Password | Access Level |
+|------|----------|----------|--------------|
+| Administrator | `admin` | `admin` | Full system access |
+| Manager Unit | `manager` | `manager` | Unit management |
+| Branch Head | `branch_head` | `branch_head` | Branch operations |
+| Collector | `collector` | `collector` | Mobile collection |
+| Cashier | `cashier` | `cashier` | Cash transactions |
+| Staff | `staff` | `staff` | Administrative |
+
+### **Demo Instructions**
+1. **Buka:** `http://localhost/gabe/pages/quick_login.php`
+2. **Pilih role** yang ingin diuji
+3. **Klik "Quick Login"**
+4. **Dashboard** akan menampilkan konten sesuai role
+
+---
+
+## 🗄️ **Database Setup (Optional)**
+
+### **For Full Functionality**
+Jika ingin mengaktifkan database integration:
+
+#### **Step 1: Create Database**
 ```sql
-mysql> source /opt/lampp/htdocs/gabe/create_databases.sql;
+mysql -u root -p
+CREATE DATABASE koperasi_berjalan;
+USE koperasi_berjalan;
 ```
+
+#### **Step 2: Import Schema**
+```bash
+# Import database schema
+mysql -u root -p koperasi_berjalan < /opt/lampp/htdocs/gabe/database/schema.sql
+
+# Import sample data (optional)
+mysql -u root -p koperasi_berjalan < /opt/lampp/htdocs/gabe/database/sample_data.sql
+```
+
+#### **Step 3: Configure Connection**
+```php
+// Edit config/database.php
+$host = 'localhost';
+$dbname = 'koperasi_berjalan';
+$username = 'root';
+$password = ''; // Your MySQL password
+```
+
+---
+
+## 🧪 **Testing Setup**
+
+### **Automated Testing**
+```bash
+# Navigate to tests directory
+cd /opt/lampp/htdocs/gabe/tests
+
+# Install dependencies (if needed)
+npm install
+
+# Run comprehensive tests
+npm test
+
+# Run specific test suites
+npm run test:auth      # Authentication tests
+npm run test:mobile    # Mobile responsiveness
+npm run test:pwa       # PWA features
+```
+
+### **Manual Testing Checklist**
+- [ ] **Login System:** Test all 6 roles
+- [ ] **Dashboard:** Verify role-based content
+- [ ] **Responsive:** Test mobile, tablet, desktop
+- [ ] **Navigation:** Test menu and breadcrumbs
+- [ ] **PWA:** Test service worker and caching
+- [ ] **Quick Login:** Test role switching
+
+---
+
+## 🔧 **Configuration**
+
+### **Apache Configuration**
+```apache
+# /opt/lampp/etc/extra/httpd-vhosts.conf (optional)
+<VirtualHost *:80>
+    DocumentRoot "/opt/lampp/htdocs/gabe"
+    ServerName localhost
+    <Directory "/opt/lampp/htdocs/gabe">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+### **PHP Configuration**
+```ini
+# /opt/lampp/etc/php.ini
+memory_limit = 256M
+max_execution_time = 300
+upload_max_filesize = 64M
+post_max_size = 64M
+```
+
+### **Application Configuration**
+```php
+// config/app.php (create if needed)
+define('APP_NAME', 'Koperasi Berjalan');
+define('APP_VERSION', '1.0.0');
+define('DEBUG_MODE', true);
+define('BASE_URL', 'http://localhost/gabe/');
+```
+
+---
+
+## 🚨 **Troubleshooting**
+
+### **Common Issues**
+
+#### **1. 404 Errors**
+```bash
+# Check Apache status
+sudo /opt/lampp/lampp status
+
+# Check .htaccess
+ls -la /opt/lampp/htdocs/gabe/.htaccess
+
+# Restart Apache
+sudo /opt/lampp/lampp restartapache
+```
+
+#### **2. Database Connection**
+```bash
+# Test MySQL connection
+mysql -u root -p
+
+# Check database exists
+SHOW DATABASES LIKE 'koperasi_berjalan';
+```
+
+#### **3. Asset Loading Issues**
+```bash
+# Check file permissions
+sudo chown -R www-data:www-data /opt/lampp/htdocs/gabe
+sudo chmod -R 755 /opt/lampp/htdocs/gabe
+
+# Verify assets exist
+ls -la /opt/lampp/htdocs/gabe/assets/
+```
+
+#### **4. JavaScript Errors**
+```bash
+# Check browser console
+# Open Developer Tools → Console
+
+# Verify assets load
+curl -I http://localhost/gabe/assets/js/bootstrap.bundle.min.js
+curl -I http://localhost/gabe/assets/css/bootstrap.min.css
+```
+
+### **Error Logs**
+```bash
+# Apache error log
+tail -f /opt/lampp/logs/error_log
+
+# PHP error log
+tail -f /opt/lampp/logs/php_error_log
+
+# MySQL error log
+tail -f /opt/lampp/mysql/data/mysql.err
+```
+
+---
+
+## 📱 **Mobile Testing**
+
+### **Device Testing**
+1. **Chrome DevTools:** F12 → Toggle device toolbar
+2. **Real Device:** Access `http://[IP-ADDRESS]/gabe/`
+3. **PWA Testing:** Install as mobile app
+
+### **Responsive Breakpoints**
+- **Mobile:** < 768px
+- **Tablet:** 768px - 1024px  
+- **Desktop:** > 1024px
+
+---
+
+## 🌐 **Production Deployment**
+
+### **Security Checklist**
+- [ ] Change default passwords
+- [ ] Enable HTTPS/SSL
+- [ ] Configure firewall
+- [ ] Set up backups
+- [ ] Monitor logs
+
+### **Performance Optimization**
+- [ ] Enable gzip compression
+- [ ] Configure caching
+- [ ] Optimize images
+- [ ] Use CDN for assets
+
+---
+
+## 📞 **Support**
+
+### **Documentation**
+- **[README.md](README.md)** - Project overview
+- **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - Implementation status
+- **[PANDUAN_LENGKAP_KOPERASI_BERJALAN.md](PANDUAN_LENGKAP_KOPERASI_BERJALAN.md)** - Complete guide
+
+### **Debug Tools**
+```javascript
+// Browser console
+window.PWA_DEBUG           // PWA debugging
+window.deviceType          // Device detection
+window.userRole            // Current user role
+window.responsiveManager   // Responsive system
+```
+
+---
+
+**🎉 Setup Complete!**
+
+Aplikasi Koperasi Berjalan siap digunakan. Kunjungi `http://localhost/gabe/` untuk memulai.
+
+**Quick Start:** `http://localhost/gabe/pages/quick_login.php` untuk demo semua role.
 
 ### **Step 4: Update Foreign Keys (Opsional)**
 ```sql

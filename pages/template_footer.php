@@ -21,7 +21,7 @@
             <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Menu</h5>
                 <ul class="list-unstyled mb-0">
-                    <li><a href="/dashboard" class="text-dark">Dashboard</a></li>
+                    <li><a href="../pages/web/dashboard.php" class="text-dark">Dashboard</a></li>
                     <li><a href="/members" class="text-dark">Anggota</a></li>
                     <li><a href="/loans" class="text-dark">Pinjaman</a></li>
                     <li><a href="/savings" class="text-dark">Simpanan</a></li>
@@ -65,19 +65,19 @@ window.indonesiaConfig = <?php echo json_encode(IndonesiaConfig::getJSConfig());
 </script>
 
 <!-- Bootstrap JS -->
-<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
 
 <!-- jQuery -->
-<script src="/assets/js/jquery.min.js"></script>
+<script src="../assets/js/jquery.min.js"></script>
 
 <!-- Chart.js untuk dashboard -->
-<script src="/assets/js/chart.min.js"></script>
+<script src="../assets/js/chart.min.js"></script>
 
 <!-- DataTables -->
-<script src="/assets/js/datatables.min.js"></script>
+<script src="../assets/js/datatables.min.js"></script>
 
 <!-- Custom JavaScript -->
-<script src="/assets/js/app.js"></script>
+<script src="../assets/js/app.js"></script>
 
 <!-- Page specific JavaScript -->
 <?php if (isset($pageJS)): ?>
@@ -203,6 +203,9 @@ document.addEventListener('DOMContentLoaded', function() {
     h3 { font-size: 14pt; }
 }
 </style>
+
+<!-- Bootstrap JavaScript -->
+<script src="/gabe/assets/js/bootstrap.bundle.min.js"></script>
 
 <!-- Analytics (optional) -->
 <?php if (isset($analyticsCode)): ?>

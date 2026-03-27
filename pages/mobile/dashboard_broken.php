@@ -9,7 +9,7 @@ require_once __DIR__ . '/../template_header.php';
 // Set page specific variables
 $pageTitle = 'Dashboard Kolektor';
 $breadcrumbs = [
-    ['title' => 'Dashboard', 'url' => '/dashboard']
+    ['title' => 'Dashboard', 'url' => '../pages/dashboard.php']
 ];
 
 // Add mobile-specific meta tags
@@ -209,7 +209,7 @@ $summary = [
                     </a>
                 </div>
                 <div class="col-6 mb-2">
-                    <a href="/settings" class="btn btn-outline-secondary btn-block">
+                    <a href="../pages/settings.php" class="btn btn-outline-secondary btn-block">
                         <i class="fas fa-cog"></i><br>
                         <small>Pengaturan</small>
                     </a>
@@ -454,10 +454,10 @@ function setupPullToRefresh() {
 </style>
 
 <!-- Mobile Dashboard CSS -->
-<link rel="stylesheet" href="/assets/css/mobile-dashboard.css">
+<link rel="stylesheet" href="../assets/css/mobile-dashboard.css">
 
 <!-- Mobile Dashboard JavaScript -->
-<script src="/assets/js/mobile-dashboard.js"></script>
+<script src="../assets/js/mobile-dashboard.js"></script>
 
 <!-- PWA Development Config -->
 <script src="/pwa-dev-config.js"></script>

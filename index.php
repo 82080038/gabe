@@ -14,14 +14,14 @@ require_once __DIR__ . '/config/indonesia_config.php';
 if (isset($_SESSION['user']['id'])) {
     // Redirect sesuai device dan role
     if ($deviceDetection->getDeviceType() === 'mobile' && $deviceDetection->getUserRole() === 'collector') {
-        header('Location: /pages/mobile/dashboard.php');
+        header('Location: /gabe/pages/mobile/dashboard.php');
     } else {
-        header('Location: /pages/web/dashboard.php');
+        header('Location: /gabe/pages/web/dashboard.php');
     }
     exit;
 }
 
 // Redirect ke login page
-header('Location: /pages/login.php');
+header('Location: /gabe/pages/login.php');
 exit;
 ?>
