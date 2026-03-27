@@ -91,10 +91,16 @@ $action = $_GET['action'] ?? 'list';
 
 switch ($action) {
     case 'apply':
-        include 'loans/apply.php';
+        include 'loans/add.php';
         break;
-    case 'approve':
-        include 'loans/approve.php';
+    case 'add':
+        include 'loans/add.php';
+        break;
+    case 'edit':
+        include 'loans/edit.php';
+        break;
+    case 'view':
+        include 'loans/view.php';
         break;
     case 'schedules':
         include 'loans/schedules.php';
@@ -102,8 +108,8 @@ switch ($action) {
     case 'products':
         include 'loans/products.php';
         break;
-    case 'view':
-        include 'loans/view.php';
+    case 'approval':
+        include 'loans/approval.php';
         break;
     default:
         include 'loans/list.php';

@@ -4,8 +4,10 @@
  * Mendukung penuh bahasa Indonesia dan lokasi Indonesia
  */
 
-// Start session
-session_start();
+// Start session (check if already started)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Load konfigurasi Indonesia
 require_once __DIR__ . '/../config/indonesia_config.php';
@@ -37,6 +39,7 @@ $metaTags = IndonesiaConfig::generateMetaTags();
     <link href="/gabe/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/gabe/assets/css/indonesia-theme.css" rel="stylesheet">
     <link href="/gabe/assets/css/responsive.css" rel="stylesheet">
+    <link href="/gabe/assets/css/mobile-optimized.css" rel="stylesheet">
     
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -120,30 +123,48 @@ $metaTags = IndonesiaConfig::generateMetaTags();
                     <?php endif; ?>
                     
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="memberDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="memberDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-users"></i> Anggota
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/gabe/pages/members.php">Daftar Anggota</a></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/members.php?action=add">Tambah Anggota</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="memberDropdown">
+                            <li><a class="dropdown-item" href="/gabe/pages/members.php">
+                                <i class="fas fa-list me-2"></i>Daftar Anggota
+                            </a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/members.php?action=add">
+                                <i class="fas fa-plus me-2"></i>Tambah Anggota
+                            </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/members.php?action=family">Hubungan Keluarga</a></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/members.php?action=import">Import Data</a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/members.php?action=family">
+                                <i class="fas fa-users me-2"></i>Hubungan Keluarga
+                            </a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/members.php?action=import">
+                                <i class="fas fa-upload me-2"></i>Import Data
+                            </a></li>
                         </ul>
                     </li>
                     
                     <?php if (isset($_SESSION['user']) && ($_SESSION['user']['role'] === 'bos' || $_SESSION['user']['role'] === 'unit_head' || $_SESSION['user']['role'] === 'branch_head')): ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="loanDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="loanDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-hand-holding-usd"></i> Pinjaman
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/gabe/pages/loans.php">Daftar Pinjaman</a></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=apply">Ajukan Pinjaman</a></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=schedules">Jadwal Angsuran</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="loanDropdown">
+                            <li><a class="dropdown-item" href="/gabe/pages/loans.php">
+                                <i class="fas fa-list me-2"></i>Daftar Pinjaman
+                            </a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=apply">
+                                <i class="fas fa-plus me-2"></i>Ajukan Pinjaman
+                            </a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=schedules">
+                                <i class="fas fa-calendar me-2"></i>Jadwal Angsuran
+                            </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=products">Produk Pinjaman</a></li>
-                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=approval">Persetujuan Pinjaman</a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=products">
+                                <i class="fas fa-box me-2"></i>Produk Pinjaman
+                            </a></li>
+                            <li><a class="dropdown-item" href="/gabe/pages/loans.php?action=approval">
+                                <i class="fas fa-check me-2"></i>Persetujuan Pinjaman
+                            </a></li>
                         </ul>
                     </li>
                     

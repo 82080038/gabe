@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-03-27T21:16:10.183Z",
+  "summary": {
+    "totalTests": 7,
+    "passedTests": 5,
+    "failedTests": 2
+  },
+  "results": [
+    {
+      "test": "Mobile Login Form",
+      "hasForm": true,
+      "inputCount": 2,
+      "hasSubmitButton": true,
+      "viewportWidth": 375,
+      "isMobileViewport": true,
+      "passed": true
+    },
+    {
+      "test": "Mobile Login Functionality",
+      "loginSuccess": true,
+      "currentUrl": "http://localhost/gabe/pages/web/dashboard.php",
+      "passed": true
+    },
+    {
+      "test": "Mobile Navigation",
+      "hasNavbar": true,
+      "hasNavbarToggler": true,
+      "hasNavbarCollapse": true,
+      "navLinkCount": 10,
+      "isCollapsed": true,
+      "passed": true
+    },
+    {
+      "test": "Mobile Menu Toggle",
+      "menuExpanded": true,
+      "passed": true
+    },
+    {
+      "test": "Mobile Dashboard Layout",
+      "cardCount": 12,
+      "tableCount": 1,
+      "chartCount": 3,
+      "hasContainer": true,
+      "passed": true
+    },
+    {
+      "test": "Mobile Form Usability",
+      "inputCount": 16,
+      "buttonCount": 20,
+      "touchFriendlyInputs": 5,
+      "touchFriendlyRatio": 31,
+      "passed": false
+    },
+    {
+      "test": "Mobile Touch Targets",
+      "totalTargets": 82,
+      "validTargets": 28,
+      "invalidTargets": 54,
+      "validRatio": 34,
+      "passed": false
+    }
+  ],
+  "screenshots": [
+    "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_logged_in_dashboard_2026-03-27T21-15-53-279Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_login_page_2026-03-27T21-15-54-527Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_login_success_2026-03-27T21-16-04-146Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_menu_before_toggle_2026-03-27T21-16-04-778Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_menu_after_toggle_2026-03-27T21-16-08-202Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_members_page_2026-03-27T21-16-09-604Z.png"
+  ]
+}

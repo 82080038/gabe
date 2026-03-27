@@ -1,0 +1,19 @@
+{
+  "name": "gabe",
+  "version": "1.0.0",
+  "description": "Aplikasi digital untuk **koperasi berjalan** dengan sistem **Kewer/Mawar** yang mendukung multi-unit dan multi-cabang.",
+  "main": "sw-dev-disabled.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/puppeteer": "^5.4.7",
+    "puppeteer": "^24.40.0"
+  }
+}

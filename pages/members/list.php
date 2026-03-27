@@ -18,9 +18,9 @@ $totalLoans = array_sum(array_column($members, 'loan_balance'));
             <button class="btn btn-success me-2" onclick="exportMembers()">
                 <i class="fas fa-download"></i> Export
             </button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+            <a href="/gabe/pages/members.php?action=add" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Tambah Anggota
-            </button>
+            </a>
         </div>
     </div>
 

@@ -25,7 +25,28 @@ $dashboardData = [
     'activeLoans' => 340,
     'totalSavings' => 2500000000,
     'monthlyRevenue' => 125000000,
-    'last_sync' => '2024-03-27 17:00:00'
+    'last_sync' => '2024-03-27 17:00:00',
+    'new_members_this_month' => 45,
+    'total_portfolio' => 5000000000,
+    'portfolio_growth' => 12.5,
+    'total_savings' => 2500000000,
+    'savings_growth' => 8.3,
+    'npl_ratio' => 2.8,
+    'npl_trend' => 'down',
+    'npl_change' => -0.5,
+    'portfolio_labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    'portfolio_data' => [4200000000, 4350000000, 4500000000, 4650000000, 4800000000, 5000000000],
+    'savings_data' => [2100000000, 2200000000, 2300000000, 2400000000, 2450000000, 2500000000],
+    'loan_types' => ['Kewer', 'Mawar', 'Sukarela', 'Darurat', 'Investasi'],
+    'loan_amounts' => [2000000000, 1500000000, 800000000, 400000000, 300000000],
+    'collection_days' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+    'collection_rates' => [85, 88, 92, 87, 90, 95],
+    'branch_performance' => [
+        ['name' => 'Jakarta Pusat', 'members' => 350, 'portfolio' => 1500000000, 'collection_rate' => 92.5, 'npl' => 2.1, 'status' => 'active'],
+        ['name' => 'Jakarta Utara', 'members' => 280, 'portfolio' => 1200000000, 'collection_rate' => 89.3, 'npl' => 3.2, 'status' => 'active'],
+        ['name' => 'Jakarta Selatan', 'members' => 320, 'portfolio' => 1300000000, 'collection_rate' => 94.1, 'npl' => 1.8, 'status' => 'active'],
+        ['name' => 'Jakarta Barat', 'members' => 300, 'portfolio' => 1000000000, 'collection_rate' => 87.6, 'npl' => 4.2, 'status' => 'active']
+    ]
 ];
 
 $recentActivities = [
@@ -90,8 +111,8 @@ $alerts = [
         <div class="col-12">
             <?php foreach ($alerts as $alert): ?>
             <div class="alert alert-<?php echo $alert['type']; ?> alert-dismissible fade show" role="alert">
-                <i class="fas fa-<?php echo $alert['icon']; ?>"></i>
-                <strong><?php echo htmlspecialchars($alert['title']); ?></strong>
+                <i class="fas fa-<?php echo $alert['icon'] ?? 'info'; ?>"></i>
+                <strong><?php echo htmlspecialchars($alert['title'] ?? 'Perhatian'); ?></strong>
                 <?php echo htmlspecialchars($alert['message']); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -173,11 +194,11 @@ $alerts = [
                                 Total Anggota
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <?php echo number_format($dashboardData['total_members'], 0, ',', '.'); ?>
+                                <?php echo number_format($dashboardData['total_members'] ?? 0, 0, ',', '.'); ?>
                             </div>
                             <div class="text-xs text-muted">
                                 <i class="fas fa-arrow-up text-success"></i> 
-                                +<?php echo number_format($dashboardData['new_members_this_month'], 0, ',', '.'); ?> bulan ini
+                                +<?php echo number_format($dashboardData['new_members_this_month'] ?? 0, 0, ',', '.'); ?> bulan ini
                             </div>
                         </div>
                         <div class="col-auto">

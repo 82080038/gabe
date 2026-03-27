@@ -1,0 +1,332 @@
+{
+  "metadata": {
+    "startTime": "2026-03-27T21:05:37.387Z",
+    "endTime": "2026-03-27T21:07:37.496Z",
+    "duration": "120109ms",
+    "testSuites": 4
+  },
+  "overallSummary": {
+    "totalTests": 23,
+    "totalPassed": 13,
+    "totalFailed": 10,
+    "successRate": "56.52%"
+  },
+  "testSuites": [
+    {
+      "suite": "Login Tests",
+      "timestamp": "2026-03-27T21:06:05.959Z",
+      "summary": {
+        "totalTests": 4,
+        "passedTests": 3,
+        "failedTests": 1
+      },
+      "results": [
+        {
+          "test": "Login Page Elements",
+          "loginFormExists": true,
+          "usernameInputExists": true,
+          "passwordInputExists": true,
+          "loginButtonExists": true,
+          "passed": true
+        },
+        {
+          "test": "Admin Login",
+          "currentUrl": "http://localhost/gabe/pages/web/dashboard.php",
+          "isLoggedIn": true,
+          "passed": true
+        },
+        {
+          "test": "Dashboard Elements",
+          "hasNavigation": true,
+          "hasDashboardTitle": true,
+          "hasUserMenu": true,
+          "hasLogoutButton": true,
+          "passed": true
+        },
+        {
+          "test": "Logout",
+          "error": "Node is either not clickable or not an Element",
+          "passed": false
+        }
+      ],
+      "screenshots": [
+        "/opt/lampp/htdocs/gabe/tests/screenshots/login_page_loaded_2026-03-27T21-05-40-560Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/admin_credentials_filled_2026-03-27T21-05-50-137Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/admin_login_result_2026-03-27T21-05-53-593Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/dashboard_loaded_2026-03-27T21-05-55-230Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/before_logout_2026-03-27T21-05-59-211Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/dropdown_opened_2026-03-27T21-06-02-700Z.png"
+      ]
+    },
+    {
+      "suite": "Navigation Tests",
+      "timestamp": "2026-03-27T21:06:31.164Z",
+      "summary": {
+        "totalTests": 7,
+        "passedTests": 1,
+        "failedTests": 6
+      },
+      "results": [
+        {
+          "test": "Navigation - Dashboard",
+          "currentUrl": "http://localhost/gabe/pages/web/dashboard.php",
+          "hasExpectedContent": true,
+          "passed": true
+        },
+        {
+          "test": "Navigation - Members",
+          "error": "Navigation element not found",
+          "passed": false
+        },
+        {
+          "test": "Navigation - Loans",
+          "error": "Navigation element not found",
+          "passed": false
+        },
+        {
+          "test": "Navigation - Collections",
+          "error": "Navigation element not found",
+          "passed": false
+        },
+        {
+          "test": "Navigation - Branches",
+          "error": "Navigation element not found",
+          "passed": false
+        },
+        {
+          "test": "Dropdown Menus",
+          "error": "No dropdown menus found",
+          "passed": false
+        },
+        {
+          "test": "Mobile Navigation",
+          "error": "No mobile menu toggle found",
+          "passed": false
+        }
+      ],
+      "screenshots": [
+        "/opt/lampp/htdocs/gabe/tests/screenshots/nav_logged_in_dashboard_2026-03-27T21-06-17-970Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/nav_before_dashboard_nav_2026-03-27T21-06-20-096Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/nav_dashboard_page_loaded_2026-03-27T21-06-22-327Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/nav_mobile_viewport_2026-03-27T21-06-28-977Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/nav_desktop_viewport_restored_2026-03-27T21-06-30-884Z.png"
+      ]
+    },
+    {
+      "suite": "Forms Tests",
+      "timestamp": "2026-03-27T21:07:08.666Z",
+      "summary": {
+        "totalTests": 5,
+        "passedTests": 4,
+        "failedTests": 1
+      },
+      "results": [
+        {
+          "test": "Member Form Elements",
+          "hasNameInput": true,
+          "hasNikInput": true,
+          "hasPhoneInput": true,
+          "hasAddressInput": true,
+          "hasBranchSelect": true,
+          "hasSubmitButton": true,
+          "passed": true
+        },
+        {
+          "test": "Member Form Validation",
+          "validationActive": true,
+          "passed": true
+        },
+        {
+          "test": "Loan Form Elements",
+          "hasMemberSelect": true,
+          "hasAmountInput": true,
+          "hasInterestInput": true,
+          "hasTermInput": true,
+          "hasPurposeInput": true,
+          "hasSubmitButton": true,
+          "passed": true
+        },
+        {
+          "test": "Loan Form Validation",
+          "validationActive": true,
+          "passed": true
+        },
+        {
+          "test": "Search Forms",
+          "error": "Failed to execute 'querySelectorAll' on 'Document': 'button[type=\"search\"], button:contains(\"Cari\"), button:contains(\"Search\")' is not a valid selector.\nre (pptr:internal:3:12826)\nIe (pptr:internal:3:13100)\npptr:evaluateHandle;PQueryHandler.queryOne%20(%2Fopt%2Flampp%2Fhtdocs%2Fgabe%2Ftests%2Fnode_modules%2Fpuppeteer-core%2Flib%2Fcjs%2Fpuppeteer%2Fcommon%2FQueryHandler.js%3A130%3A73):2:16",
+          "passed": false
+        }
+      ],
+      "screenshots": [
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_logged_in_dashboard_2026-03-27T21-06-43-595Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_members_add_form_loaded_2026-03-27T21-06-45-206Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_form_before_validation_2026-03-27T21-06-52-095Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_form_after_empty_submit_2026-03-27T21-06-54-252Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_loans_apply_form_loaded_2026-03-27T21-06-55-789Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_loan_form_before_validation_2026-03-27T21-07-02-732Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_loan_form_after_empty_submit_2026-03-27T21-07-04-903Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/form_members_page_for_search_2026-03-27T21-07-06-457Z.png"
+      ]
+    },
+    {
+      "suite": "Mobile Tests",
+      "timestamp": "2026-03-27T21:07:37.329Z",
+      "summary": {
+        "totalTests": 7,
+        "passedTests": 5,
+        "failedTests": 2
+      },
+      "results": [
+        {
+          "test": "Mobile Login Form",
+          "hasForm": true,
+          "inputCount": 2,
+          "hasSubmitButton": true,
+          "viewportWidth": 375,
+          "isMobileViewport": true,
+          "passed": true
+        },
+        {
+          "test": "Mobile Login Functionality",
+          "loginSuccess": true,
+          "currentUrl": "http://localhost/gabe/pages/web/dashboard.php",
+          "passed": true
+        },
+        {
+          "test": "Mobile Navigation",
+          "hasNavbar": true,
+          "hasNavbarToggler": true,
+          "hasNavbarCollapse": true,
+          "navLinkCount": 10,
+          "isCollapsed": true,
+          "passed": true
+        },
+        {
+          "test": "Mobile Menu Toggle",
+          "menuExpanded": true,
+          "passed": true
+        },
+        {
+          "test": "Mobile Dashboard Layout",
+          "cardCount": 12,
+          "tableCount": 1,
+          "chartCount": 3,
+          "hasContainer": true,
+          "passed": true
+        },
+        {
+          "test": "Mobile Form Usability",
+          "inputCount": 16,
+          "buttonCount": 20,
+          "touchFriendlyInputs": 5,
+          "touchFriendlyRatio": 31,
+          "passed": false
+        },
+        {
+          "test": "Mobile Touch Targets",
+          "totalTargets": 82,
+          "validTargets": 20,
+          "invalidTargets": 62,
+          "validRatio": 24,
+          "passed": false
+        }
+      ],
+      "screenshots": [
+        "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_logged_in_dashboard_2026-03-27T21-07-20-847Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_login_page_2026-03-27T21-07-22-055Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_login_success_2026-03-27T21-07-31-499Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_menu_before_toggle_2026-03-27T21-07-32-117Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_menu_after_toggle_2026-03-27T21-07-35-407Z.png",
+        "/opt/lampp/htdocs/gabe/tests/screenshots/mobile_mobile_members_page_2026-03-27T21-07-36-807Z.png"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "Missing Elements",
+      "issue": "Navigation - Members",
+      "suggestion": "Add missing UI elements or update selectors"
+    },
+    {
+      "priority": "high",
+      "category": "Missing Elements",
+      "issue": "Navigation - Loans",
+      "suggestion": "Add missing UI elements or update selectors"
+    },
+    {
+      "priority": "high",
+      "category": "Missing Elements",
+      "issue": "Navigation - Collections",
+      "suggestion": "Add missing UI elements or update selectors"
+    },
+    {
+      "priority": "high",
+      "category": "Missing Elements",
+      "issue": "Navigation - Branches",
+      "suggestion": "Add missing UI elements or update selectors"
+    }
+  ],
+  "issues": [
+    {
+      "suite": "Login Tests",
+      "test": "Logout",
+      "error": "Node is either not clickable or not an Element",
+      "severity": "medium"
+    },
+    {
+      "suite": "Navigation Tests",
+      "test": "Navigation - Members",
+      "error": "Navigation element not found",
+      "severity": "high"
+    },
+    {
+      "suite": "Navigation Tests",
+      "test": "Navigation - Loans",
+      "error": "Navigation element not found",
+      "severity": "high"
+    },
+    {
+      "suite": "Navigation Tests",
+      "test": "Navigation - Collections",
+      "error": "Navigation element not found",
+      "severity": "high"
+    },
+    {
+      "suite": "Navigation Tests",
+      "test": "Navigation - Branches",
+      "error": "Navigation element not found",
+      "severity": "high"
+    },
+    {
+      "suite": "Navigation Tests",
+      "test": "Dropdown Menus",
+      "error": "No dropdown menus found",
+      "severity": "medium"
+    },
+    {
+      "suite": "Navigation Tests",
+      "test": "Mobile Navigation",
+      "error": "No mobile menu toggle found",
+      "severity": "high"
+    },
+    {
+      "suite": "Forms Tests",
+      "test": "Search Forms",
+      "error": "Failed to execute 'querySelectorAll' on 'Document': 'button[type=\"search\"], button:contains(\"Cari\"), button:contains(\"Search\")' is not a valid selector.\nre (pptr:internal:3:12826)\nIe (pptr:internal:3:13100)\npptr:evaluateHandle;PQueryHandler.queryOne%20(%2Fopt%2Flampp%2Fhtdocs%2Fgabe%2Ftests%2Fnode_modules%2Fpuppeteer-core%2Flib%2Fcjs%2Fpuppeteer%2Fcommon%2FQueryHandler.js%3A130%3A73):2:16",
+      "severity": "medium"
+    },
+    {
+      "suite": "Mobile Tests",
+      "test": "Mobile Form Usability",
+      "error": "Test failed",
+      "severity": "medium"
+    },
+    {
+      "suite": "Mobile Tests",
+      "test": "Mobile Touch Targets",
+      "error": "Test failed",
+      "severity": "medium"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-27T21:16:52.487Z",
+  "summary": {
+    "totalTests": 5,
+    "passedTests": 4,
+    "failedTests": 1
+  },
+  "results": [
+    {
+      "test": "Member Form Elements",
+      "hasNameInput": true,
+      "hasNikInput": true,
+      "hasPhoneInput": true,
+      "hasAddressInput": true,
+      "hasBranchSelect": true,
+      "hasSubmitButton": true,
+      "passed": true
+    },
+    {
+      "test": "Member Form Validation",
+      "validationActive": true,
+      "passed": true
+    },
+    {
+      "test": "Loan Form Elements",
+      "hasMemberSelect": true,
+      "hasAmountInput": true,
+      "hasInterestInput": true,
+      "hasTermInput": true,
+      "hasPurposeInput": true,
+      "hasSubmitButton": true,
+      "passed": true
+    },
+    {
+      "test": "Loan Form Validation",
+      "validationActive": true,
+      "passed": true
+    },
+    {
+      "test": "Search Forms",
+      "error": "Failed to execute 'querySelectorAll' on 'Document': 'button[type=\"search\"], button:contains(\"Cari\"), button:contains(\"Search\")' is not a valid selector.\nre (pptr:internal:3:12826)\nIe (pptr:internal:3:13100)\npptr:evaluateHandle;PQueryHandler.queryOne%20(%2Fopt%2Flampp%2Fhtdocs%2Fgabe%2Ftests%2Fnode_modules%2Fpuppeteer-core%2Flib%2Fcjs%2Fpuppeteer%2Fcommon%2FQueryHandler.js%3A130%3A73):2:16",
+      "passed": false
+    }
+  ],
+  "screenshots": [
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_logged_in_dashboard_2026-03-27T21-16-26-821Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_members_add_form_loaded_2026-03-27T21-16-28-560Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_form_before_validation_2026-03-27T21-16-35-543Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_form_after_empty_submit_2026-03-27T21-16-37-729Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_loans_apply_form_loaded_2026-03-27T21-16-39-412Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_loan_form_before_validation_2026-03-27T21-16-46-405Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_loan_form_after_empty_submit_2026-03-27T21-16-48-576Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/form_members_page_for_search_2026-03-27T21-16-50-199Z.png"
+  ]
+}

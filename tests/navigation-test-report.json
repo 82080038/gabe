@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-03-27T21:06:31.164Z",
+  "summary": {
+    "totalTests": 7,
+    "passedTests": 1,
+    "failedTests": 6
+  },
+  "results": [
+    {
+      "test": "Navigation - Dashboard",
+      "currentUrl": "http://localhost/gabe/pages/web/dashboard.php",
+      "hasExpectedContent": true,
+      "passed": true
+    },
+    {
+      "test": "Navigation - Members",
+      "error": "Navigation element not found",
+      "passed": false
+    },
+    {
+      "test": "Navigation - Loans",
+      "error": "Navigation element not found",
+      "passed": false
+    },
+    {
+      "test": "Navigation - Collections",
+      "error": "Navigation element not found",
+      "passed": false
+    },
+    {
+      "test": "Navigation - Branches",
+      "error": "Navigation element not found",
+      "passed": false
+    },
+    {
+      "test": "Dropdown Menus",
+      "error": "No dropdown menus found",
+      "passed": false
+    },
+    {
+      "test": "Mobile Navigation",
+      "error": "No mobile menu toggle found",
+      "passed": false
+    }
+  ],
+  "screenshots": [
+    "/opt/lampp/htdocs/gabe/tests/screenshots/nav_logged_in_dashboard_2026-03-27T21-06-17-970Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/nav_before_dashboard_nav_2026-03-27T21-06-20-096Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/nav_dashboard_page_loaded_2026-03-27T21-06-22-327Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/nav_mobile_viewport_2026-03-27T21-06-28-977Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/nav_desktop_viewport_restored_2026-03-27T21-06-30-884Z.png"
+  ]
+}

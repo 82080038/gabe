@@ -6,6 +6,9 @@
  * serta zona waktu Indonesia
  */
 
+// Prevent redefinition
+if (!defined('INDONESIA_CONFIG_LOADED')) {
+    
 // Zona Waktu Indonesia
 date_default_timezone_set('Asia/Jakarta');
 
@@ -18,14 +21,19 @@ define('INDONESIA_DATETIME_FORMAT', 'd F Y H:i:s');
 define('INDONESIA_TIME_FORMAT', 'H:i:s');
 
 // Konstanta Mata Uang
-define('CURRENCY_CODE', 'IDR');
-define('CURRENCY_SYMBOL', 'Rp');
-define('CURRENCY_DECIMALS', 0);
+if (!defined('CURRENCY_CODE')) define('CURRENCY_CODE', 'IDR');
+if (!defined('CURRENCY_SYMBOL')) define('CURRENCY_SYMBOL', 'Rp');
+if (!defined('CURRENCY_DECIMALS')) define('CURRENCY_DECIMALS', 0);
 
 // Konstanta Lokasi
 define('COUNTRY_CODE', 'ID');
 define('COUNTRY_NAME', 'Indonesia');
 define('DEFAULT_LANGUAGE', 'id');
+
+// Mark as loaded
+define('INDONESIA_CONFIG_LOADED', true);
+
+} // End redefinition check
 
 // Konstanta Telepon Indonesia
 define('PHONE_COUNTRY_CODE', '+62');

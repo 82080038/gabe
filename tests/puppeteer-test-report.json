@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-03-27T21:06:05.959Z",
+  "summary": {
+    "totalTests": 4,
+    "passedTests": 3,
+    "failedTests": 1
+  },
+  "results": [
+    {
+      "test": "Login Page Elements",
+      "loginFormExists": true,
+      "usernameInputExists": true,
+      "passwordInputExists": true,
+      "loginButtonExists": true,
+      "passed": true
+    },
+    {
+      "test": "Admin Login",
+      "currentUrl": "http://localhost/gabe/pages/web/dashboard.php",
+      "isLoggedIn": true,
+      "passed": true
+    },
+    {
+      "test": "Dashboard Elements",
+      "hasNavigation": true,
+      "hasDashboardTitle": true,
+      "hasUserMenu": true,
+      "hasLogoutButton": true,
+      "passed": true
+    },
+    {
+      "test": "Logout",
+      "error": "Node is either not clickable or not an Element",
+      "passed": false
+    }
+  ],
+  "screenshots": [
+    "/opt/lampp/htdocs/gabe/tests/screenshots/login_page_loaded_2026-03-27T21-05-40-560Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/admin_credentials_filled_2026-03-27T21-05-50-137Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/admin_login_result_2026-03-27T21-05-53-593Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/dashboard_loaded_2026-03-27T21-05-55-230Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/before_logout_2026-03-27T21-05-59-211Z.png",
+    "/opt/lampp/htdocs/gabe/tests/screenshots/dropdown_opened_2026-03-27T21-06-02-700Z.png"
+  ]
+}

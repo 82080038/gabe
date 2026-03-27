@@ -19,9 +19,9 @@ $totalDisbursed = array_sum(array_column($loans, 'principal_amount'));
             <button class="btn btn-success me-2" onclick="exportLoans()">
                 <i class="fas fa-download"></i> Export
             </button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#applyLoanModal">
+            <a href="/gabe/pages/loans.php?action=apply" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Ajukan Pinjaman
-            </button>
+            </a>
         </div>
     </div>
 

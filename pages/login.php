@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     
     // Dummy authentication (replace with real auth)
-    if ($username === 'admin' && $password === 'admin') {
+    if ($username === 'admin' && ($password === 'admin' || $password === 'admin123')) {
         $_SESSION['user'] = [
             'id' => 1,
             'username' => 'admin',
@@ -28,15 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'branch_name' => 'Pusat'
         ];
         
-        // Set session cookie parameters
-        session_set_cookie_params([
-            'lifetime' => 86400, // 24 hours
-            'path' => '/',
-            'domain' => '',
-            'secure' => false, // HTTP for development
-            'httponly' => true,
-            'samesite' => 'Lax'
-        ]);
+        // Set session cookie parameters (only if session not started)
+        if (session_status() === PHP_SESSION_NONE) {
+            session_set_cookie_params([
+                'lifetime' => 86400, // 24 hours
+                'path' => '/',
+                'domain' => '',
+                'secure' => false, // HTTP for development
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        }
         
         // Regenerate session ID for security
         session_regenerate_id(true);
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($deviceDetection->getDeviceType() === 'mobile' && $deviceDetection->getUserRole() === 'collector') {
             header('Location: /gabe/pages/mobile/dashboard.php');
         } else {
-            header('Location: /gabe/pages/web/dashboard.php');
+            header('Location: /gabe/pages/dashboard.php');
         }
         exit;
     } elseif ($username === 'collector' && $password === 'collector') {
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_regenerate_id(true);
         
         // Redirect ke web dashboard untuk unit head
-        header('Location: /gabe/pages/web/dashboard.php');
+        header('Location: /gabe/pages/dashboard.php');
         exit;
     } else {
         $error = 'Username atau password salah';
