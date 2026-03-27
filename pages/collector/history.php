@@ -4,8 +4,10 @@
  * View collection and payment history
  */
 
-// Start session
-session_start();
+// Start session (check if already started)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Check authentication
 if (!isset($_SESSION['user'])) {

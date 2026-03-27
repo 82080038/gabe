@@ -21,7 +21,7 @@ $breadcrumbs = [
                 </h5>
             </div>
             <div class="card-body">
-                <form method="POST" action="/loans/save" id="addLoanForm">
+                <form method="POST" action="/loans/save" id="addLoanForm" data-validate>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -48,7 +48,8 @@ $breadcrumbs = [
                             
                             <div class="mb-3">
                                 <label for="amount" class="form-label">Jumlah Pinjaman</label>
-                                <input type="number" class="form-control currency" id="amount" name="amount" min="100000" step="10000" required>
+                                <input type="number" class="form-control currency" id="amount" name="amount" min="100000" step="10000" required placeholder="Minimal Rp 1.000.000">
+                                <small class="form-text text-muted">Minimal Rp 1.000.000, maksimal Rp 50.000.000</small>
                             </div>
                             
                             <div class="mb-3">

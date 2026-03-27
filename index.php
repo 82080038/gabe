@@ -4,7 +4,10 @@
  * Redirect ke dashboard atau login page
  */
 
-session_start();
+// Start session (check if already started)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Load device detection
 require_once __DIR__ . '/config/device_detection.php';

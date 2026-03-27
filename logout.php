@@ -3,7 +3,10 @@
  * Logout handler untuk Aplikasi Koperasi Berjalan
  */
 
-session_start();
+// Start session (check if already started)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Hapus semua session data
 session_unset();

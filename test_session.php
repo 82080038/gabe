@@ -1,5 +1,8 @@
 <?php
-session_start();
+// Start session (check if already started)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Test session cookie persistence
 echo "Testing session cookie persistence...\n";
