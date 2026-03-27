@@ -1,0 +1,845 @@
+{
+  "timestamp": "2026-03-27T16:41:29.849Z",
+  "summary": {
+    "totalTests": 30,
+    "passed": 30,
+    "failed": 0,
+    "totalDuration": 312133
+  },
+  "results": [
+    {
+      "test": "Login Page - Desktop",
+      "page": "Login Page",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 7136,
+      "title": "Login - Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": false,
+        "hasNavigation": false,
+        "hasFooter": false,
+        "specificElements": [
+          {
+            "name": "Login Form",
+            "found": true
+          },
+          {
+            "name": "Username Field",
+            "found": true
+          },
+          {
+            "name": "Password Field",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": false,
+        "navigationAccessible": false
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:36:24.585Z"
+    },
+    {
+      "test": "Quick Login Demo - Desktop",
+      "page": "Quick Login Demo",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 8953,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": [
+          {
+            "name": "Quick Login Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:36:33.539Z"
+    },
+    {
+      "test": "Web Dashboard - Desktop",
+      "page": "Web Dashboard",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 18638,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": false,
+        "specificElements": [
+          {
+            "name": "Dashboard Content",
+            "found": true
+          },
+          {
+            "name": "Metric Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:36:52.177Z"
+    },
+    {
+      "test": "Mobile Dashboard - Desktop",
+      "page": "Mobile Dashboard",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 8346,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": [
+          {
+            "name": "Dashboard Content",
+            "found": true
+          },
+          {
+            "name": "Metric Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:37:00.523Z"
+    },
+    {
+      "test": "Profile Page - Desktop",
+      "page": "Profile Page",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 7388,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:37:07.912Z"
+    },
+    {
+      "test": "Settings Page - Desktop",
+      "page": "Settings Page",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 14939,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:37:22.851Z"
+    },
+    {
+      "test": "Member Portal - Desktop",
+      "page": "Member Portal",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 14173,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:37:37.025Z"
+    },
+    {
+      "test": "Collector Route - Desktop",
+      "page": "Collector Route",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 14189,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:37:51.215Z"
+    },
+    {
+      "test": "Responsive Demo - Desktop",
+      "page": "Responsive Demo",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 7555,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:37:58.770Z"
+    },
+    {
+      "test": "Index/Root - Desktop",
+      "page": "Index/Root",
+      "viewport": "Desktop",
+      "status": "passed",
+      "duration": 5205,
+      "title": "Login - Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": false,
+        "hasNavigation": false,
+        "hasFooter": false,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": false,
+        "navigationAccessible": false
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:38:03.975Z"
+    },
+    {
+      "test": "Login Page - Tablet",
+      "page": "Login Page",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 7032,
+      "title": "Login - Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": false,
+        "hasNavigation": false,
+        "hasFooter": false,
+        "specificElements": [
+          {
+            "name": "Login Form",
+            "found": true
+          },
+          {
+            "name": "Username Field",
+            "found": true
+          },
+          {
+            "name": "Password Field",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": false,
+        "navigationAccessible": false
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:38:11.134Z"
+    },
+    {
+      "test": "Quick Login Demo - Tablet",
+      "page": "Quick Login Demo",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 7853,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": [
+          {
+            "name": "Quick Login Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:38:18.988Z"
+    },
+    {
+      "test": "Web Dashboard - Tablet",
+      "page": "Web Dashboard",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 16501,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": false,
+        "specificElements": [
+          {
+            "name": "Dashboard Content",
+            "found": true
+          },
+          {
+            "name": "Metric Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:38:35.489Z"
+    },
+    {
+      "test": "Mobile Dashboard - Tablet",
+      "page": "Mobile Dashboard",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 8328,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": [
+          {
+            "name": "Dashboard Content",
+            "found": true
+          },
+          {
+            "name": "Metric Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:38:43.818Z"
+    },
+    {
+      "test": "Profile Page - Tablet",
+      "page": "Profile Page",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 7222,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:38:51.040Z"
+    },
+    {
+      "test": "Settings Page - Tablet",
+      "page": "Settings Page",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 14932,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:39:05.972Z"
+    },
+    {
+      "test": "Member Portal - Tablet",
+      "page": "Member Portal",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 14942,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:39:20.915Z"
+    },
+    {
+      "test": "Collector Route - Tablet",
+      "page": "Collector Route",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 14853,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:39:35.768Z"
+    },
+    {
+      "test": "Responsive Demo - Tablet",
+      "page": "Responsive Demo",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 6777,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:39:42.545Z"
+    },
+    {
+      "test": "Index/Root - Tablet",
+      "page": "Index/Root",
+      "viewport": "Tablet",
+      "status": "passed",
+      "duration": 4853,
+      "title": "Login - Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": false,
+        "hasNavigation": false,
+        "hasFooter": false,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": false,
+        "navigationAccessible": false
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:39:47.399Z"
+    },
+    {
+      "test": "Login Page - Mobile",
+      "page": "Login Page",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 7006,
+      "title": "Login - Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": false,
+        "hasNavigation": false,
+        "hasFooter": false,
+        "specificElements": [
+          {
+            "name": "Login Form",
+            "found": true
+          },
+          {
+            "name": "Username Field",
+            "found": true
+          },
+          {
+            "name": "Password Field",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": false,
+        "navigationAccessible": false
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:39:54.533Z"
+    },
+    {
+      "test": "Quick Login Demo - Mobile",
+      "page": "Quick Login Demo",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 8175,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": [
+          {
+            "name": "Quick Login Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:40:02.708Z"
+    },
+    {
+      "test": "Web Dashboard - Mobile",
+      "page": "Web Dashboard",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 16087,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": false,
+        "specificElements": [
+          {
+            "name": "Dashboard Content",
+            "found": true
+          },
+          {
+            "name": "Metric Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:40:18.795Z"
+    },
+    {
+      "test": "Mobile Dashboard - Mobile",
+      "page": "Mobile Dashboard",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 8329,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": [
+          {
+            "name": "Dashboard Content",
+            "found": true
+          },
+          {
+            "name": "Metric Cards",
+            "found": true
+          }
+        ]
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:40:27.124Z"
+    },
+    {
+      "test": "Profile Page - Mobile",
+      "page": "Profile Page",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 6733,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:40:33.857Z"
+    },
+    {
+      "test": "Settings Page - Mobile",
+      "page": "Settings Page",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 14930,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:40:48.788Z"
+    },
+    {
+      "test": "Member Portal - Mobile",
+      "page": "Member Portal",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 14677,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:41:03.465Z"
+    },
+    {
+      "test": "Collector Route - Mobile",
+      "page": "Collector Route",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 14849,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:41:18.314Z"
+    },
+    {
+      "test": "Responsive Demo - Mobile",
+      "page": "Responsive Demo",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 6778,
+      "title": "Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": true,
+        "hasNavigation": true,
+        "hasFooter": true,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": true,
+        "elementOverlap": false,
+        "contentVisible": true,
+        "navigationAccessible": true
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:41:25.093Z"
+    },
+    {
+      "test": "Index/Root - Mobile",
+      "page": "Index/Root",
+      "viewport": "Mobile",
+      "status": "passed",
+      "duration": 4754,
+      "title": "Login - Aplikasi Koperasi Berjalan",
+      "checks": {
+        "hasTitle": true,
+        "hasBody": true,
+        "hasMainContent": false,
+        "hasNavigation": false,
+        "hasFooter": false,
+        "specificElements": []
+      },
+      "layout": {
+        "viewportOverflow": false,
+        "elementOverlap": false,
+        "contentVisible": false,
+        "navigationAccessible": false
+      },
+      "jsErrors": [],
+      "timestamp": "2026-03-27T16:41:29.848Z"
+    }
+  ],
+  "pagesTested": 10,
+  "viewportsTested": 3,
+  "environment": {
+    "baseUrl": "http://localhost/gabe",
+    "headless": true
+  }
+}

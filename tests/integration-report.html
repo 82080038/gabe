@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Comprehensive Integration Test Report - Koperasi Berjalan</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .summary { background: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .passed { color: #27ae60; font-weight: bold; }
+        .failed { color: #e74c3c; font-weight: bold; }
+        .scenario-card { background: white; margin: 20px 0; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .scenario-header { padding: 15px; background: #3498db; color: white; border-radius: 5px 5px 0 0; }
+        .scenario-content { padding: 15px; }
+        .test-item { padding: 8px; margin: 5px 0; border-radius: 3px; }
+        .test-passed { background: #d5f4e6; color: #27ae60; }
+        .test-failed { background: #fadbd8; color: #e74c3c; }
+        .coverage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .coverage-card { background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .coverage-percentage { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .coverage-label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔬 Comprehensive Integration Test Report</h1>
+        <p>Koperasi Berjalan Application - Complete E2E, F2E, API, Database Testing</p>
+        <p>Generated: 2026-03-27T17:12:12.864Z</p>
+    </div>
+    
+    <div class="summary">
+        <h2>📊 Test Summary</h2>
+        <div class="coverage-grid">
+            <div class="coverage-card">
+                <div class="coverage-percentage">29</div>
+                <div class="coverage-label">Total Tests</div>
+            </div>
+            <div class="coverage-card">
+                <div class="coverage-percentage passed">13</div>
+                <div class="coverage-label">Passed</div>
+            </div>
+            <div class="coverage-card">
+                <div class="coverage-percentage failed">16</div>
+                <div class="coverage-label">Failed</div>
+            </div>
+            <div class="coverage-card">
+                <div class="coverage-percentage">44.8%</div>
+                <div class="coverage-label">Success Rate</div>
+            </div>
+        </div>
+        <p><strong>Duration:</strong> 30820ms | 
+           <strong>Scenarios:</strong> 8</p>
+    </div>
+    
+    <h2>🎯 Coverage by Test Type</h2>
+    <div class="coverage-grid">
+        
+            <div class="coverage-card">
+                <div class="coverage-percentage">33.3%</div>
+                <div class="coverage-label">E2E</div>
+                <p><small>2/6 tests</small></p>
+            </div>
+        
+            <div class="coverage-card">
+                <div class="coverage-percentage">8.3%</div>
+                <div class="coverage-label">F2E</div>
+                <p><small>1/12 tests</small></p>
+            </div>
+        
+            <div class="coverage-card">
+                <div class="coverage-percentage">100.0%</div>
+                <div class="coverage-label">API</div>
+                <p><small>8/8 tests</small></p>
+            </div>
+        
+            <div class="coverage-card">
+                <div class="coverage-percentage">66.7%</div>
+                <div class="coverage-label">BACKEND</div>
+                <p><small>2/3 tests</small></p>
+            </div>
+        
+    </div>
+    
+    <h2>🧪 Detailed Test Results</h2>
+    
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>Authentication Flow</h3>
+                <p>Type: E2E | Passed: 2/4 | Duration: 25375ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Login successful for admin, redirected to web_dashboard
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Login successful for collector, redirected to mobile_dashboard
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Node is either not clickable or not an Element
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Node is either not clickable or not an Element
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>Role-Based Navigation</h3>
+                <p>Type: F2E | Passed: 0/4 | Duration: 0ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>Dashboard Integration</h3>
+                <p>Type: E2E | Passed: 0/2 | Duration: 0ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown E2E test action
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown E2E test action
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>CRUD Operations</h3>
+                <p>Type: API | Passed: 4/4 | Duration: 0ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: API create_unit successful
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: API create_branch successful
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: API assign_route successful
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: API process_payment successful
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>JavaScript Functionality</h3>
+                <p>Type: F2E | Passed: 1/5 | Duration: 1321ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: DataTable not found
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Modal trigger not found
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Chart canvas not found
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Form not found
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: jQuery AJAX functional
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>Database Integration</h3>
+                <p>Type: Backend | Passed: 2/3 | Duration: 204ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Session data not found
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Role permissions implemented
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Data persistence working
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>Mobile Responsiveness</h3>
+                <p>Type: F2E | Passed: 0/3 | Duration: 0ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+                    <div class="test-item test-failed">
+                        <strong>FAILED</strong>: Unknown F2E test component
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3>API Endpoints</h3>
+                <p>Type: API | Passed: 4/4 | Duration: 3920ms</p>
+            </div>
+            <div class="scenario-content">
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Endpoint /pages/login.php returned 200
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Endpoint /pages/units.php returned 200
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Endpoint /pages/branches.php returned 200
+                    </div>
+                
+                    <div class="test-item test-passed">
+                        <strong>PASSED</strong>: Endpoint /pages/collections.php returned 200
+                    </div>
+                
+            </div>
+        </div>
+    
+    
+    <div class="summary">
+        <h2>🔧 Environment</h2>
+        <p><strong>Base URL:</strong> http://localhost/gabe</p>
+        <p><strong>Browser:</strong> Chromium (Puppeteer)</p>
+        <p><strong>Headless Mode:</strong> Yes</p>
+    </div>
+</body>
+</html>

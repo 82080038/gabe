@@ -58,26 +58,30 @@
     </div>
 </footer>
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <!-- Indonesia Formatter Script -->
 <script>
 // Konfigurasi global untuk Indonesia
 window.indonesiaConfig = <?php echo json_encode(IndonesiaConfig::getJSConfig()); ?>;
 </script>
 
-<!-- Bootstrap JS -->
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
-
-<!-- jQuery -->
-<script src="../assets/js/jquery.min.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Chart.js untuk dashboard -->
-<script src="../assets/js/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- DataTables -->
-<script src="../assets/js/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Custom JavaScript -->
-<script src="../assets/js/app.js"></script>
+<script src="/gabe/assets/js/app.js"></script>
 
 <!-- Page specific JavaScript -->
 <?php if (isset($pageJS)): ?>
@@ -87,6 +91,34 @@ window.indonesiaConfig = <?php echo json_encode(IndonesiaConfig::getJSConfig());
 <!-- Indonesia Theme Initialization -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all tooltips
+    var tooltipTriggerElements = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerElements.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Initialize all popovers
+    var popoverTriggerElements = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerElements.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
+    
+    // Initialize Bootstrap dropdowns - simplified approach
+    var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+    var dropdownList = dropdownTriggerList.map(function (dropdownTriggerEl) {
+        return new bootstrap.Dropdown(dropdownTriggerEl);
+    });
+    
+    // Initialize DataTables if present
+    if (typeof $.fn.DataTable !== 'undefined') {
+        $('.dataTable').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+            }
+        });
+    }
+    
     // Set timezone untuk semua date inputs
     const dateInputs = document.querySelectorAll('input[type="date"], input[type="datetime-local"]');
     dateInputs.forEach(input => {
@@ -205,7 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </style>
 
 <!-- Bootstrap JavaScript -->
-<script src="/gabe/assets/js/bootstrap.bundle.min.js"></script>
 
 <!-- Analytics (optional) -->
 <?php if (isset($analyticsCode)): ?>

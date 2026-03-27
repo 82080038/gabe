@@ -1,10 +1,23 @@
 <?php
 /**
- * Mobile Dashboard untuk Kolektor
- * PWA-enabled dengan touch-friendly interface
+ * Mobile Dashboard untuk Collector
+ * Optimized untuk mobile devices dan door-to-door collection
  */
 
-require_once __DIR__ . '/template_header.php';
+// Check authentication first
+session_start();
+if (!isset($_SESSION['user']['id'])) {
+    header('Location: /gabe/pages/login.php');
+    exit;
+}
+
+// Check role - only collector can access mobile dashboard
+if ($_SESSION['user']['role'] !== 'collector') {
+    header('Location: /gabe/pages/web/dashboard.php');
+    exit;
+}
+
+require_once __DIR__ . '/../template_header.php';
 
 // Set page specific variables
 $pageTitle = 'Dashboard Kolektor';
@@ -18,6 +31,20 @@ echo '<meta name="apple-mobile-web-app-capable" content="yes">';
 echo '<meta name="apple-mobile-web-app-status-bar-style" content="default">';
 echo '<meta name="theme-color" content="#667eea">';
 
+// Mock data for mobile dashboard
+$todayRoute = [
+    ['name' => 'Bapak Ahmad', 'address' => 'Jl. Merdeka No. 123', 'amount' => 50000],
+    ['name' => 'Ibu Siti', 'address' => 'Jl. Sudirman No. 456', 'amount' => 75000],
+    ['name' => 'Bapak Budi', 'address' => 'Jl. Gatotkaca No. 789', 'amount' => 60000]
+];
+
+$collectionStats = [
+    'target' => 500000,
+    'collected' => 400000,
+    'visited' => 15,
+    'total' => 20
+];
+
 // Get today's route data (mock data for now)
 $todayRoute = [];
 $summary = [
@@ -28,6 +55,25 @@ $summary = [
 ?>
 
 <div class="container-fluid p-0 mobile-dashboard">
+    
+    <!-- User Info Header -->
+    <div class="alert alert-info mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <strong><?php echo htmlspecialchars($_SESSION['user']['name'] ?? 'User'); ?></strong>
+                <br>
+                <small class="text-muted">
+                    <i class="fas fa-map-marker-alt"></i> 
+                    <?php echo htmlspecialchars($_SESSION['user']['branch_name'] ?? 'Branch'); ?>
+                </small>
+            </div>
+            <div class="text-end">
+                <small class="d-block"><?php echo date('d M Y'); ?></small>
+                <small class="text-muted"><?php echo date('H:i'); ?></small>
+            </div>
+        </div>
+    </div>
+    
     <!-- Header dengan summary -->
     <div class="summary-card text-white p-3 mb-3">
         <div class="row text-center">
@@ -94,6 +140,101 @@ $summary = [
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="mb-0">Rute Hari Ini</h6>
             <span class="badge bg-primary"><?php echo count($todayRoute); ?> Anggota</span>
+        </div>
+        <div class="card-body p-0">
+            <?php if (empty($todayRoute)): ?>
+                <div class="text-center py-4">
+                    <i class="fas fa-route fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Belum ada rute untuk hari ini</p>
+                    <button class="btn btn-primary btn-sm" onclick="startRoute()">
+                        <i class="fas fa-play"></i> Mulai Rute
+                    </button>
+                </div>
+            <?php else: ?>
+                <div class="list-group list-group-flush">
+                    <?php foreach ($todayRoute as $index => $member): ?>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1"><?php echo htmlspecialchars($member['name']); ?></h6>
+                                <p class="mb-1 small text-muted">
+                                    <i class="fas fa-map-marker-alt"></i> 
+                                    <?php echo htmlspecialchars($member['address']); ?>
+                                </p>
+                                <span class="badge bg-success">Rp <?php echo number_format($member['amount'], 0, ',', '.'); ?></span>
+                            </div>
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-sm btn-outline-success mb-1" onclick="collectPayment(<?php echo $index; ?>)">
+                                    <i class="fas fa-money-bill"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-info" onclick="viewMember(<?php echo $index; ?>)">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-3">
+        <div class="col-6">
+            <a href="/collector/route" class="btn btn-primary btn-block btn-lg btn-mobile-action touch-feedback">
+                <i class="fas fa-route icon-large"></i>
+                <small>Mulai Rute</small>
+            </a>
+        </div>
+        <div class="col-6">
+            <a href="/collector/payments" class="btn btn-success btn-block btn-lg btn-mobile-action touch-feedback">
+                <i class="fas fa-money-bill icon-large"></i>
+                <small>Pembayaran</small>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h6 class="mb-0">Aktivitas Terkini</h6>
+        </div>
+        <div class="card-body">
+            <div class="activity-timeline">
+                <div class="activity-item d-flex mb-3">
+                    <div class="activity-icon me-3">
+                        <i class="fas fa-check-circle text-success"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Pembayaran Kewer</div>
+                        <div class="activity-description text-muted small">Bapak Ahmad - Rp 50.000</div>
+                        <div class="activity-meta text-muted small">10:30</div>
+                    </div>
+                </div>
+                <div class="activity-item d-flex mb-3">
+                    <div class="activity-icon me-3">
+                        <i class="fas fa-check-circle text-success"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Pembayaran Mawar</div>
+                        <div class="activity-description text-muted small">Ibu Siti - Rp 75.000</div>
+                        <div class="activity-meta text-muted small">09:45</div>
+                    </div>
+                </div>
+                <div class="activity-item d-flex">
+                    <div class="activity-icon me-3">
+                        <i class="fas fa-map-marker-alt text-info"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Mulai Rute</div>
+                        <div class="activity-description text-muted small">Rute A - Tebet</div>
+                        <div class="activity-meta text-muted small">08:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         </div>
         <div class="card-body p-0">
             <div id="route-list" class="route-list">
@@ -220,9 +361,6 @@ $summary = [
 
 <!-- Mobile Dashboard JavaScript -->
 <script src="../assets/js/mobile-dashboard.js"></script>
-
-<!-- PWA Development Config -->
-<script src="/pwa-dev-config.js"></script>
 
 <!-- Online Status Indicator -->
 <div id="online-status" class="online-status online">

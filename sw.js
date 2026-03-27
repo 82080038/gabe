@@ -1,415 +1,50 @@
 // ================================================================
-// SERVICE WORKER - KOPERASI BERJALAN PWA
-// Development-ready with offline caching and sync capabilities
+// SERVICE WORKER - DISABLED FOR APPLICATION DEVELOPMENT
+// ================================================================
+// PWA features are disabled to focus on core application logic
+// and business flow development. Will be re-enabled when application
+// logic is complete and stable.
 // ================================================================
 
-const CACHE_NAME = 'koperasi-berjalan-v1.0.0';
-const STATIC_CACHE = 'koperasi-static-v1.0.0';
-const DYNAMIC_CACHE = 'koperasi-dynamic-v1.0.0';
-const API_CACHE = 'koperasi-api-v1.0.0';
+console.log('[SW-DISABLED] Service Worker DISABLED - Application Development Mode');
 
-// Files to cache for offline functionality
-const STATIC_ASSETS = [
-    '/gabe/',
-    '/gabe/index.php',
-    '/gabe/pages/login.php',
-    '/gabe/pages/web/dashboard.php',
-    '/gabe/assets/css/bootstrap.min.css',
-    '/gabe/assets/css/indonesia-theme.css',
-    '/gabe/assets/css/fontawesome.min.css',
-    '/gabe/assets/js/bootstrap.bundle.min.js',
-    '/gabe/assets/js/responsive-manager.js',
-    '/gabe/assets/js/indonesia-formatter.js',
-    '/gabe/manifest.json',
-    '/gabe/pwa-dev-config.js',
-    '/gabe/assets/images/favicon.ico'
-];
-
-// API endpoints to cache
-const API_ENDPOINTS = [
-    '/gabe/api/auth/login',
-    '/gabe/api/auth/logout',
-    '/gabe/api/user/profile',
-    '/gabe/api/dashboard/stats',
-    '/gabe/api/members/list',
-    '/gabe/api/loans/list',
-    '/gabe/api/savings/list'
-];
-
-// ================================================================
-// INSTALL EVENT - Cache static assets
-// ================================================================
+// Install event - do nothing
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing Service Worker v1.0.0');
-    
-    event.waitUntil(
-        caches.open(STATIC_CACHE)
-            .then((cache) => {
-                console.log('[SW] Caching static assets');
-                // Cache files one by one to handle individual failures
-                return Promise.allSettled(
-                    STATIC_ASSETS.map(url => 
-                        cache.add(url).catch(err => {
-                            console.warn(`[SW] Failed to cache ${url}:`, err.message);
-                            return null; // Continue with other files
-                        })
-                    )
-                );
-            })
-            .then((results) => {
-                const successful = results.filter(r => r.status === 'fulfilled').length;
-                const failed = results.filter(r => r.status === 'rejected').length;
-                console.log(`[SW] Static assets cached: ${successful} successful, ${failed} failed`);
-                return self.skipWaiting();
-            })
-            .catch((error) => {
-                console.error('[SW] Failed to cache static assets:', error);
-            })
-    );
+    console.log('[SW-DISABLED] Install event - SKIPPED');
+    self.skipWaiting();
 });
 
-// ================================================================
-// ACTIVATE EVENT - Clean up old caches
-// ================================================================
+// Activate event - do nothing
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activating Service Worker v1.0.0');
-    
-    event.waitUntil(
-        caches.keys()
-            .then((cacheNames) => {
-                return Promise.all(
-                    cacheNames.map((cacheName) => {
-                        if (cacheName !== STATIC_CACHE && 
-                            cacheName !== DYNAMIC_CACHE && 
-                            cacheName !== API_CACHE &&
-                            cacheName !== CACHE_NAME) {
-                            console.log('[SW] Deleting old cache:', cacheName);
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                console.log('[SW] Service Worker activated');
-                return self.clients.claim();
-            })
-    );
+    console.log('[SW-DISABLED] Activate event - SKIPPED');
+    event.waitUntil(self.clients.claim());
 });
 
-// ================================================================
-// FETCH EVENT - Handle network requests
-// ================================================================
+// Fetch event - PASS THROUGH TO NETWORK ONLY
 self.addEventListener('fetch', (event) => {
-    const { request } = event;
-    const url = new URL(request.url);
-    
-    // Skip non-HTTP requests
-    if (!request.url.startsWith('http')) {
-        return;
-    }
-    
-    // Handle different request types
-    if (request.method === 'GET') {
-        // Static assets - Cache First Strategy
-        if (isStaticAsset(request.url)) {
-            event.respondWith(cacheFirst(request, STATIC_CACHE));
-        }
-        // API requests - Network First Strategy
-        else if (isAPIRequest(request.url)) {
-            event.respondWith(networkFirst(request, API_CACHE));
-        }
-        // Other requests - Stale While Revalidate
-        else {
-            event.respondWith(staleWhileRevalidate(request, DYNAMIC_CACHE));
-        }
-    }
-    // Handle POST/PUT/DELETE requests
-    else {
-        event.respondWith(handleMutatingRequest(request));
-    }
+    console.log('[SW-DISABLED] Fetch event - NETWORK ONLY');
+    event.respondWith(fetch(event.request));
 });
 
-// ================================================================
-// CACHE STRATEGIES
-// ================================================================
-
-// Cache First - For static assets
-async function cacheFirst(request, cacheName) {
-    try {
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        const networkResponse = await fetch(request);
-        if (networkResponse.ok) {
-            const cache = await caches.open(cacheName);
-            cache.put(request, networkResponse.clone());
-        }
-        return networkResponse;
-    } catch (error) {
-        console.error('[SW] Cache First failed:', error);
-        return getOfflineFallback(request);
-    }
-}
-
-// Network First - For API requests
-async function networkFirst(request, cacheName) {
-    try {
-        const networkResponse = await fetch(request);
-        if (networkResponse.ok) {
-            const cache = await caches.open(cacheName);
-            cache.put(request, networkResponse.clone());
-        }
-        return networkResponse;
-    } catch (error) {
-        console.log('[SW] Network failed, trying cache:', error);
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        return getAPIFallback(request);
-    }
-}
-
-// Stale While Revalidate - For dynamic content
-async function staleWhileRevalidate(request, cacheName) {
-    const cache = await caches.open(cacheName);
-    const cachedResponse = await cache.match(request);
-    
-    const fetchPromise = fetch(request).then((networkResponse) => {
-        if (networkResponse.ok) {
-            cache.put(request, networkResponse.clone());
-        }
-        return networkResponse;
-    }).catch((error) => {
-        console.error('[SW] Stale While Revalidate failed:', error);
-    });
-    
-    return cachedResponse || fetchPromise;
-}
-
-// ================================================================
-// MUTATING REQUESTS - Handle POST/PUT/DELETE
-// ================================================================
-async function handleMutatingRequest(request) {
-    try {
-        const networkResponse = await fetch(request);
-        
-        // If successful, invalidate relevant caches
-        if (networkResponse.ok) {
-            await invalidateRelatedCaches(request);
-        }
-        
-        return networkResponse;
-    } catch (error) {
-        console.error('[SW] Mutating request failed:', error);
-        
-        // Store failed request for background sync
-        if ('sync' in self.registration) {
-            await storeRequestForSync(request);
-            return new Response(
-                JSON.stringify({ 
-                    success: false, 
-                    message: 'Request stored for background sync' 
-                }),
-                { status: 202, headers: { 'Content-Type': 'application/json' } }
-            );
-        }
-        
-        throw error;
-    }
-}
-
-// ================================================================
-// BACKGROUND SYNC - Handle failed requests
-// ================================================================
-self.addEventListener('sync', (event) => {
-    if (event.tag === 'background-sync') {
-        event.waitUntil(processBackgroundSync());
-    }
-});
-
-async function processBackgroundSync() {
-    try {
-        const failedRequests = await getStoredRequests();
-        
-        for (const request of failedRequests) {
-            try {
-                await fetch(request);
-                await removeStoredRequest(request.id);
-            } catch (error) {
-                console.error('[SW] Background sync failed for request:', error);
-            }
-        }
-    } catch (error) {
-        console.error('[SW] Background sync process failed:', error);
-    }
-}
-
-// ================================================================
-// PUSH NOTIFICATIONS
-// ================================================================
+// All other events disabled
 self.addEventListener('push', (event) => {
-    const options = {
-        body: event.data ? event.data.text() : 'Notifikasi baru dari Koperasi Berjalan',
-        icon: '/assets/icons/icon-192x192.png',
-        badge: '/assets/icons/badge-72x72.png',
-        vibrate: [100, 50, 100],
-        data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1
-        },
-        actions: [
-            {
-                action: 'explore',
-                title: 'Lihat Detail',
-                icon: '/assets/icons/checkmark.png'
-            },
-            {
-                action: 'close',
-                title: 'Tutup',
-                icon: '/assets/icons/xmark.png'
-            }
-        ]
-    };
-    
-    event.waitUntil(
-        self.registration.showNotification('Koperasi Berjalan', options)
-    );
+    console.log('[SW-DISABLED] Push event - DISABLED');
+});
+
+self.addEventListener('sync', (event) => {
+    console.log('[SW-DISABLED] Sync event - DISABLED');
 });
 
 self.addEventListener('notificationclick', (event) => {
-    event.notification.close();
-    
-    if (event.action === 'explore') {
-        event.waitUntil(
-            clients.openWindow('/')
-        );
-    }
+    console.log('[SW-DISABLED] Notification click - DISABLED');
 });
 
-// ================================================================
-// UTILITY FUNCTIONS
-// ================================================================
-
-function isStaticAsset(url) {
-    return url.includes('/assets/') || 
-           url.includes('.css') || 
-           url.includes('.js') || 
-           url.includes('.png') || 
-           url.includes('.jpg') || 
-           url.includes('.svg') ||
-           url.endsWith('/manifest.json');
-}
-
-function isAPIRequest(url) {
-    return url.includes('/api/') || url.includes('/ajax/');
-}
-
-async function getOfflineFallback(request) {
-    if (request.url.includes('/pages/')) {
-        return caches.match('/pages/offline.php') || 
-               new Response('Halaman tidak tersedia offline', { status: 503 });
-    }
-    
-    return new Response('Offline - Tidak ada koneksi internet', { 
-        status: 503,
-        headers: { 'Content-Type': 'text/plain' }
-    });
-}
-
-async function getAPIFallback(request) {
-    return new Response(
-        JSON.stringify({ 
-            success: false, 
-            message: 'Offline - Data tidak tersedia',
-            cached: true 
-        }),
-        { 
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        }
-    );
-}
-
-async function invalidateRelatedCaches(request) {
-    const url = new URL(request.url);
-    
-    // Clear dynamic cache for page requests
-    if (url.pathname.includes('/pages/')) {
-        await caches.delete(DYNAMIC_CACHE);
-    }
-    
-    // Clear API cache for API requests
-    if (url.pathname.includes('/api/')) {
-        await caches.delete(API_CACHE);
-    }
-}
-
-// ================================================================
-// BACKGROUND SYNC STORAGE (IndexedDB)
-// ================================================================
-
-async function storeRequestForSync(request) {
-    const requestData = {
-        id: Date.now() + Math.random(),
-        url: request.url,
-        method: request.method,
-        headers: Object.fromEntries(request.headers.entries()),
-        body: await request.text(),
-        timestamp: Date.now()
-    };
-    
-    // Store in IndexedDB (simplified version)
-    const db = await openSyncDB();
-    const tx = db.transaction('requests', 'readwrite');
-    await tx.objectStore('requests').add(requestData);
-}
-
-async function getStoredRequests() {
-    const db = await openSyncDB();
-    const tx = db.transaction('requests', 'readonly');
-    return await tx.objectStore('requests').getAll();
-}
-
-async function removeStoredRequest(id) {
-    const db = await openSyncDB();
-    const tx = db.transaction('requests', 'readwrite');
-    await tx.objectStore('requests').delete(id);
-}
-
-async function openSyncDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open('koperasi-sync-db', 1);
-        
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => resolve(request.result);
-        
-        request.onupgradeneeded = (event) => {
-            const db = event.target.result;
-            if (!db.objectStoreNames.contains('requests')) {
-                db.createObjectStore('requests', { keyPath: 'id' });
-            }
-        };
-    });
-}
-
-// ================================================================
-// MESSAGE HANDLING - Communication with main thread
-// ================================================================
 self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
-    
-    if (event.data && event.data.type === 'FORCE_REFRESH') {
-        self.clients.matchAll().then((clients) => {
-            clients.forEach((client) => {
-                client.navigate(client.url);
-            });
-        });
-    }
+    console.log('[SW-DISABLED] Message event - DISABLED');
 });
 
-console.log('[SW] Service Worker loaded successfully');
+// NO CACHING
+// NO OFFLINE FUNCTIONALITY  
+// NO PUSH NOTIFICATIONS
+// NO BACKGROUND SYNC
+// FOCUS ON APPLICATION LOGIC ONLY

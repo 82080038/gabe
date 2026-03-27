@@ -100,11 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quick_login'])) {
         
         // Redirect based on device and role
         $deviceType = 'desktop'; // Simplified for demo
-        if ($deviceType === 'mobile' && $user['role'] === 'collector') {
-            header('Location: /gabe/pages/mobile/dashboard.php');
-        } else {
-            header('Location: /gabe/pages/web/dashboard.php');
-        }
+        
+        // Always redirect to web dashboard for quick login demo
+        header('Location: /gabe/pages/web/dashboard.php');
         exit;
     }
 }

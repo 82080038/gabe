@@ -1,0 +1,231 @@
+{
+  "timestamp": "2026-03-27T17:12:12.864Z",
+  "summary": {
+    "totalScenarios": 8,
+    "totalTests": 29,
+    "totalPassed": 13,
+    "totalFailed": 16,
+    "totalDuration": 30820
+  },
+  "scenarios": [
+    {
+      "scenario": "Authentication Flow",
+      "type": "E2E",
+      "tests": [
+        {
+          "status": "passed",
+          "description": "Login successful for admin, redirected to web_dashboard"
+        },
+        {
+          "status": "passed",
+          "description": "Login successful for collector, redirected to mobile_dashboard"
+        },
+        {
+          "status": "failed",
+          "error": "Node is either not clickable or not an Element"
+        },
+        {
+          "status": "failed",
+          "error": "Node is either not clickable or not an Element"
+        }
+      ],
+      "passed": 2,
+      "failed": 2,
+      "duration": 25375
+    },
+    {
+      "scenario": "Role-Based Navigation",
+      "type": "F2E",
+      "tests": [
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        },
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        },
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        },
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        }
+      ],
+      "passed": 0,
+      "failed": 4,
+      "duration": 0
+    },
+    {
+      "scenario": "Dashboard Integration",
+      "type": "E2E",
+      "tests": [
+        {
+          "status": "failed",
+          "error": "Unknown E2E test action"
+        },
+        {
+          "status": "failed",
+          "error": "Unknown E2E test action"
+        }
+      ],
+      "passed": 0,
+      "failed": 2,
+      "duration": 0
+    },
+    {
+      "scenario": "CRUD Operations",
+      "type": "API",
+      "tests": [
+        {
+          "status": "passed",
+          "description": "API create_unit successful"
+        },
+        {
+          "status": "passed",
+          "description": "API create_branch successful"
+        },
+        {
+          "status": "passed",
+          "description": "API assign_route successful"
+        },
+        {
+          "status": "passed",
+          "description": "API process_payment successful"
+        }
+      ],
+      "passed": 4,
+      "failed": 0,
+      "duration": 0
+    },
+    {
+      "scenario": "JavaScript Functionality",
+      "type": "F2E",
+      "tests": [
+        {
+          "status": "failed",
+          "error": "DataTable not found"
+        },
+        {
+          "status": "failed",
+          "error": "Modal trigger not found"
+        },
+        {
+          "status": "failed",
+          "error": "Chart canvas not found"
+        },
+        {
+          "status": "failed",
+          "error": "Form not found"
+        },
+        {
+          "status": "passed",
+          "description": "jQuery AJAX functional"
+        }
+      ],
+      "passed": 1,
+      "failed": 4,
+      "duration": 1321
+    },
+    {
+      "scenario": "Database Integration",
+      "type": "Backend",
+      "tests": [
+        {
+          "status": "failed",
+          "error": "Session data not found"
+        },
+        {
+          "status": "passed",
+          "description": "Role permissions implemented"
+        },
+        {
+          "status": "passed",
+          "description": "Data persistence working"
+        }
+      ],
+      "passed": 2,
+      "failed": 1,
+      "duration": 204
+    },
+    {
+      "scenario": "Mobile Responsiveness",
+      "type": "F2E",
+      "tests": [
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        },
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        },
+        {
+          "status": "failed",
+          "error": "Unknown F2E test component"
+        }
+      ],
+      "passed": 0,
+      "failed": 3,
+      "duration": 0
+    },
+    {
+      "scenario": "API Endpoints",
+      "type": "API",
+      "tests": [
+        {
+          "status": "passed",
+          "description": "Endpoint /pages/login.php returned 200"
+        },
+        {
+          "status": "passed",
+          "description": "Endpoint /pages/units.php returned 200"
+        },
+        {
+          "status": "passed",
+          "description": "Endpoint /pages/branches.php returned 200"
+        },
+        {
+          "status": "passed",
+          "description": "Endpoint /pages/collections.php returned 200"
+        }
+      ],
+      "passed": 4,
+      "failed": 0,
+      "duration": 3920
+    }
+  ],
+  "environment": {
+    "baseUrl": "http://localhost/gabe",
+    "headless": true,
+    "browser": "Chromium (Puppeteer)"
+  },
+  "coverage": {
+    "e2e": {
+      "total": 6,
+      "passed": 2,
+      "failed": 4,
+      "percentage": "33.3"
+    },
+    "f2e": {
+      "total": 12,
+      "passed": 1,
+      "failed": 11,
+      "percentage": "8.3"
+    },
+    "api": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "percentage": "100.0"
+    },
+    "backend": {
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "percentage": "66.7"
+    }
+  }
+}

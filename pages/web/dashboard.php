@@ -4,6 +4,13 @@
  * Full featured dengan charts dan comprehensive data
  */
 
+// Check authentication first
+session_start();
+if (!isset($_SESSION['user']['id'])) {
+    header('Location: /gabe/pages/login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../template_header.php';
 
 // Set page specific variables
@@ -17,13 +24,14 @@ $dashboardData = [
     'totalMembers' => 1250,
     'activeLoans' => 340,
     'totalSavings' => 2500000000,
-    'monthlyRevenue' => 125000000
+    'monthlyRevenue' => 125000000,
+    'last_sync' => '2024-03-27 17:00:00'
 ];
 
 $recentActivities = [
-    ['time' => '10:30', 'user' => 'Admin', 'action' => 'Tambah anggota baru', 'title' => 'Tambah Anggota Baru', 'description' => 'Anggota baru berhasil ditambahkan ke sistem', 'created_at' => '2024-03-27 10:30:00'],
-    ['time' => '09:45', 'user' => 'Kolektor', 'action' => 'Update pembayaran', 'title' => 'Update Pembayaran', 'description' => 'Pembayaran Kewer berhasil dicatat', 'created_at' => '2024-03-27 09:45:00'],
-    ['time' => '08:20', 'user' => 'Manager', 'action' => 'Approve pinjaman', 'title' => 'Approve Pinjaman', 'description' => 'Pinjaman berhasil disetujui', 'created_at' => '2024-03-27 08:20:00']
+    ['time' => '10:30', 'user' => 'Admin', 'action' => 'Tambah anggota baru', 'title' => 'Tambah Anggota Baru', 'description' => 'Anggota baru berhasil ditambahkan ke sistem', 'created_at' => '2024-03-27 10:30:00', 'type' => 'member'],
+    ['time' => '09:45', 'user' => 'Kolektor', 'action' => 'Update pembayaran', 'title' => 'Update Pembayaran', 'description' => 'Pembayaran Kewer berhasil dicatat', 'created_at' => '2024-03-27 09:45:00', 'type' => 'payment'],
+    ['time' => '08:20', 'user' => 'Manager', 'action' => 'Approve pinjaman', 'title' => 'Approve Pinjaman', 'description' => 'Pinjaman berhasil disetujui', 'created_at' => '2024-03-27 08:20:00', 'type' => 'loan']
 ];
 
 $alerts = [
@@ -455,7 +463,7 @@ $alerts = [
                         </div>
                         <div class="status-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-clock text-primary"></i> Last Sync</span>
-                            <span class="text-muted small"><?php echo formatWaktu($dashboardData['last_sync']); ?></span>
+                            <span class="text-muted small"><?php echo date('d M Y H:i', strtotime($dashboardData['last_sync'])); ?></span>
                         </div>
                     </div>
                 </div>
@@ -578,39 +586,25 @@ function setupAutoRefresh() {
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket connection for real-time updates (if available)
-    if (window.WebSocket) {
-        const ws = new WebSocket('ws://localhost:8080/dashboard-updates');
-        
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            handleRealTimeUpdate(data);
-        };
-        
-        ws.onopen = function() {
-            console.log('WebSocket connected');
-        };
-        
-        ws.onerror = function(error) {
-            console.log('WebSocket error:', error);
-        };
-    }
+    // WebSocket connection disabled for development
+    console.log('WebSocket real-time updates disabled in development mode');
+    
+    // Fallback: Simulate real-time updates with polling
+    setInterval(function() {
+        // Refresh dashboard data every 30 seconds
+        console.log('Dashboard data refresh check');
+        refreshDashboard();
+    }, 30000);
+}
+
+function refreshDashboard() {
+    // Refresh dashboard data
+    console.log('Refreshing dashboard data...');
 }
 
 function handleRealTimeUpdate(data) {
-    switch(data.type) {
-        case 'new_loan':
-            updateMetrics();
-            showNotification('Pinjaman baru diajukan', 'info');
-            break;
-        case 'payment_received':
-            updateMetrics();
-            showNotification('Pembayaran diterima', 'success');
-            break;
-        case 'system_alert':
-            showAlert(data.alert);
-            break;
-    }
+    // Real-time update handler disabled in development
+    console.log('Real-time updates disabled in development mode');
 }
 
 function refreshDashboard() {
@@ -809,8 +803,7 @@ function showAlert(alert) {
 }
 </style>
 
-<!-- Bootstrap JavaScript -->
-<script src="/gabe/assets/js/bootstrap.bundle.min.js"></script>
+<?php require_once __DIR__ . '/../template_footer.php'; ?>
 
 </body>
 </html>

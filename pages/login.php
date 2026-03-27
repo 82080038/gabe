@@ -4,6 +4,8 @@
  * Responsive login dengan device detection
  */
 
+session_start();
+
 require_once __DIR__ . '/../config/device_detection.php';
 require_once __DIR__ . '/../config/indonesia_config.php';
 
@@ -26,6 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'branch_name' => 'Pusat'
         ];
         
+        // Set session cookie parameters
+        session_set_cookie_params([
+            'lifetime' => 86400, // 24 hours
+            'path' => '/',
+            'domain' => '',
+            'secure' => false, // HTTP for development
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+        
+        // Regenerate session ID for security
+        session_regenerate_id(true);
+        
         // Redirect sesuai device
         if ($deviceDetection->getDeviceType() === 'mobile' && $deviceDetection->getUserRole() === 'collector') {
             header('Location: /gabe/pages/mobile/dashboard.php');
@@ -43,8 +58,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'branch_name' => 'Cabang Jakarta'
         ];
         
+        // Set session cookie parameters
+        session_set_cookie_params([
+            'lifetime' => 86400, // 24 hours
+            'path' => '/',
+            'domain' => '',
+            'secure' => false, // HTTP for development
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+        
+        // Regenerate session ID for security
+        session_regenerate_id(true);
+        
         // Redirect ke mobile dashboard untuk collector
         header('Location: /gabe/pages/mobile/dashboard.php');
+        exit;
+    } elseif ($username === 'unit_head' && $password === 'unit_head') {
+        $_SESSION['user'] = [
+            'id' => 3,
+            'username' => 'unit_head',
+            'name' => 'Kepala Unit',
+            'role' => 'unit_head',
+            'branch_id' => 1,
+            'branch_name' => 'Cabang Jakarta'
+        ];
+        
+        // Set session cookie parameters
+        session_set_cookie_params([
+            'lifetime' => 86400, // 24 hours
+            'path' => '/',
+            'domain' => '',
+            'secure' => false, // HTTP for development
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+        
+        // Regenerate session ID for security
+        session_regenerate_id(true);
+        
+        // Redirect ke web dashboard untuk unit head
+        header('Location: /gabe/pages/web/dashboard.php');
         exit;
     } else {
         $error = 'Username atau password salah';
@@ -292,20 +346,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/gabe/manifest.json">
-    <meta name="theme-color" content="#2c3e50">
+    <!-- Apple Touch Icon -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Koperasi Berjalan">
     <link rel="apple-touch-icon" href="/gabe/assets/icons/icon-192x192.png">
-    
-    <!-- JavaScript -->
     <script src="/gabe/assets/js/jquery.min.js"></script>
     <script src="/gabe/assets/js/bootstrap.bundle.min.js"></script>
     <script src="/gabe/assets/js/responsive-manager.js"></script>
     <script src="/gabe/assets/js/indonesia-formatter.js"></script>
-    <script src="/gabe/pwa-dev-config.js"></script>
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -341,27 +390,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             role: window.userRole,
             capabilities: window.deviceConfig?.capabilities
         });
-        
-        // PWA Development Debug
-        <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1'): ?>
-        console.log('[PWA] Development mode active');
-        setTimeout(() => {
-            if (window.PWA_DEBUG) {
-                console.log('[PWA] Debug tools available:', window.PWA_DEBUG);
-            }
-        }, 2000);
-        <?php endif; ?>
     });
     </script>
-    
-    <!-- Development Mode Debug Panel -->
-    <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1'): ?>
-    <div id="pwa-debug-panel" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; font-size: 12px; z-index: 10000;">
-        <div style="margin-bottom: 5px; font-weight: bold;">🔧 PWA Debug</div>
-        <button onclick="window.PWA_DEBUG?.clearCache()" style="background: #dc3545; color: white; border: none; padding: 3px 8px; margin: 1px; cursor: pointer; font-size: 11px;">Clear Cache</button>
-        <button onclick="window.PWA_DEBUG?.forceUpdate()" style="background: #007bff; color: white; border: none; padding: 3px 8px; margin: 1px; cursor: pointer; font-size: 11px;">Update</button>
-        <button onclick="window.PWA_DEBUG?.subscribePush()" style="background: #28a745; color: white; border: none; padding: 3px 8px; margin: 1px; cursor: pointer; font-size: 11px;">Push</button>
-    </div>
-    <?php endif; ?>
 </body>
 </html>

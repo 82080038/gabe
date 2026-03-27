@@ -241,7 +241,4 @@ echo '<meta name="theme-color" content="#667eea">';
 <!-- Mobile Route JavaScript -->
 <script src="../assets/js/mobile-route.js"></script>
 
-<!-- PWA Development Config -->
-<script src="/pwa-dev-config.js"></script>
-
 <?php require_once __DIR__ . '/../template_footer.php'; ?>

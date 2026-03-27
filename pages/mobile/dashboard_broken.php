@@ -459,9 +459,6 @@ function setupPullToRefresh() {
 <!-- Mobile Dashboard JavaScript -->
 <script src="../assets/js/mobile-dashboard.js"></script>
 
-<!-- PWA Development Config -->
-<script src="/pwa-dev-config.js"></script>
-
 <!-- Online Status Indicator -->
 <div id="online-status" class="online-status online">
     <i class="fas fa-wifi"></i> Online

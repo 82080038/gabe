@@ -1,0 +1,246 @@
+{
+  "timestamp": "2026-03-27T16:54:57.457Z",
+  "summary": {
+    "totalRoles": 2,
+    "passed": 0,
+    "failed": 2,
+    "totalDuration": 54058
+  },
+  "userRoles": [
+    {
+      "username": "admin",
+      "password": "admin",
+      "role": "bos",
+      "name": "Administrator",
+      "branch": "Pusat",
+      "expectedDashboard": "web",
+      "features": [
+        "unit_management",
+        "branch_management",
+        "member_management",
+        "loan_management",
+        "savings_management",
+        "collection_management",
+        "reporting",
+        "system_settings"
+      ]
+    },
+    {
+      "username": "collector",
+      "password": "collector",
+      "role": "collector",
+      "name": "Petugas Kolektor",
+      "branch": "Cabang Jakarta",
+      "expectedDashboard": "mobile",
+      "features": [
+        "mobile_dashboard",
+        "collection_route",
+        "member_visit",
+        "payment_collection",
+        "daily_report"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "role": "bos",
+      "name": "Administrator",
+      "status": "failed",
+      "duration": 29712,
+      "error": "Node is either not clickable or not an Element",
+      "timestamp": "2026-03-27T16:54:32.332Z"
+    },
+    {
+      "role": "collector",
+      "name": "Petugas Kolektor",
+      "status": "failed",
+      "duration": 24346,
+      "error": "Node is either not clickable or not an Element",
+      "timestamp": "2026-03-27T16:54:57.089Z"
+    }
+  ],
+  "featureTests": {
+    "bos": {
+      "unit_management": [
+        {
+          "selector": "a[href=\"/units\"]",
+          "name": "Daftar Unit Menu"
+        },
+        {
+          "selector": "a[href=\"/units/add\"]",
+          "name": "Tambah Unit Menu"
+        }
+      ],
+      "branch_management": [
+        {
+          "selector": "a[href=\"/branches\"]",
+          "name": "Daftar Cabang Menu"
+        },
+        {
+          "selector": "a[href=\"/branches/add\"]",
+          "name": "Tambah Cabang Menu"
+        }
+      ],
+      "member_management": [
+        {
+          "selector": "a[href=\"/members\"]",
+          "name": "Daftar Anggota Menu"
+        },
+        {
+          "selector": "a[href=\"/members/add\"]",
+          "name": "Tambah Anggota Menu"
+        },
+        {
+          "selector": "a[href=\"/members/family\"]",
+          "name": "Hubungan Keluarga Menu"
+        }
+      ],
+      "loan_management": [
+        {
+          "selector": "a[href=\"/loans\"]",
+          "name": "Daftar Pinjaman Menu"
+        },
+        {
+          "selector": "a[href=\"/loans/apply\"]",
+          "name": "Ajukan Pinjaman Menu"
+        },
+        {
+          "selector": "a[href=\"/loans/schedules\"]",
+          "name": "Jadwal Angsuran Menu"
+        },
+        {
+          "selector": "a[href=\"/loans/products\"]",
+          "name": "Produk Pinjaman Menu"
+        }
+      ],
+      "savings_management": [
+        {
+          "selector": "a[href=\"/savings/kewer\"]",
+          "name": "Kewer (Harian) Menu"
+        },
+        {
+          "selector": "a[href=\"/savings/mawar\"]",
+          "name": "Mawar (Bulanan) Menu"
+        },
+        {
+          "selector": "a[href=\"/savings/sukarela\"]",
+          "name": "Sukarela Menu"
+        },
+        {
+          "selector": "a[href=\"/savings/products\"]",
+          "name": "Produk Simpanan Menu"
+        }
+      ],
+      "collection_management": [
+        {
+          "selector": "a[href=\"/collections\"]",
+          "name": "Manajemen Koleksi Menu"
+        },
+        {
+          "selector": "a[href=\"/collections/reports\"]",
+          "name": "Laporan Koleksi Menu"
+        }
+      ],
+      "reporting": [
+        {
+          "selector": "a[href=\"/reports/summary\"]",
+          "name": "Ringkasan Laporan Menu"
+        },
+        {
+          "selector": "a[href=\"/reports/loans\"]",
+          "name": "Laporan Pinjaman Menu"
+        },
+        {
+          "selector": "a[href=\"/reports/savings\"]",
+          "name": "Laporan Simpanan Menu"
+        },
+        {
+          "selector": "a[href=\"/reports/cash\"]",
+          "name": "Arus Kas Menu"
+        },
+        {
+          "selector": "a[href=\"/reports/financial\"]",
+          "name": "Laporan Keuangan Menu"
+        },
+        {
+          "selector": "a[href=\"/reports/ojk\"]",
+          "name": "Laporan OJK Menu"
+        }
+      ],
+      "system_settings": [
+        {
+          "selector": "a[href=\"/settings/system\"]",
+          "name": "Pengaturan Sistem Menu"
+        },
+        {
+          "selector": "a[href=\"/settings/users\"]",
+          "name": "Manajemen User Menu"
+        }
+      ]
+    },
+    "collector": {
+      "mobile_dashboard": [
+        {
+          "selector": ".mobile-dashboard",
+          "name": "Mobile Dashboard Container"
+        },
+        {
+          "selector": ".collection-summary",
+          "name": "Ringkasan Koleksi"
+        },
+        {
+          "selector": ".today-route",
+          "name": "Rute Hari Ini"
+        }
+      ],
+      "collection_route": [
+        {
+          "selector": ".route-list",
+          "name": "Daftar Rute"
+        },
+        {
+          "selector": ".member-card",
+          "name": "Kartu Anggota"
+        },
+        {
+          "selector": ".collection-form",
+          "name": "Form Koleksi"
+        }
+      ],
+      "member_visit": [
+        {
+          "selector": ".visit-history",
+          "name": "Riwayat Kunjungan"
+        },
+        {
+          "selector": ".member-details",
+          "name": "Detail Anggota"
+        }
+      ],
+      "payment_collection": [
+        {
+          "selector": ".payment-form",
+          "name": "Form Pembayaran"
+        },
+        {
+          "selector": ".payment-history",
+          "name": "Riwayat Pembayaran"
+        }
+      ],
+      "daily_report": [
+        {
+          "selector": ".daily-summary",
+          "name": "Ringkasan Harian"
+        },
+        {
+          "selector": ".collection-stats",
+          "name": "Statistik Koleksi"
+        }
+      ]
+    }
+  },
+  "environment": {
+    "baseUrl": "http://localhost/gabe",
+    "headless": true
+  }
+}

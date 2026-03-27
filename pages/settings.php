@@ -3,30 +3,54 @@
  * Settings Page
  */
 
+// Start session
+session_start();
+
+// Check authentication
+if (!isset($_SESSION['user'])) {
+    header('Location: /gabe/pages/login.php');
+    exit;
+}
+
+// Check admin permission
+if ($_SESSION['user']['role'] !== 'bos') {
+    header('Location: /gabe/pages/web/dashboard.php');
+    exit;
+}
+
 require_once __DIR__ . '/template_header.php';
 
-$pageTitle = 'Pengaturan';
+// Set page specific variables
+$pageTitle = 'Pengaturan Sistem';
 $breadcrumbs = [
     ['title' => 'Dashboard', 'url' => '/gabe/pages/web/dashboard.php'],
-    ['title' => 'Pengaturan', 'url' => '#']
+    ['title' => 'Sistem', 'url' => '#']
 ];
-?>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1>Pengaturan</h1>
-            <p>Halaman pengaturan aplikasi - dalam pengembangan</p>
-            
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Pengaturan Aplikasi</h5>
-                    <p>Fitur pengaturan akan segera tersedia.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+// Handle different actions
+$action = $_GET['action'] ?? 'general';
+
+switch ($action) {
+    case 'users':
+        include 'settings/users.php';
+        break;
+    case 'roles':
+        include 'settings/roles.php';
+        break;
+    case 'backup':
+        include 'settings/backup.php';
+        break;
+    case 'logs':
+        include 'settings/logs.php';
+        break;
+    case 'maintenance':
+        include 'settings/maintenance.php';
+        break;
+    default:
+        include 'settings/general.php';
+        break;
+}
+?>
 
 </main>
 <!-- Footer -->

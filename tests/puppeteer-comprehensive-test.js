@@ -15,7 +15,7 @@ class ComprehensiveSystemTest {
         this.testResults = [];
         this.screenshots = [];
         this.config = {
-            baseUrl: 'http://localhost:8000',
+            baseUrl: 'http://localhost/gabe',
             timeout: 30000,
             headless: process.env.HEADLESS !== 'false',
             slowMo: 100,
@@ -160,7 +160,7 @@ class ComprehensiveSystemTest {
     
     async testAuthentication() {
         // Test login page accessibility
-        await this.page.goto(`${this.config.baseUrl}/login`);
+        await this.page.goto(`${this.config.baseUrl}/pages/login.php`);
         await this.page.waitForSelector('.login-container');
         
         // Test form validation
@@ -747,7 +747,7 @@ class ComprehensiveSystemTest {
         
         for (const viewport of mobileViewports) {
             await this.page.setViewport(viewport);
-            await this.page.goto(`${this.config.baseUrl}/login`);
+            await this.page.goto(`${this.config.baseUrl}/pages/login.php`);
             
             // Test mobile login
             await this.page.waitForSelector('.login-container');
@@ -789,7 +789,7 @@ class ComprehensiveSystemTest {
         
         // Test offline capability
         await this.page.setOfflineMode(true);
-        await this.page.goto(`${this.config.baseUrl}/login`);
+        await this.page.goto(`${this.config.baseUrl}/pages/login.php`);
         await this.page.waitForSelector('.login-container');
         await this.page.setOfflineMode(false);
         
@@ -798,7 +798,7 @@ class ComprehensiveSystemTest {
     
     async testSecurity() {
         // Test HTTPS redirection
-        await this.page.goto(`${this.config.baseUrl}/login`);
+        await this.page.goto(`${this.config.baseUrl}/pages/login.php`);
         const currentUrl = this.page.url();
         
         // Test XSS protection
@@ -867,7 +867,7 @@ class ComprehensiveSystemTest {
     }
     
     async loginAs(username, password) {
-        await this.page.goto(`${this.config.baseUrl}/login`);
+        await this.page.goto(`${this.config.baseUrl}/pages/login.php`);
         await this.page.waitForSelector('.login-container');
         
         await this.page.type('#username', username);

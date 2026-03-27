@@ -439,9 +439,6 @@ $savings = [
 <!-- Member Portal JavaScript -->
 <script src="../assets/js/member-portal.js"></script>
 
-<!-- PWA Development Config -->
-<script src="/pwa-dev-config.js"></script>
-
 <?php require_once __DIR__ . '/../template_footer.php'; ?>
 
 <?php
