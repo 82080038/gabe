@@ -1,15 +1,17 @@
 # 🚀 Setup Instructions - Koperasi Berjalan
 
-**Last Updated:** 2026-03-27  
-**Version:** 1.0.0  
-**Status:** Production Ready
+**Last Updated:** 2026-03-27 22:01 UTC+07:00  
+**Version:** 1.1.0  
+**Status:** Production Ready with Database Integration
 
 ---
 
 ## 📋 **Overview**
 
 Aplikasi Koperasi Berjalan adalah sistem simpan pinjam digital yang siap digunakan dengan:
+- **Database-driven authentication** dengan password hashing
 - **Multi-role user system** (6 role types)
+- **Clean dashboard** tanpa PHP errors
 - **Responsive web & mobile interface**
 - **PWA features** dengan Service Worker
 - **Quick login demo** untuk testing

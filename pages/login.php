@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../config/device_detection.php';
 require_once __DIR__ . '/../config/indonesia_config.php';
+require_once __DIR__ . '/../config/auth.php';
 
 // Set page title
 $pageTitle = 'Login - Aplikasi Koperasi Berjalan';
@@ -15,37 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    // Dummy authentication (replace with real auth)
-    if ($username === 'admin' && $password === 'admin') {
-        $_SESSION['user'] = [
-            'id' => 1,
-            'username' => 'admin',
-            'name' => 'Administrator',
-            'role' => 'bos',
-            'branch_id' => 1,
-            'branch_name' => 'Pusat'
-        ];
-        
+    // Attempt authentication
+    if (loginUser($username, $password)) {
         // Redirect sesuai device
-        if ($deviceDetection->getDeviceType() === 'mobile' && $deviceDetection->getUserRole() === 'collector') {
-            header('Location: /gabe/pages/mobile/dashboard.php');
-        } else {
-            header('Location: /gabe/pages/web/dashboard.php');
-        }
-        exit;
-    } elseif ($username === 'collector' && $password === 'collector') {
-        $_SESSION['user'] = [
-            'id' => 2,
-            'username' => 'collector',
-            'name' => 'Petugas Kolektor',
-            'role' => 'collector',
-            'branch_id' => 1,
-            'branch_name' => 'Cabang Jakarta'
-        ];
-        
-        // Redirect ke mobile dashboard untuk collector
-        header('Location: /gabe/pages/mobile/dashboard.php');
-        exit;
+        redirectBasedOnRole($deviceDetection->getDeviceType());
     } else {
         $error = 'Username atau password salah';
     }

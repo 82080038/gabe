@@ -137,7 +137,7 @@ $alerts = [
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h4 class="mb-2"><?php echo htmlspecialchars($currentRoleContent['title']); ?></h4>
+                            <h1 class="h3 mb-0"><?php echo htmlspecialchars($dashboardData['title'] ?? 'Dashboard Manajemen'); ?></h1>
                             <p class="mb-3"><?php echo htmlspecialchars($currentRoleContent['description']); ?></p>
                             <div class="d-flex flex-wrap gap-2">
                                 <?php foreach ($currentRoleContent['features'] as $feature): ?>
@@ -165,11 +165,11 @@ $alerts = [
                                 Total Anggota
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <?php echo number_format($dashboardData['total_members'], 0, ',', '.'); ?>
+                                <h2 class="h5 mb-0"><?php echo number_format($dashboardData['total_members'] ?? 0, 0, ',', '.'); ?></h2>
                             </div>
                             <div class="text-xs text-muted">
                                 <i class="fas fa-arrow-up text-success"></i> 
-                                +<?php echo number_format($dashboardData['new_members_this_month'], 0, ',', '.'); ?> bulan ini
+                                <span class="text-success"><?php echo number_format($dashboardData['new_members_this_month'] ?? 0, 0, ',', '.'); ?></span> ini
                             </div>
                         </div>
                         <div class="col-auto">
@@ -189,11 +189,11 @@ $alerts = [
                                 Portfolio Pinjaman
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <?php echo formatRupiah($dashboardData['total_portfolio']); ?>
+                                <?php echo formatRupiah($dashboardData['total_portfolio'] ?? 0); ?>
                             </div>
                             <div class="text-xs text-muted">
                                 <i class="fas fa-arrow-up text-success"></i> 
-                                +<?php echo number_format($dashboardData['portfolio_growth'], 2, ',', '.'); ?>% bulan ini
+                                <?php echo number_format($dashboardData['portfolio_growth'] ?? 0, 1, ',', '.'); ?>% bulan ini
                             </div>
                         </div>
                         <div class="col-auto">
@@ -213,11 +213,11 @@ $alerts = [
                                 Total Simpanan
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <?php echo formatRupiah($dashboardData['total_savings']); ?>
+                                <?php echo formatRupiah($dashboardData['total_savings'] ?? 0); ?>
                             </div>
                             <div class="text-xs text-muted">
                                 <i class="fas fa-arrow-up text-success"></i> 
-                                +<?php echo number_format($dashboardData['savings_growth'], 2, ',', '.'); ?>% bulan ini
+                                <?php echo number_format($dashboardData['savings_growth'] ?? 0, 1, ',', '.'); ?>% bulan ini
                             </div>
                         </div>
                         <div class="col-auto">
@@ -237,11 +237,11 @@ $alerts = [
                                 NPL Ratio
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <?php echo number_format($dashboardData['npl_ratio'], 2, ',', '.'); ?>%
+                                <?php echo number_format($dashboardData['npl_ratio'] ?? 0, 2, ',', '.'); ?>%
                             </div>
                             <div class="text-xs text-muted">
-                                <i class="fas fa-arrow-<?php echo $dashboardData['npl_trend'] === 'up' ? 'down text-danger' : 'up text-success'; ?>"></i> 
-                                <?php echo number_format($dashboardData['npl_change'], 2, ',', '.'); ?>% dari bulan lalu
+                                <i class="fas fa-arrow-<?php echo ($dashboardData['npl_trend'] ?? 'down') === 'up' ? 'down text-danger' : 'up text-success'; ?>"></i> 
+                                <?php echo number_format($dashboardData['npl_change'] ?? 0, 2, ',', '.'); ?>% dari bulan lalu
                             </div>
                         </div>
                         <div class="col-auto">
@@ -336,7 +336,7 @@ $alerts = [
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($dashboardData['branch_performance'] as $branch): ?>
+                                <?php foreach ($dashboardData['branch_performance'] ?? [] as $branch): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($branch['name']); ?></td>
                                     <td><?php echo number_format($branch['members'], 0, ',', '.'); ?></td>
@@ -378,10 +378,11 @@ $alerts = [
                             <div class="d-flex align-items-start">
                                 <div class="activity-icon me-3">
                                     <?php
-                                    $iconClass = $activity['type'] === 'loan' ? 'fa-hand-holding-usd text-primary' :
-                                                ($activity['type'] === 'payment' ? 'fa-money-bill text-success' :
-                                                ($activity['type'] === 'member' ? 'fa-user-plus text-info' :
-                                                ($activity['type'] === 'system' ? 'fa-cog text-warning' : 'fa-info-circle text-secondary')));
+                                    $activityType = $activity['type'] ?? 'system';
+                                    $iconClass = $activityType === 'loan' ? 'fa-hand-holding-usd text-primary' :
+                                                ($activityType === 'payment' ? 'fa-money-bill text-success' :
+                                                ($activityType === 'member' ? 'fa-user-plus text-info' :
+                                                ($activityType === 'system' ? 'fa-cog text-warning' : 'fa-info-circle text-secondary')));
                                     ?>
                                     <i class="fas <?php echo $iconClass; ?>"></i>
                                 </div>
@@ -455,7 +456,7 @@ $alerts = [
                         </div>
                         <div class="status-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-clock text-primary"></i> Last Sync</span>
-                            <span class="text-muted small"><?php echo formatWaktu($dashboardData['last_sync']); ?></span>
+                            <span class="text-muted small"><?php echo formatWaktu($dashboardData['last_sync'] ?? date('Y-m-d H:i:s')); ?></span>
                         </div>
                     </div>
                 </div>
@@ -480,17 +481,17 @@ function initCharts() {
     portfolioChart = new Chart(portfolioCtx, {
         type: 'line',
         data: {
-            labels: <?php echo json_encode($dashboardData['portfolio_labels']); ?>,
+            labels: <?php echo json_encode($dashboardData['portfolio_labels'] ?? []); ?>,
             datasets: [{
                 label: 'Portfolio Pinjaman',
-                data: <?php echo json_encode($dashboardData['portfolio_data']); ?>,
+                data: <?php echo json_encode($dashboardData['portfolio_data'] ?? []); ?>,
                 borderColor: '#e74c3c',
                 backgroundColor: 'rgba(231, 76, 60, 0.1)',
                 tension: 0.4,
                 fill: true
             }, {
                 label: 'Total Simpanan',
-                data: <?php echo json_encode($dashboardData['savings_data']); ?>,
+                data: <?php echo json_encode($dashboardData['savings_data'] ?? []); ?>,
                 borderColor: '#27ae60',
                 backgroundColor: 'rgba(39, 174, 96, 0.1)',
                 tension: 0.4,
@@ -523,9 +524,9 @@ function initCharts() {
     loanDistributionChart = new Chart(loanCtx, {
         type: 'doughnut',
         data: {
-            labels: <?php echo json_encode($dashboardData['loan_types']); ?>,
+            labels: <?php echo json_encode($dashboardData['loan_types'] ?? []); ?>,
             datasets: [{
-                data: <?php echo json_encode($dashboardData['loan_amounts']); ?>,
+                data: <?php echo json_encode($dashboardData['loan_amounts'] ?? []); ?>,
                 backgroundColor: [
                     '#e74c3c', '#3498db', '#27ae60', '#f39c12', '#9b59b6', '#1abc9c'
                 ]
@@ -547,10 +548,10 @@ function initCharts() {
     collectionChart = new Chart(collectionCtx, {
         type: 'bar',
         data: {
-            labels: <?php echo json_encode($dashboardData['collection_days']); ?>,
+            labels: <?php echo json_encode($dashboardData['collection_days'] ?? []); ?>,
             datasets: [{
                 label: 'Tingkat Penagihan (%)',
-                data: <?php echo json_encode($dashboardData['collection_rates']); ?>,
+                data: <?php echo json_encode($dashboardData['collection_rates'] ?? []); ?>,
                 backgroundColor: '#3498db'
             }]
         },

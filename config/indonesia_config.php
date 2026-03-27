@@ -209,6 +209,12 @@ if (!function_exists('formatNomorTelepon')) {
     }
 }
 
+if (!function_exists('formatWaktu')) {
+    function formatWaktu($datetime) {
+        return IndonesiaConfig::formatDateTime($datetime);
+    }
+}
+
 if (!function_exists('terbilang')) {
     function terbilang($number) {
         return IndonesiaConfig::toWords($number);
